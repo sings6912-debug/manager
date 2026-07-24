@@ -5,19 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុ Pro Cloud</title>
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- SheetJS Excel -->
+
+    <!-- SheetJS for Excel Import/Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- Chart.js -->
+    
+    <!-- Chart.js for Interactive Charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- html2pdf.js -->
+
+    <!-- html2pdf.js for PDF Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap');
+        
         body {
             font-family: 'Kantumruy Pro', sans-serif;
             background-color: #f1f5f9;
@@ -26,340 +31,2821 @@
             background-attachment: fixed;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .editable-input { width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; outline: none; transition: all 0.2s; }
-        .editable-input:hover { background-color: rgba(200, 200, 200, 0.15); border-color: #cbd5e1; }
-        .editable-input:focus { background-color: #ffffff; color: #0f172a !important; border-color: #2563eb; }
-        .tab-btn.active { border-bottom: 3px solid #2563eb; color: #1d4ed8; font-weight: 700; background-color: #eff6ff; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        .editable-input {
+            width: 100%;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 4px 8px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .editable-input:hover {
+            background-color: rgba(200, 200, 200, 0.15);
+            border-color: #cbd5e1;
+        }
+        .editable-input:focus {
+            background-color: #ffffff;
+            color: #0f172a !important;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .tab-btn.active {
+            border-bottom: 3px solid #2563eb;
+            color: #1d4ed8;
+            font-weight: 700;
+            background-color: #eff6ff;
+        }
+
+        /* Modal Text & Item Contrast Rules */
+        .modal-content-card {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+        }
         
-        /* Modals & Dark Theme Styles */
-        .modal-content-card { background-color: #ffffff !important; color: #0f172a !important; border: 1px solid #cbd5e1 !important; }
-        .modal-sub-card { background-color: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
-        .modal-item-input { background-color: #ffffff !important; color: #0f172a !important; border: 1px solid #cbd5e1 !important; border-radius: 6px; padding: 6px 10px; font-weight: 600; }
+        .modal-content-card label,
+        .modal-content-card span,
+        .modal-content-card h3,
+        .modal-content-card h4,
+        .modal-content-card p,
+        .modal-content-card legend,
+        .modal-label-text {
+            color: #0f172a !important;
+            font-weight: 700;
+        }
+
+        .modal-sub-card {
+            background-color: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+
+        .modal-item-input {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-weight: 600;
+        }
+
+        /* Dark Theme Scoped Overrides for Modals */
+        body.theme-dark .modal-content-card,
+        body.theme-aba-dark .modal-content-card,
+        body.theme-slate .modal-content-card {
+            background-color: #18181b !important;
+            color: #ffffff !important;
+            border: 1px solid #3f3f46 !important;
+        }
+
+        body.theme-dark .modal-content-card label,
+        body.theme-dark .modal-content-card span,
+        body.theme-dark .modal-content-card h3,
+        body.theme-dark .modal-content-card h4,
+        body.theme-dark .modal-content-card p,
+        body.theme-dark .modal-content-card legend,
+        body.theme-dark .modal-content-card div,
+        body.theme-dark .modal-label-text,
+        body.theme-aba-dark .modal-content-card label,
+        body.theme-aba-dark .modal-content-card span,
+        body.theme-aba-dark .modal-content-card h3,
+        body.theme-aba-dark .modal-content-card h4,
+        body.theme-aba-dark .modal-content-card p,
+        body.theme-aba-dark .modal-content-card legend,
+        body.theme-aba-dark .modal-content-card div,
+        body.theme-aba-dark .modal-label-text,
+        body.theme-slate .modal-content-card label,
+        body.theme-slate .modal-content-card span,
+        body.theme-slate .modal-content-card h3,
+        body.theme-slate .modal-content-card h4,
+        body.theme-slate .modal-content-card p,
+        body.theme-slate .modal-content-card legend,
+        body.theme-slate .modal-content-card div,
+        body.theme-slate .modal-label-text {
+            color: #ffffff !important;
+        }
+
+        body.theme-dark .modal-sub-card,
+        body.theme-aba-dark .modal-sub-card,
+        body.theme-slate .modal-sub-card {
+            background-color: #27272a !important;
+            border-color: #3f3f46 !important;
+            color: #ffffff !important;
+        }
+
+        body.theme-dark .modal-item-input,
+        body.theme-aba-dark .modal-item-input,
+        body.theme-slate .modal-item-input {
+            background-color: #1e1e24 !important;
+            color: #ffffff !important;
+            border-color: #52525b !important;
+        }
+
+        /* Custom Dark Theme Rules for Main Layout */
+        body.theme-aba-dark, body.theme-slate, body.theme-dark {
+            color: #f8fafc;
+        }
+        body.theme-aba-dark {
+            background-color: #121212;
+        }
+        body.theme-slate {
+            background-color: #0f172a;
+        }
+        body.theme-aba-dark .bg-white, body.theme-slate .bg-white {
+            background-color: #1e1e1e !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+        body.theme-aba-dark .tab-btn.active, body.theme-slate .tab-btn.active {
+            border-bottom: 3px solid #d4af37;
+            color: #f3e5ab;
+            background-color: #2a2415;
+        }
+        body.theme-aba-dark .tab-btn, body.theme-slate .tab-btn {
+            color: #94a3b8;
+        }
+        body.theme-aba-dark input, body.theme-aba-dark select,
+        body.theme-slate input, body.theme-slate select {
+            color: #f8fafc;
+        }
+        body.theme-aba-dark option, body.theme-slate option {
+            background-color: #1e1e1e;
+            color: #f8fafc;
+        }
+        body.theme-aba-dark .bg-slate-50, body.theme-slate .bg-slate-50 {
+            background-color: #27272a !important;
+            color: #f8fafc !important;
+        }
+
+        /* Widget Headers Contrast Fix */
+        .widget-card-title {
+            color: #0f172a !important;
+            font-weight: 800;
+        }
+        body.theme-dark .widget-card-title,
+        body.theme-aba-dark .widget-card-title,
+        body.theme-slate .widget-card-title {
+            color: #ffffff !important;
+        }
+
+        .shortcuts-toolbar-label {
+            color: #0f172a !important;
+            font-weight: 800;
+        }
+        body.theme-dark .shortcuts-toolbar-label,
+        body.theme-aba-dark .shortcuts-toolbar-label,
+        body.theme-slate .shortcuts-toolbar-label {
+            color: #ffffff !important;
+        }
         
-        body.theme-aba-dark, body.theme-slate, body.theme-dark { color: #f8fafc; }
-        body.theme-aba-dark { background-color: #121212; }
-        body.theme-slate { background-color: #0f172a; }
-        body.theme-aba-dark .bg-white, body.theme-slate .bg-white { background-color: #1e1e1e !important; color: #f8fafc !important; border-color: #334155 !important; }
-        body.theme-aba-dark .tab-btn.active, body.theme-slate .tab-btn.active { border-bottom: 3px solid #d4af37; color: #f3e5ab; background-color: #2a2415; }
-        body.theme-aba-dark td, body.theme-aba-dark th, body.theme-slate td, body.theme-slate th { color: #ffffff !important; }
-        
-        #toastContainer { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
-        .toast-msg { pointer-events: auto; animation: slideIn 0.3s ease-out forwards; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #3b82f6; transition: background-color 0.2s; }
-        .pin-dot.filled { background-color: #3b82f6; }
+        #searchInput, #filterAccount, #filterDatePeriod {
+            background-color: #ffffff;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1;
+        }
+        body.theme-dark #searchInput, body.theme-dark #filterAccount, body.theme-dark #filterDatePeriod,
+        body.theme-aba-dark #searchInput, body.theme-aba-dark #filterAccount, body.theme-aba-dark #filterDatePeriod,
+        body.theme-slate #searchInput, body.theme-slate #filterAccount, body.theme-slate #filterDatePeriod {
+            background-color: #27272a !important;
+            color: #ffffff !important;
+            border-color: #52525b !important;
+        }
+
+        body.theme-dark td, body.theme-dark th,
+        body.theme-aba-dark td, body.theme-aba-dark th,
+        body.theme-slate td, body.theme-slate th {
+            color: #ffffff !important;
+        }
+        body.theme-dark .text-gray-800, body.theme-dark .text-gray-500, body.theme-dark .text-gray-600,
+        body.theme-aba-dark .text-gray-800, body.theme-aba-dark .text-gray-500, body.theme-aba-dark .text-gray-600,
+        body.theme-slate .text-gray-800, body.theme-slate .text-gray-500, body.theme-slate .text-gray-600 {
+            color: #e2e8f0 !important;
+        }
+        body.theme-dark tfoot, body.theme-dark tfoot td,
+        body.theme-aba-dark tfoot, body.theme-aba-dark tfoot td,
+        body.theme-slate tfoot, body.theme-slate tfoot td {
+            background-color: #18181b !important;
+            color: #ffffff !important;
+        }
+
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+        }
+
+        .emoji-btn {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: transform 0.1s, background-color 0.2s;
+            font-size: 1.1rem;
+            user-select: none;
+        }
+        .emoji-btn:hover {
+            background-color: rgba(226, 232, 240, 0.6);
+            transform: scale(1.2);
+        }
+
+        #toastContainer {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast-msg {
+            pointer-events: auto;
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .pin-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #3b82f6;
+            transition: background-color 0.2s;
+        }
+        .pin-dot.filled {
+            background-color: #3b82f6;
+        }
     </style>
 </head>
 <body class="text-slate-800 antialiased min-h-screen pb-10" id="appBody">
 
-    <!-- 🔑 LICENSE ACTIVATION OVERLAY -->
-    <div id="licenseModalOverlay" class="fixed inset-0 z-[150] bg-slate-950/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 text-white">
-        <div class="max-w-md w-full bg-slate-900 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden text-center">
-            <div class="w-20 h-20 bg-blue-600/20 border border-blue-500/40 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-400 text-3xl shadow-lg">
-                <i class="fa-solid fa-key"></i>
-            </div>
-            <h2 class="text-2xl font-black mb-2 text-white">បញ្ចូលកូដអាជ្ញាប័ណ្ណ (License Key)</h2>
-            <p class="text-xs text-slate-300 mb-6 leading-relaxed">
-                សូមបញ្ចូលកូដអាជ្ញាប័ណ្ណរបស់អ្នក ដើម្បីចូលប្រើប្រាស់ប្រព័ន្ធហិរញ្ញវត្ថុ Pro Cloud។
-            </p>
-
-            <div class="space-y-4 mb-6">
-                <div>
-                    <input type="text" id="licenseKeyInput" placeholder="ឧ. PRO-8888-9999" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-center text-lg font-mono font-bold tracking-widest text-amber-300 focus:outline-none focus:border-blue-500 uppercase transition shadow-inner">
-                </div>
-                <button onclick="activateLicenseKey()" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-extrabold text-sm shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <span>ផ្ទៀងផ្ទាត់ & ចូលប្រើប្រាស់</span>
-                </button>
-            </div>
-
-            <div class="border-t border-slate-800 pt-4 text-left bg-slate-950/50 p-3 rounded-xl border">
-                <p class="text-[11px] font-bold text-slate-400 mb-1">📞 ត្រូវការទិញ License Key ឬបន្តសុពលភាព៖</p>
-                <div class="flex items-center justify-between text-xs font-mono text-blue-300 font-bold">
-                    <span>Telegram Admin:</span>
-                    <a href="https://t.me/Heng6912" target="_blank" class="text-amber-400 hover:underline">@Heng6912 ↗</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PIN Lock Overlay -->
+    <!-- PIN Security Lock Overlay -->
     <div id="pinLockOverlay" class="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-xl flex flex-col items-center justify-center text-white hidden">
         <div class="text-center mb-8">
-            <div class="w-16 h-16 bg-blue-600/20 border border-blue-500/40 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-400 text-2xl"><i class="fa-solid fa-lock"></i></div>
-            <h2 class="text-xl font-bold">វាយបញ្ចូលលេខកូដ PIN ៤ ខ្ទង់</h2>
+            <div class="w-16 h-16 bg-blue-600/20 border border-blue-500/40 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-400 text-2xl">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h2 class="text-xl font-bold" id="pinLockTitle">វាយបញ្ចូលលេខកូដ PIN ៤ ខ្ទង់</h2>
+            <p class="text-xs text-slate-400 mt-1">ដើម្បីចូលប្រើប្រាស់ប្រព័ន្ធហិរញ្ញវត្ថុ</p>
         </div>
-        <div class="flex gap-4 mb-8 justify-center">
-            <div class="pin-dot" id="dot-0"></div><div class="pin-dot" id="dot-1"></div><div class="pin-dot" id="dot-2"></div><div class="pin-dot" id="dot-3"></div>
+
+        <div class="flex gap-4 mb-8">
+            <div class="pin-dot" id="dot-0"></div>
+            <div class="pin-dot" id="dot-1"></div>
+            <div class="pin-dot" id="dot-2"></div>
+            <div class="pin-dot" id="dot-3"></div>
         </div>
-        <div class="grid grid-cols-3 gap-4 w-64 mx-auto text-center">
-            <button onclick="pressPin('1')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">1</button>
-            <button onclick="pressPin('2')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">2</button>
-            <button onclick="pressPin('3')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">3</button>
-            <button onclick="pressPin('4')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">4</button>
-            <button onclick="pressPin('5')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">5</button>
-            <button onclick="pressPin('6')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">6</button>
-            <button onclick="pressPin('7')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">7</button>
-            <button onclick="pressPin('8')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">8</button>
-            <button onclick="pressPin('9')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">9</button>
+
+        <div class="grid grid-cols-3 gap-4 w-64">
+            <button onclick="pressPin('1')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">1</button>
+            <button onclick="pressPin('2')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">2</button>
+            <button onclick="pressPin('3')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">3</button>
+            <button onclick="pressPin('4')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">4</button>
+            <button onclick="pressPin('5')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">5</button>
+            <button onclick="pressPin('6')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">6</button>
+            <button onclick="pressPin('7')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">7</button>
+            <button onclick="pressPin('8')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">8</button>
+            <button onclick="pressPin('9')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">9</button>
             <div></div>
-            <button onclick="pressPin('0')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">0</button>
-            <button onclick="clearPin()" class="h-14 bg-rose-900/40 text-rose-300 rounded-2xl text-sm font-bold"><i class="fa-solid fa-delete-left"></i></button>
+            <button onclick="pressPin('0')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold flex items-center justify-center transition active:scale-95">0</button>
+            <button onclick="clearPin()" class="h-14 bg-rose-900/40 hover:bg-rose-800 text-rose-300 rounded-2xl text-sm font-bold flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-delete-left"></i></button>
         </div>
     </div>
 
-    <!-- Toast Notifications -->
+    <!-- Toast Notification Container -->
     <div id="toastContainer"></div>
 
     <div class="max-w-[1400px] mx-auto pt-4 px-2 md:px-6">
-        <!-- Hero Header Card -->
-        <div id="heroCard" class="bg-gradient-to-br from-blue-800 to-indigo-900 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
+        
+        <!-- Header & Global Stats Card -->
+        <div id="heroCard" class="bg-gradient-to-br from-blue-800 to-indigo-900 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden transition-all duration-300">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -mr-10 -mt-10"></div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-6">
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-bold flex items-center gap-3">
-                        <i class="fa-solid fa-wallet text-amber-300"></i>
-                        <span id="displayAppTitle">ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុ Pro Cloud</span>
-                    </h1>
+                    <div class="flex items-center gap-3">
+                        <h1 class="text-2xl md:text-3xl font-bold flex items-center gap-3 cursor-pointer group" onclick="openCustomizeModal()" title="ចុចដើម្បីកែឈ្មោះ">
+                            <i class="fa-solid fa-wallet text-amber-300"></i>
+                            <span id="displayAppTitle">ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុផ្ទាល់ខ្លួន (Pro Cloud)</span>
+                            <i class="fa-solid fa-pen-to-square text-xs opacity-50 group-hover:opacity-100 text-amber-300 transition"></i>
+                        </h1>
+                    </div>
                     <div class="flex flex-wrap items-center gap-3 mt-2">
                         <span id="cloudStatusBadge" class="bg-amber-500/20 text-amber-200 border border-amber-400/30 text-xs px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> កំពុងភ្ជាប់ Cloud...
+                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                            កំពុងភ្ជាប់ Cloud...
                         </span>
-                        <span id="currentLicenseBadge" class="bg-blue-500/20 text-blue-200 border border-blue-400/30 text-xs px-2.5 py-1 rounded-full font-bold">
-                            🔑 Key: <span id="licenseBadgeText" class="font-mono text-amber-300">...</span>
-                        </span>
+                        <p class="text-blue-200 text-xs md:text-sm font-medium" id="displayAppSubtitle">ទិន្នន័យ Sync ស្វ័យប្រវត្តិ ☁️</p>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3">
+                <!-- Right Action Header Controls -->
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+                    
+                    <!-- Net Worth Card -->
                     <div class="bg-black/40 backdrop-blur-md border border-white/20 p-4 rounded-xl flex items-center justify-between gap-6 min-w-[280px]">
                         <div>
-                            <div class="text-blue-200 text-xs font-medium uppercase mb-1">ទ្រព្យសកម្មសរុបរួម (Net Worth)</div>
+                            <div class="text-blue-200 text-xs font-medium uppercase tracking-wider mb-1 flex items-center gap-2">
+                                ទ្រព្យសកម្មសរុបរួម (Net Worth)
+                                <button onclick="toggleHideAmounts()" id="eyeBtn" class="text-amber-300 hover:text-white transition text-sm ml-1" title="បិទ/បើកមើលសមតុល្យ">
+                                    <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                                </button>
+                            </div>
                             <div class="text-2xl font-black text-emerald-400 font-mono tracking-tight" id="globalNetWorth">$ 0.00</div>
                         </div>
+                        
                         <div class="h-10 w-px bg-white/20"></div>
+
                         <div>
-                            <div class="text-blue-200 text-xs font-medium uppercase mb-1">អត្រាប្តូរប្រាក់</div>
+                            <div class="flex items-center justify-between text-blue-200 text-xs font-medium uppercase tracking-wider mb-1">
+                                <span>អត្រាប្តូរប្រាក់</span>
+                                <button onclick="fetchLiveExchangeRate()" class="text-xs text-amber-300 hover:underline flex items-center gap-1" title="ទាញយកអត្រាប្តូរប្រាក់ជាក់ស្តែង">
+                                    <i class="fa-solid fa-rotate text-[10px]" id="rateSyncSpin"></i>
+                                    <span>Live</span>
+                                </button>
+                            </div>
                             <div class="flex items-center gap-1 bg-white/20 px-2 py-1 rounded text-sm">
                                 <span>៛</span>
                                 <input type="number" id="exchangeRate" value="4100" onchange="updateExchangeRate()" class="bg-transparent text-white font-bold w-16 outline-none text-right font-mono">
                             </div>
                         </div>
                     </div>
+
+                    <button onclick="openCustomizeModal()" class="px-3.5 py-3 bg-amber-400 hover:bg-amber-300 text-slate-900 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>🎨 កែសម្រួលអេក្រង់</span>
+                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Navigation Tabs -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6 flex overflow-x-auto">
-            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 font-bold transition-colors flex items-center justify-center gap-2"><i class="fa-solid fa-gauge"></i> ផ្ទាំងសង្ខេប (Dashboard)</button>
-            <button onclick="switchTab('entry')" id="tab-entry" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 font-bold transition-colors flex items-center justify-center gap-2"><i class="fa-solid fa-list-check"></i> ប្រតិបត្តិការ (Transactions)</button>
-            <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 font-bold transition-colors flex items-center justify-center gap-2"><i class="fa-solid fa-chart-column"></i> របាយការណ៍លម្អិត</button>
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 focus:outline-none transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-gauge"></i>
+                ផ្ទាំងសង្ខេប (Dashboard)
+            </button>
+            <button onclick="switchTab('entry')" id="tab-entry" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 focus:outline-none transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-list-check"></i>
+                ប្រតិបត្តិការ (Transactions)
+            </button>
+            <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 focus:outline-none transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-chart-column"></i>
+                របាយការណ៍លម្អិត
+            </button>
         </div>
 
-        <!-- DASHBOARD VIEW -->
+        <!-- VIEW: DASHBOARD -->
         <div id="view-dashboard" class="space-y-6">
+            
+            <!-- Cards: Account Balances -->
             <div id="sec-accounts">
-                <h2 class="text-lg font-extrabold mb-3 flex items-center gap-2"><i class="fa-solid fa-credit-card text-blue-600"></i> សមតុល្យតាមគណនី</h2>
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-extrabold text-slate-900 dark:text-amber-300 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-xl border border-slate-300 dark:border-amber-500/30 shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-credit-card text-blue-600 dark:text-amber-400"></i>
+                        <span>សមតុល្យតាមគណនី (Account Balances)</span>
+                    </h2>
+                    <button onclick="toggleHideAmounts()" class="text-xs bg-white/90 dark:bg-slate-900/90 px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-blue-700 dark:text-amber-300 hover:underline font-extrabold flex items-center gap-1.5 shadow-md">
+                        <i class="fa-solid fa-eye-slash"></i> <span id="eyeBtnText">បាំង/បង្ហាញសមតុល្យ</span>
+                    </button>
+                </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="dashboardCards"></div>
             </div>
 
-            <div id="sec-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white p-5 rounded-xl shadow-sm border"><h3 class="text-md font-bold mb-4 text-center">ចំណាយតាមផ្នែក (ខែនេះ)</h3><div class="relative h-[300px] w-full"><canvas id="expenseChart"></canvas></div></div>
-                <div class="bg-white p-5 rounded-xl shadow-sm border"><h3 class="text-md font-bold mb-4 text-center">ចំណូល vs ចំណាយ (៦ ខែចុងក្រោយ)</h3><div class="relative h-[300px] w-full"><canvas id="trendChart"></canvas></div></div>
-            </div>
-        </div>
-
-        <!-- TRANSACTIONS VIEW -->
-        <div id="view-entry" class="hidden space-y-4">
-            <div class="bg-white p-4 rounded-xl shadow-sm border flex flex-col sm:flex-row justify-between gap-4">
-                <div class="flex items-center gap-2">
-                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="ស្វែងរក..." class="border p-2 rounded-lg text-sm font-bold">
-                    <select id="filterAccount" onchange="renderTable()" class="border p-2 rounded-lg text-sm font-bold"></select>
+            <!-- Savings Goals Widget -->
+            <div id="sec-goals" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold widget-card-title flex items-center gap-2">
+                        🐖 គោលដៅសន្សំប្រាក់ (Savings Goals)
+                    </h2>
+                    <button onclick="openGoalModal()" class="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-lg border border-emerald-200 transition">
+                        + បន្ថែមគោលដៅ
+                    </button>
                 </div>
-                <button onclick="addRow()" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold text-sm">+ បន្ថែមជួរដេកថ្មី</button>
+                <div id="goalsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-                <table class="min-w-full divide-y" id="mainTable">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-3 py-3 text-left text-xs font-bold uppercase">កាលបរិច្ឆេទ & ម៉ោង</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold uppercase">ផ្នែក/ប្រភេទ</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold uppercase">ការពិពណ៌នា</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold uppercase">គណនី</th>
-                            <th class="px-3 py-3 text-right text-xs font-bold uppercase">ចំណូល</th>
-                            <th class="px-3 py-3 text-right text-xs font-bold uppercase">ចំណាយ</th>
-                            <th class="px-3 py-3 text-center">លុប</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody" class="divide-y"></tbody>
-                </table>
+            <!-- Monthly Budget Progress Bar Widget -->
+            <div id="sec-budgets" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold widget-card-title flex items-center gap-2">
+                        🎯 ថវិកាចំណាយប្រចាំខែ (Monthly Spending Budget)
+                    </h2>
+                    <button onclick="openBudgetModal()" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-3 py-1.5 rounded-lg border border-indigo-200 transition">
+                        ⚙️ កំណត់ថវិកា
+                    </button>
+                </div>
+                <div id="budgetProgressContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+
+            <!-- Charts Section -->
+            <div id="sec-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-md font-bold widget-card-title mb-4 text-center">ចំណាយតាមផ្នែក (ខែនេះ)</h3>
+                    <div class="relative h-[300px] w-full flex justify-center">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-md font-bold widget-card-title mb-4 text-center">ចំណូល vs ចំណាយ (៦ ខែចុងក្រោយ)</h3>
+                    <div class="relative h-[300px] w-full flex justify-center">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- REPORT VIEW -->
+        <!-- VIEW: TRANSACTIONS (DATA ENTRY) -->
+        <div id="view-entry" class="hidden space-y-4">
+            
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-bold shortcuts-toolbar-label flex items-center gap-1">
+                        ⚡ កត់ត្រារហ័ស (1-Click Shortcuts)៖
+                    </span>
+                    <button onclick="openShortcutModal()" class="text-[11px] text-blue-600 dark:text-amber-400 hover:underline font-bold">+ កែសម្រួលប៊ូតុងរហ័ស</button>
+                </div>
+                <div class="flex items-center gap-2 overflow-x-auto pb-1" id="shortcutsContainer"></div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                
+                <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto flex-wrap">
+                    <div class="relative w-full sm:w-48">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </div>
+                        <input type="text" id="searchInput" oninput="renderTable()" placeholder="ស្វែងរក..." class="block w-full pl-9 pr-3 py-2 border rounded-lg text-sm font-bold outline-none">
+                    </div>
+                    
+                    <!-- Enhanced Date Filter Dropdown with Custom Date-Time Picker -->
+                    <select id="filterDatePeriod" onchange="toggleCustomDateTimeFilter()" class="block w-44 py-2 px-3 border rounded-lg text-sm shadow-sm focus:outline-none font-bold">
+                        <option value="ALL">📅 គ្រប់កាលបរិច្ឆេទ</option>
+                        <option value="TODAY" selected>☀️ ថ្ងៃនេះ (Today)</option>
+                        <option value="YESTERDAY">🌙 ម្សិលមិញ</option>
+                        <option value="THIS_WEEK">🗓️ សប្តាហ៍នេះ</option>
+                        <option value="THIS_MONTH">📆 ខែនេះ</option>
+                        <option value="CUSTOM_DATETIME">🎯 រើសថ្ងៃ/ម៉ោង/នាទី/វិនាទី</option>
+                    </select>
+
+                    <!-- Exact Custom Date-Time Pickers (Appears when selected) -->
+                    <div id="filterDateTimeContainer" class="hidden flex flex-wrap items-center gap-2 bg-blue-50/80 dark:bg-zinc-800/80 p-1.5 rounded-lg border border-blue-200 dark:border-zinc-700">
+                        <div class="flex items-center gap-1 text-[11px] font-bold">
+                            <span>ចាប់ពី៖</span>
+                            <input type="datetime-local" step="1" id="filterStartDateTime" onchange="renderTable()" class="bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded px-1.5 py-1 text-xs font-mono">
+                        </div>
+                        <div class="flex items-center gap-1 text-[11px] font-bold">
+                            <span>ដល់៖</span>
+                            <input type="datetime-local" step="1" id="filterEndDateTime" onchange="renderTable()" class="bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded px-1.5 py-1 text-xs font-mono">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                        <select id="filterAccount" onchange="renderTable()" class="block w-32 py-2 px-3 border rounded-lg text-sm shadow-sm focus:outline-none font-bold">
+                        </select>
+                        <button onclick="openAccountsModal()" class="px-2.5 py-2 text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-lg border border-slate-300 flex items-center gap-1 transition whitespace-nowrap">
+                            ⚙️ គណនី
+                        </button>
+                        <button onclick="openCurrenciesModal()" class="px-2.5 py-2 text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold rounded-lg border border-amber-300 flex items-center gap-1 transition whitespace-nowrap">
+                            ⛽ ខ្នាត
+                        </button>
+                        <button onclick="openCategoriesModal()" class="px-2.5 py-2 text-xs bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold rounded-lg border border-purple-300 flex items-center gap-1 transition whitespace-nowrap">
+                            📁 ប្រភេទ
+                        </button>
+                        <button onclick="openTransferModal()" class="px-2.5 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-sm flex items-center gap-1 transition whitespace-nowrap">
+                            🔄 ផ្ទេរប្រាក់
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                    <input type="file" id="fileInput" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="hidden" onchange="importData(event)">
+                    <button onclick="document.getElementById('fileInput').click()" class="px-3 py-2 text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition font-medium flex items-center gap-1">
+                        📥 នាំចូល Excel
+                    </button>
+                    <button onclick="exportToExcel()" class="px-3 py-2 text-xs bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition font-medium">
+                        Excel
+                    </button>
+
+                    <button onclick="exportToJSON()" class="px-3 py-2 text-xs bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition font-bold" title="ទាញយក Backup កូដ JSON">
+                        💾 Backup JSON
+                    </button>
+                    <input type="file" id="jsonFileInput" accept=".json" class="hidden" onchange="importFromJSON(event)">
+                    <button onclick="document.getElementById('jsonFileInput').click()" class="px-3 py-2 text-xs bg-sky-100 text-sky-800 border border-sky-300 rounded-lg hover:bg-sky-200 transition font-bold" title="ចាក់បញ្ចូល Backup JSON">
+                        📂 Restore JSON
+                    </button>
+
+                    <button onclick="confirmClearData()" class="px-3 py-2 text-xs bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition font-medium ml-auto">
+                        លុបទិន្នន័យ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Today's Summary Banner + Savings Rate % -->
+            <div id="todaySummaryBanner" class="bg-blue-50 dark:bg-zinc-800 border border-blue-200 dark:border-zinc-700 p-3 rounded-xl flex flex-wrap items-center justify-between text-xs font-bold gap-2">
+                <span class="text-blue-900 dark:text-blue-300 flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-day text-blue-600 dark:text-amber-400"></i>
+                    <span>សង្ខេបចំណូលចំណាយ (Summary)៖</span>
+                </span>
+                <div class="flex items-center gap-4 flex-wrap">
+                    <span class="text-emerald-600 dark:text-emerald-400">ចំណូល៖ <span id="todayIncText">$0.00</span></span>
+                    <span class="text-rose-600 dark:text-rose-400">ចំណាយ៖ <span id="todayExpText">$0.00</span></span>
+                    <span class="text-indigo-600 dark:text-amber-300 bg-indigo-50 dark:bg-zinc-700 px-2 py-0.5 rounded border border-indigo-200 dark:border-zinc-600">អត្រាសន្សំ៖ <span id="todaySavingsRate">0%</span></span>
+                </div>
+            </div>
+
+            <!-- The Data Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700" id="mainTable">
+                        <thead class="bg-slate-50 dark:bg-zinc-800">
+                            <tr>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-12">ល.រ</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-52">កាលបរិច្ឆេទ & ម៉ោង</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-44">ផ្នែក/ប្រភេទ</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase">ការពិពណ៌នា</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-36">គណនី</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-28">ខ្នាត/រូបិយប័ណ្ណ</th>
+                                <th class="px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-32">ចំណូល</th>
+                                <th class="px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-32">ចំណាយ</th>
+                                <th class="px-3 py-3 text-center text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-20">
+                                    <button onclick="addRow()" class="text-blue-600 hover:text-blue-800 bg-blue-50 px-2 py-1 rounded border border-blue-200 font-black" title="បន្ថែមថ្មី">+</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="bg-white dark:bg-zinc-900 divide-y divide-gray-100 dark:divide-zinc-800"></tbody>
+                        <tfoot class="bg-slate-100 dark:bg-zinc-800 border-t-2 border-gray-300 dark:border-zinc-700">
+                            <tr>
+                                <td colspan="6" class="px-4 py-4 text-sm font-bold text-slate-900 dark:text-slate-100 text-right">សរុប (រាយតាមខ្នាត/រូបិយប័ណ្ណ):</td>
+                                <td class="px-3 py-4 text-right text-sm font-bold text-green-600 dark:text-emerald-400" id="totIncCell"></td>
+                                <td class="px-3 py-4 text-right text-sm font-bold text-red-500 dark:text-rose-400" id="totExpCell"></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            
+            <button onclick="addRow()" class="w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 rounded-xl hover:border-blue-400 hover:text-blue-600 transition font-medium flex items-center justify-center gap-2">
+                <i class="fa-solid fa-plus"></i> បន្ថែមជួរដេកថ្មី
+            </button>
+        </div>
+
+        <!-- VIEW: REPORTS -->
         <div id="view-report" class="hidden space-y-6">
-            <div class="bg-white p-5 rounded-xl border">
-                <h3 class="font-bold mb-4">របាយការណ៍សរុប</h3>
-                <div id="repPeriodBody"></div>
+            <div class="bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-bold text-slate-900 dark:text-slate-100 whitespace-nowrap">របាយការណ៍តាម៖</label>
+                        <select id="reportPeriod" onchange="toggleCustomPeriod()" class="bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 text-gray-900 dark:text-slate-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 w-56 outline-none font-bold">
+                            <option value="daily">ប្រចាំថ្ងៃ</option>
+                            <option value="weekly">ប្រចាំសប្តាហ៍</option>
+                            <option value="monthly" selected>ប្រចាំខែ</option>
+                            <option value="quarterly">ប្រចាំត្រីមាស (Quarterly)</option>
+                            <option value="yearly">ប្រចាំឆ្នាំ</option>
+                            <option value="custom">កំណត់ផ្ទាល់ខ្លួន ( Custom Range )</option>
+                        </select>
+                    </div>
+
+                    <div id="customPeriodContainer" class="hidden flex flex-wrap items-center gap-3 bg-blue-50/50 dark:bg-zinc-800/50 p-2 rounded-lg border border-blue-100 dark:border-zinc-700">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xs font-bold text-gray-600 dark:text-gray-300">ចាប់ពី៖</span>
+                            <input type="datetime-local" step="1" id="customStartDate" onchange="renderReports()" class="bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 text-xs rounded-lg p-1.5 font-mono text-slate-800 dark:text-white">
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xs font-bold text-gray-600 dark:text-gray-300">ដល់៖</span>
+                            <input type="datetime-local" step="1" id="customEndDate" onchange="renderReports()" class="bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 text-xs rounded-lg p-1.5 font-mono text-slate-800 dark:text-white">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="exportToPDF()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-lg shadow flex items-center gap-1 transition">
+                        📄 ទាញយក PDF
+                    </button>
+                    <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold rounded-lg shadow flex items-center gap-1 transition">
+                        🖨️ បោះពុម្ព (Print)
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6" id="reportPrintArea">
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
+                    <div class="bg-slate-50 dark:bg-zinc-800 px-5 py-3 border-b border-gray-200 dark:border-zinc-700 font-bold text-slate-900 dark:text-amber-300">របាយការណ៍តាមពេលវេលា</div>
+                    <div class="overflow-x-auto max-h-[500px]">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
+                            <thead class="bg-white dark:bg-zinc-800 sticky top-0 shadow-sm z-10">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 dark:text-slate-200 uppercase">កាលបរិច្ឆេទ</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-gray-700 dark:text-slate-200 uppercase">ខ្នាត/រូបិយប័ណ្ណ</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-green-600 dark:text-emerald-400 uppercase">ចំណូល</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-red-500 dark:text-rose-400 uppercase">ចំណាយ</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-slate-800 dark:text-amber-300 uppercase">សមតុល្យ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="repPeriodBody" class="divide-y divide-gray-100 dark:divide-zinc-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
+                    <div class="bg-slate-50 dark:bg-zinc-800 px-5 py-3 border-b border-gray-200 dark:border-zinc-700 font-bold text-slate-900 dark:text-amber-300">របាយការណ៍តាមផ្នែក (សរុបរួម)</div>
+                    <div class="overflow-x-auto max-h-[500px]">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
+                            <thead class="bg-white dark:bg-zinc-800 sticky top-0 shadow-sm z-10">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 dark:text-slate-200 uppercase">ផ្នែក / ប្រភេទ</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-gray-700 dark:text-slate-200 uppercase">ខ្នាត/រូបិយប័ណ្ណ</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-green-600 dark:text-emerald-400 uppercase">ចំណូល</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-red-500 dark:text-rose-400 uppercase">ចំណាយ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="repCatBody" class="divide-y divide-gray-100 dark:divide-zinc-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal for UI Customization -->
+    <div id="customizeModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-lg mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
+                    <i class="fa-solid fa-palette text-amber-500"></i> កែសម្រួលអេក្រង់ & Theme
+                </h3>
+                <button onclick="closeCustomizeModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
+            </div>
+            
+            <div class="space-y-4 mb-6 max-h-[70vh] overflow-y-auto pr-1">
+                <div class="modal-sub-card p-3 rounded-xl space-y-2">
+                    <label class="block text-xs font-bold modal-label-text">✏️ កែប្រែឈ្មោះប្រព័ន្ធ & ការរៀបរាប់៖</label>
+                    <div>
+                        <span class="text-[11px] font-bold modal-label-text block mb-1">ឈ្មោះប្រព័ន្ធ (App Title):</span>
+                        <input type="text" id="cfgAppTitle" placeholder="ឈ្មោះប្រព័ន្ធ..." class="modal-item-input w-full p-2 text-sm font-bold">
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold modal-label-text block mb-1">ការរៀបរាប់ (Subtitle):</span>
+                        <input type="text" id="cfgAppSubtitle" placeholder="ការរៀបរាប់..." class="modal-item-input w-full p-2 text-xs">
+                    </div>
+                </div>
+
+                <div class="modal-sub-card p-3 rounded-xl space-y-2">
+                    <label class="block text-xs font-bold modal-label-text">🔒 កំណត់សោរ PIN Code ៤ ខ្ទង់៖</label>
+                    <div class="flex items-center gap-2">
+                        <input type="password" maxlength="4" id="cfgPinInput" placeholder="លេខ ៤ ខ្ទង់" class="modal-item-input w-32 p-2 text-center font-bold tracking-widest">
+                        <button onclick="savePinCode()" class="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow">រក្សាទុក PIN</button>
+                        <button onclick="clearPinCode()" class="px-3 py-2 bg-rose-100 text-rose-700 rounded-lg text-xs font-bold shadow">លុប PIN</button>
+                    </div>
+                </div>
+
+                <div class="modal-sub-card p-3 rounded-xl">
+                    <label class="block text-xs font-bold mb-2 modal-label-text">🎨 កែប្រែពណ៌អក្សរចំណងជើង (Text Colors)៖</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold mb-1 modal-label-text">ពណ៌អក្សរចំណងជើង៖</label>
+                            <input type="color" id="cfgTitleColor" value="#ffffff" onchange="applyUiConfig()" class="w-full h-9 rounded border p-1 cursor-pointer bg-white dark:bg-zinc-700">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold mb-1 modal-label-text">ពណ៌អក្សររៀបរាប់៖</label>
+                            <input type="color" id="cfgSubtitleColor" value="#bfdbfe" onchange="applyUiConfig()" class="w-full h-9 rounded border p-1 cursor-pointer bg-white dark:bg-zinc-700">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-sub-card p-3 rounded-xl space-y-2">
+                    <label class="block text-xs font-bold modal-label-text">🖼️ ដាក់រូបភាព Background (Wallpaper)៖</label>
+                    
+                    <div>
+                        <label class="block text-[11px] font-bold mb-1 modal-label-text">ជ្រើសរើសរូបភាពពីទូរស័ព្ទ/កុំព្យូទ័រ (Local Image)៖</label>
+                        <input type="file" id="cfgBgFileInput" accept="image/*" onchange="handleLocalBgUpload(event)" class="block w-full text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                    </div>
+
+                    <div class="flex items-center gap-2 my-1">
+                        <div class="flex-1 h-px bg-gray-300 dark:bg-zinc-700"></div>
+                        <span class="text-[10px] font-bold modal-label-text">ឬបញ្ចូល Link</span>
+                        <div class="flex-1 h-px bg-gray-300 dark:bg-zinc-700"></div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="cfgBgImageUrl" placeholder="https://example.com/wallpaper.jpg" class="modal-item-input flex-1 p-2 text-xs">
+                        <button onclick="clearBgImage()" class="px-3 py-1 bg-rose-100 hover:bg-rose-200 text-xs font-bold rounded-lg text-rose-700 transition">លុបរូប</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold mb-2 modal-label-text">🎨 ជ្រើសរើសប្រភេទ Theme (ពណ៌អេក្រង់)៖</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setThemeStyle('default')" class="p-2.5 border-2 rounded-xl text-xs font-bold text-center transition bg-slate-100 text-slate-900 border-blue-500">
+                            Classic Light ⬜
+                        </button>
+                        <button onclick="setThemeStyle('aba-dark')" class="p-2.5 border-2 rounded-xl text-xs font-bold text-center transition bg-slate-900 text-amber-400 border-amber-500">
+                            Dark Gold 🖤✨
+                        </button>
+                        <button onclick="setThemeStyle('slate')" class="p-2.5 border-2 rounded-xl text-xs font-bold text-center transition bg-slate-800 text-slate-100 border-slate-600">
+                            Navy Slate 🟦
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ADMIN LICENSE GENERATOR SECTION -->
+                <div class="border-t pt-3 mt-3 border-gray-300 dark:border-zinc-700">
+                    <label class="block text-sm font-black modal-label-text text-amber-600 mb-2">👑 Admin Panel: បង្កើត License Key</label>
+                    <div class="modal-sub-card p-4 rounded-xl border border-amber-300 dark:border-amber-600 shadow-sm space-y-3 bg-amber-50/30 dark:bg-amber-900/10">
+                        <div>
+                            <span class="text-[10px] font-bold block mb-1 modal-label-text">ឈ្មោះ Key:</span>
+                            <input type="text" id="adminNewKey" placeholder="ឧ. PRO-001" class="modal-item-input w-full p-2 text-xs uppercase font-mono font-bold">
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <label class="flex items-center gap-1 text-xs font-bold cursor-pointer text-emerald-600 dark:text-emerald-400">
+                                <input type="checkbox" id="adminLifetime" class="w-4 h-4 rounded" onchange="document.getElementById('durationContainer').classList.toggle('opacity-30', this.checked)">
+                                ប្រើបានរហូត (Lifetime)
+                            </label>
+                        </div>
+                        
+                        <div class="flex gap-2 items-center" id="durationContainer">
+                            <span class="text-[10px] font-bold modal-label-text">កំណត់ចំនួន:</span>
+                            <input type="number" id="adminDuration" value="1" min="1" class="modal-item-input w-20 p-2 text-xs text-center font-bold">
+                            <select id="adminDurationUnit" class="modal-item-input flex-1 p-2 text-xs font-bold">
+                                <option value="MONTHS">ខែ (Months)</option>
+                                <option value="YEARS">ឆ្នាំ (Years)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="adminGenerateKey()" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-lg shadow transition">
+                            ➕ បង្កើត & Save ចូល Cloud
+                        </button>
+                    </div>
+                </div>
+
+                <div class="border-t pt-3 space-y-2 border-gray-200 dark:border-zinc-700">
+                    <label class="block text-xs font-bold mb-1 modal-label-text">👁️ បង្ហាញ/លាក់ ផ្នែកលើ Dashboard៖</label>
+                    
+                    <label class="flex items-center justify-between p-2.5 modal-sub-card rounded-lg text-xs cursor-pointer">
+                        <span class="font-bold modal-label-text">💳 សមតុល្យតាមគណនី (Account Balances)</span>
+                        <input type="checkbox" id="chkAccounts" checked onchange="toggleSection('sec-accounts', this.checked)" class="w-4 h-4 text-blue-600 rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2.5 modal-sub-card rounded-lg text-xs cursor-pointer">
+                        <span class="font-bold modal-label-text">🐖 គោលដៅសន្សំប្រាក់ (Savings Goals Widget)</span>
+                        <input type="checkbox" id="chkGoals" checked onchange="toggleSection('sec-goals', this.checked)" class="w-4 h-4 text-blue-600 rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2.5 modal-sub-card rounded-lg text-xs cursor-pointer">
+                        <span class="font-bold modal-label-text">🎯 ថវិកាចំណាយប្រចាំខែ (Spending Budget Widget)</span>
+                        <input type="checkbox" id="chkBudgets" checked onchange="toggleSection('sec-budgets', this.checked)" class="w-4 h-4 text-blue-600 rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2.5 modal-sub-card rounded-lg text-xs cursor-pointer">
+                        <span class="font-bold modal-label-text">📊 ក្រាហ្វវិភាគ (Analytics Charts)</span>
+                        <input type="checkbox" id="chkCharts" checked onchange="toggleSection('sec-charts', this.checked)" class="w-4 h-4 text-blue-600 rounded">
+                    </label>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 border-t pt-3 border-gray-200 dark:border-zinc-700">
+                <button onclick="saveUiCustomizations()" class="px-5 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition shadow">រក្សាទុកការកំណត់</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Managing Savings Goals -->
+    <div id="goalModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
+                    <span>🐖</span> កំណត់គោលដៅសន្សំប្រាក់
+                </h3>
+                <button onclick="closeGoalModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold mb-1 modal-label-text">ឈ្មោះគោលដៅ (ឧ. 🛵 ទិញម៉ូតូ)៖</label>
+                    <input type="text" id="glName" placeholder="ឈ្មោះគោលដៅ..." class="modal-item-input w-full p-2.5 text-sm font-medium">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold mb-1 modal-label-text">🔗 ភ្ជាប់ជាមួយគណនីធនាគារ/កាបូបលុយ៖</label>
+                    <select id="glLinkedAcc" onchange="toggleGoalCurrentInput()" class="modal-item-input w-full p-2.5 text-sm font-bold text-amber-600 dark:text-amber-400"></select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold mb-1 modal-label-text">ចំនួនដៅសរុប ($)៖</label>
+                        <input type="number" step="any" id="glTarget" placeholder="ឧ. 1500" class="modal-item-input w-full p-2.5 text-sm font-bold text-emerald-600">
+                    </div>
+                    <div id="glCurrentWrapper">
+                        <label class="block text-xs font-bold mb-1 modal-label-text">សន្សំបានបច្ចុប្បន្ន ($)៖</label>
+                        <input type="number" step="any" id="glCurrent" placeholder="ឧ. 400" class="modal-item-input w-full p-2.5 text-sm font-bold text-blue-600">
+                    </div>
+                </div>
+
+                <button id="glSaveBtn" onclick="saveSavingsGoal()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-lg transition shadow">បន្ថែម/រក្សាទុកគោលដៅ</button>
+                
+                <p class="text-xs border-t pt-2 font-bold modal-label-text border-gray-200 dark:border-gray-700">បញ្ជីគោលដៅសន្សំប្រាក់៖</p>
+                <div class="max-h-48 overflow-y-auto space-y-2 pr-1" id="goalListContainer"></div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="closeGoalModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">បិទ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Managing Budget Limits -->
+    <div id="budgetModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
+                    <span>🎯</span> កំណត់ថវិកាចំណាយប្រចាំខែ
+                </h3>
+                <button onclick="closeBudgetModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold mb-1 modal-label-text">ជ្រើសរើសផ្នែក/ប្រភេទ៖</label>
+                    <select id="bgCategory" class="modal-item-input w-full p-2.5 text-sm font-medium"></select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold mb-1 modal-label-text">🔗 ភ្ជាប់ជាមួយគណនីធនាគារ/កាបូបលុយ៖</label>
+                    <select id="bgLinkedAcc" class="modal-item-input w-full p-2.5 text-sm font-bold text-blue-600 dark:text-blue-400"></select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold mb-1 modal-label-text">កំណត់ថវិកាអតិបរមា៖</label>
+                        <input type="number" step="any" id="bgLimit" placeholder="ឧ. 200" class="modal-item-input w-full p-2.5 text-sm font-bold text-indigo-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1 modal-label-text">ខ្នាត/រូបិយប័ណ្ណ៖</label>
+                        <select id="bgCurrency" class="modal-item-input w-full p-2.5 text-sm font-bold text-amber-700"></select>
+                    </div>
+                </div>
+                <button id="bgSaveBtn" onclick="saveBudgetLimit()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition shadow">បន្ថែម/រក្សាទុកថវិកា</button>
+                
+                <p class="text-xs border-t pt-2 font-bold modal-label-text border-gray-200 dark:border-gray-700">បញ្ជីថវិកាដែលបានកំណត់៖</p>
+                <div class="max-h-48 overflow-y-auto space-y-2 pr-1" id="budgetListContainer"></div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="closeBudgetModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">បិទ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Managing 1-Click Shortcuts -->
+    <div id="shortcutModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
+                    <span>⚡</span> កែសម្រួលប៊ូតុងរហ័ស
+                </h3>
+                <button onclick="closeShortcutModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <!-- Add new shortcut form -->
+                <div class="modal-sub-card p-3 rounded-lg space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold mb-1 modal-label-text">ឈ្មោះប៊ូតុង (ឧ. ☕ កាហ្វេ)៖</label>
+                        <input type="text" id="newScName" placeholder="ឈ្មោះប៊ូតុង..." class="modal-item-input w-full p-2 text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold mb-1 modal-label-text">ប្រភេទ៖</label>
+                            <select id="newScCat" class="modal-item-input w-full p-2 text-sm font-medium"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold mb-1 modal-label-text">គណនីដកលុយ៖</label>
+                            <select id="newScAcc" class="modal-item-input w-full p-2 text-sm font-medium"></select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold mb-1 modal-label-text">ចំនួនប្រាក់ចំណាយ៖</label>
+                            <input type="number" step="any" id="newScAmount" placeholder="0.00" class="modal-item-input w-full p-2 text-sm font-bold text-red-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold mb-1 modal-label-text">ខ្នាត៖</label>
+                            <select id="newScCur" class="modal-item-input w-full p-2 text-sm font-bold text-amber-600"></select>
+                        </div>
+                    </div>
+                    <button id="scSaveBtn" onclick="addNewShortcut()" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition shadow">បន្ថែមប៊ូតុងថ្មី</button>
+                </div>
+
+                <p class="text-xs border-t pt-2 font-bold modal-label-text border-gray-200 dark:border-gray-700">បញ្ជីប៊ូតុងដែលមានស្រាប់ (ចុច ⬅️ ➡️ ដើម្បីរំកិលទីតាំង)៖</p>
+                <div class="max-h-48 overflow-y-auto space-y-2 pr-1" id="shortcutListContainer"></div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="closeShortcutModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">បិទ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Managing Custom Accounts -->
+    <div id="accountsModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
+                    <span>⚙️</span> គ្រប់គ្រងគណនី / កាបូបលុយ
+                </h3>
+                <button onclick="closeAccountsModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <div class="flex gap-2">
+                        <input type="text" id="newAccountName" placeholder="ឈ្មោះគណនីថ្មី (ឧ. 🏦 ABA, 💳 Wing...)" class="modal-item-input flex-1 px-3 py-2 text-sm">
+                        <button onclick="addNewAccount()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition">បន្ថែម</button>
+                    </div>
+                    <div class="flex items-center gap-1 mt-1.5 text-xs overflow-x-auto py-1 modal-label-text">
+                        <span class="text-[10px] font-bold">ចុចរើស Emoji៖</span>
+                        <span class="emoji-btn" onclick="appendEmoji('newAccountName', '🏦')">🏦</span>
+                        <span class="emoji-btn" onclick="appendEmoji('newAccountName', '💳')">💳</span>
+                        <span class="emoji-btn" onclick="appendEmoji('newAccountName', '👛')">👛</span>
+                        <span class="emoji-btn" onclick="appendEmoji('newAccountName', '⛽')">⛽</span>
+                        <span class="emoji-btn" onclick="appendEmoji('newAccountName', '💰')">💰</span>
+                    </div>
+                </div>
+                <div class="max-h-60 overflow-y-auto space-y-2 pr-1" id="accountsListContainer"></div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="closeAccountsModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">បិទ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Managing Currencies -->
+    <div id="currenciesModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
+                    <span>⛽</span> គ្រប់គ្រងខ្នាត / រូបិយប័ណ្ណ
+                </h3>
+                <button onclick="closeCurrenciesModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div class="flex gap-2">
+                    <input type="text" id="newCurrencyName" placeholder="ឈ្មោះខ្នាតថ្មី (ឧ. THB, L...)" class="modal-item-input flex-1 px-3 py-2 text-sm">
+                    <button onclick="addNewCurrency()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded-lg transition">បន្ថែម</button>
+                </div>
+                <div class="max-h-60 overflow-y-auto space-y-2 pr-1" id="currenciesListContainer"></div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="closeCurrenciesModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">បិទ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Managing Categories -->
+    <div id="categoriesModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
+                    <span>📁</span> គ្រប់គ្រងផ្នែក / ប្រភេទ
+                </h3>
+                <button onclick="closeCategoriesModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div class="flex gap-2">
+                    <input type="text" id="newCategoryName" placeholder="ឈ្មោះប្រភេទថ្មី..." class="modal-item-input flex-1 px-3 py-2 text-sm">
+                    <button onclick="addNewCategory()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold rounded-lg transition">បន្ថែម</button>
+                </div>
+                <div class="max-h-60 overflow-y-auto space-y-2 pr-1" id="categoriesListContainer"></div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="closeCategoriesModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">បិទ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Account Transfer -->
+    <div id="transferModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
+                    <span>🔄</span> ផ្ទេរប្រាក់រវាងគណនី
+                </h3>
+                <button onclick="closeTransferModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold mb-1 modal-label-text">ពីគណនី (ចេញ)៖</label>
+                    <select id="transferFromAcc" class="modal-item-input w-full p-2.5 text-sm font-medium"></select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold mb-1 modal-label-text">ទៅគណនី (ចូល)៖</label>
+                    <select id="transferToAcc" class="modal-item-input w-full p-2.5 text-sm font-medium"></select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold mb-1 modal-label-text">ចំនួន៖</label>
+                        <input type="number" step="any" id="transferAmount" placeholder="0.00" class="modal-item-input w-full p-2.5 text-sm font-bold text-blue-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1 modal-label-text">ខ្នាត/រូបិយប័ណ្ណ៖</label>
+                        <select id="transferCurrency" class="modal-item-input w-full p-2.5 text-sm font-bold text-amber-700"></select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold mb-1 modal-label-text">ការពិពណ៌នាបញ្ជាក់៖</label>
+                    <input type="text" id="transferDesc" value="ផ្ទេរប្រាក់រវាងគណនី" class="modal-item-input w-full p-2.5 text-sm">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3">
+                <button onclick="closeTransferModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">បោះបង់</button>
+                <button onclick="executeTransfer()" class="px-4 py-2 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow transition">ផ្ទេរប្រាក់ឥឡូវនេះ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Confirmation -->
+    <div id="confirmModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 transform transition-all">
+            <h3 class="text-lg font-bold mb-2 modal-label-text" id="modalTitle">បញ្ជាក់ការលុប</h3>
+            <p class="text-sm mb-6 modal-label-text" id="modalDesc">តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?</p>
+            <div class="flex justify-end gap-3">
+                <button onclick="closeModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">បោះបង់</button>
+                <button id="modalConfirmBtn" onclick="executeDelete()" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg">យល់ព្រមលុប</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Global state container
         window.state = {
-            licenseKey: '', licenseInfo: null, exchangeRate: 4100, hideAmounts: false, hiddenAccounts: [],
-            appTitle: 'Finance Pro Cloud', themeStyle: 'default',
-            accounts: ['🏦 ABA', '💳 AC', '👛 Wallet', '🐖 Savings'], currencies: ['USD', 'KHR'],
-            categories: ['ប្រាក់ខែ', 'អាហារ', 'សាំង', 'ទិញទំនិញ', 'ផ្សេងៗ'], transactions: []
+            exchangeRate: 4100,
+            hideAmounts: false, 
+            hiddenAccounts: [],
+            visibleSections: {
+                'sec-accounts': true,
+                'sec-goals': true,
+                'sec-budgets': true,
+                'sec-charts': true
+            },
+            themeStyle: 'default',
+            bgImageUrl: '',
+            titleColor: '#ffffff',
+            subtitleColor: '#bfdbfe',
+            pinCode: '',
+            enteredPin: '',
+            appTitle: 'ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុផ្ទាល់ខ្លួន (Pro Cloud)',
+            appSubtitle: 'ទិន្នន័យ Sync ស្វ័យប្រវត្តិ ☁️',
+            accounts: ['🏦 ABA', '💳 AC', '👛 Wallet', '🐖 Savings', '⛽ កាតសាំង'],
+            currencies: ['USD', 'KHR', 'L (លីត្រ)'],
+            categories: ['ប្រាក់ខែ', 'អាហារ', 'សាំង', 'បង់ថ្លៃភ្លើង/ទឹក', 'ទិញទំនិញ', 'ផ្ទេរប្រាក់', 'ផ្សេងៗ'],
+            budgets: [
+                { id: 'b1', cat: 'អាហារ', limit: 200, cur: 'USD', linkedAcc: 'ALL' },
+                { id: 'b2', cat: 'សាំង', limit: 50, cur: 'L (លីត្រ)', linkedAcc: 'ALL' }
+            ],
+            goals: [
+                { id: 'g1', name: '🛵 ទិញម៉ូតូ', target: 1500, current: 400, linkedAcc: 'NONE' },
+                { id: 'g2', name: '🏖️ ដើរលេងសៀមរាប', target: 300, current: 180, linkedAcc: 'NONE' }
+            ],
+            shortcuts: [
+                { id: 's1', name: '🍔 បាយថ្ងៃត្រង់ ($2.50)', cat: 'អាហារ', acc: '👛 Wallet', cur: 'USD', inc: 0, exp: 2.5, desc: 'បាយថ្ងៃត្រង់' },
+                { id: 's2', name: '☕ កាហ្វេ ($1.50)', cat: 'អាហារ', acc: '👛 Wallet', cur: 'USD', inc: 0, exp: 1.5, desc: 'ទិញកាហ្វេ' },
+                { id: 's3', name: '⛽ ចាក់សាំង (10L)', cat: 'សាំង', acc: '⛽ កាតសាំង', cur: 'L (លីត្រ)', inc: 0, exp: 10, desc: 'ចាក់សាំង' }
+            ],
+            transactions: []
         };
+
         window.charts = { expense: null, trend: null };
 
+        // Helper Money Formatter
         window.formatMoney = function(amount, cur) {
+            if (window.state && window.state.hideAmounts) return '••••••';
             if (cur === 'KHR') return (amount || 0).toLocaleString('en-US') + ' ៛';
-            return (amount || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' $';
+            if (cur === 'USD') return (amount || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' $';
+            return (amount || 0).toLocaleString('en-US', {maximumFractionDigits: 2}) + ' ' + (cur || '');
         };
 
-        window.checkLicenseValidity = function(licObj) {
-            if (!licObj) return { valid: false, reason: 'NOT_FOUND' };
-            if (licObj.status !== 'ACTIVE') return { valid: false, reason: 'INACTIVE' };
-            if (licObj.expiryDate === 'LIFETIME') return { valid: true, reason: 'LIFETIME' };
-            if (new Date().toISOString().split('T')[0] > licObj.expiryDate) return { valid: false, reason: 'EXPIRED' };
-            return { valid: true, reason: 'ACTIVE' };
+        window.playChimeSound = function() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.25);
+            } catch(e) {}
         };
 
-        window.activateLicenseKey = function() {
-            const inputVal = document.getElementById('licenseKeyInput').value.trim().toUpperCase();
-            if (!inputVal) return alert('សូមបញ្ចូល License Key!');
+        window.showToast = function(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+            const toast = document.createElement('div');
+            let bg = 'bg-slate-800 text-white';
+            if (type === 'success') bg = 'bg-emerald-600 text-white';
+            if (type === 'error') bg = 'bg-rose-600 text-white';
             
-            window.firebaseGet(window.firebaseRef(window.firebaseDb, 'licenses/' + inputVal)).then((snapshot) => {
-                if (snapshot.exists()) {
-                    const licData = snapshot.val();
-                    const check = window.checkLicenseValidity(licData);
-                    if (check.valid) {
-                        window.state.licenseKey = inputVal;
-                        window.state.licenseInfo = licData;
-                        localStorage.setItem('finance_app_license_key', inputVal);
-                        document.getElementById('licenseModalOverlay').classList.add('hidden');
-                        document.getElementById('licenseBadgeText').textContent = inputVal;
-                        window.attachFirebaseListenersForLicense(inputVal);
-                    } else { alert("License Key នេះបានផុតកំណត់ ឬអសកម្ម!"); }
-                } else { alert("រកមិនឃើញ License Key នេះទេ!"); }
+            toast.className = `toast-msg ${bg} px-4 py-2.5 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 border border-white/10`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        window.checkPinLock = function() {
+            if (window.state.pinCode && window.state.pinCode.length === 4) {
+                const el = document.getElementById('pinLockOverlay');
+                if (el) el.classList.remove('hidden');
+                window.updatePinDots();
+            } else {
+                const el = document.getElementById('pinLockOverlay');
+                if (el) el.classList.add('hidden');
+            }
+        };
+
+        window.pressPin = function(digit) {
+            if (window.state.enteredPin.length < 4) {
+                window.state.enteredPin += digit;
+                window.updatePinDots();
+                if (window.state.enteredPin.length === 4) {
+                    setTimeout(() => {
+                        if (window.state.enteredPin === window.state.pinCode) {
+                            window.playChimeSound();
+                            document.getElementById('pinLockOverlay').classList.add('hidden');
+                            window.state.enteredPin = '';
+                            window.showToast('ស្វាគមន៍! បានដោះសោររៀងរាល់ជោគជ័យ', 'success');
+                        } else {
+                            window.showToast('លេខកូដ PIN មិនត្រឹមត្រូវទេ!', 'error');
+                            window.state.enteredPin = '';
+                            window.updatePinDots();
+                        }
+                    }, 150);
+                }
+            }
+        };
+
+        window.clearPin = function() {
+            window.state.enteredPin = window.state.enteredPin.slice(0, -1);
+            window.updatePinDots();
+        };
+
+        window.updatePinDots = function() {
+            for (let i = 0; i < 4; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (dot) {
+                    if (i < window.state.enteredPin.length) dot.classList.add('filled');
+                    else dot.classList.remove('filled');
+                }
+            }
+        };
+
+        window.savePinCode = function() {
+            const val = document.getElementById('cfgPinInput').value.trim();
+            if (val.length === 4 && !isNaN(val)) {
+                window.state.pinCode = val;
+                window.saveUiConfigToLocal();
+                window.saveUiConfigToCloud();
+                window.showToast('បានរក្សាទុក PIN Code ៤ ខ្ទង់!', 'success');
+            } else {
+                window.showToast('សូមបញ្ចូលលេខកូដ PIN ៤ ខ្ទង់!', 'error');
+            }
+        };
+
+        window.clearPinCode = function() {
+            window.state.pinCode = '';
+            document.getElementById('cfgPinInput').value = '';
+            window.saveUiConfigToLocal();
+            window.saveUiConfigToCloud();
+            window.showToast('បានលុបសោរ PIN Code', 'info');
+        };
+
+        window.formatForDateTimeInput = function(dStr) {
+            if (!dStr) return '';
+            if (dStr.length === 10) return dStr + 'T00:00:00';
+            if (dStr.includes('T')) return dStr.slice(0, 19);
+            const d = new Date(dStr);
+            if (isNaN(d.getTime())) return dStr;
+            const now = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+            return now.toISOString().slice(0, 19);
+        };
+
+        window.generateId = function() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        };
+
+        window.appendEmoji = function(inputId, emoji) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.value += emoji;
+                input.focus();
+            }
+        };
+
+        window.toggleHideAmounts = function() {
+            window.state.hideAmounts = !window.state.hideAmounts;
+            const eyeIcon = document.getElementById('eyeIcon');
+            const eyeBtnText = document.getElementById('eyeBtnText');
+            
+            if (window.state.hideAmounts) {
+                if (eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+                if (eyeBtnText) eyeBtnText.textContent = 'បង្ហាញសមតុល្យ';
+            } else {
+                if (eyeIcon) eyeIcon.className = 'fa-solid fa-eye';
+                if (eyeBtnText) eyeBtnText.textContent = 'បាំងសមតុល្យ';
+            }
+
+            window.saveUiConfigToLocal();
+            window.renderTable();
+            window.updateDashboard();
+        };
+
+        window.fetchLiveExchangeRate = async function(isSilent = false) {
+            const rateSpin = document.getElementById('rateSyncSpin');
+            if (rateSpin) rateSpin.classList.add('animate-spin');
+
+            try {
+                const response = await fetch('https://open.er-api.com/v6/latest/USD');
+                const data = await response.json();
+                if (data && data.rates && data.rates.KHR) {
+                    const liveRate = Math.round(data.rates.KHR);
+                    const rateInput = document.getElementById('exchangeRate');
+                    if (rateInput) rateInput.value = liveRate;
+                    window.updateExchangeRate();
+                    if (!isSilent) {
+                        window.showToast(`អត្រាប្តូរប្រាក់៖ 1$ = ${liveRate.toLocaleString()} ៛`, 'success');
+                    }
+                }
+            } catch (err) {
+                if (!isSilent) window.showToast('មិនអាចទាញយកអត្រាប្តូរប្រាក់បានទេ', 'error');
+            } finally {
+                if (rateSpin) rateSpin.classList.remove('animate-spin');
+            }
+        };
+
+        window.openCustomizeModal = function() {
+            document.getElementById('cfgAppTitle').value = window.state.appTitle || '';
+            document.getElementById('cfgAppSubtitle').value = window.state.appSubtitle || '';
+            document.getElementById('cfgBgImageUrl').value = window.state.bgImageUrl || '';
+            document.getElementById('cfgTitleColor').value = window.state.titleColor || '#ffffff';
+            document.getElementById('cfgSubtitleColor').value = window.state.subtitleColor || '#bfdbfe';
+            document.getElementById('cfgPinInput').value = window.state.pinCode || '';
+            
+            // Checkboxes state
+            if (window.state.visibleSections) {
+                if (document.getElementById('chkAccounts')) document.getElementById('chkAccounts').checked = !!window.state.visibleSections['sec-accounts'];
+                if (document.getElementById('chkGoals')) document.getElementById('chkGoals').checked = !!window.state.visibleSections['sec-goals'];
+                if (document.getElementById('chkBudgets')) document.getElementById('chkBudgets').checked = !!window.state.visibleSections['sec-budgets'];
+                if (document.getElementById('chkCharts')) document.getElementById('chkCharts').checked = !!window.state.visibleSections['sec-charts'];
+            }
+
+            document.getElementById('customizeModal').classList.remove('hidden');
+        };
+
+        window.closeCustomizeModal = function() {
+            document.getElementById('customizeModal').classList.add('hidden');
+        };
+
+        window.adminGenerateKey = function() {
+            const keyVal = document.getElementById('adminNewKey').value.trim().toUpperCase();
+            if (!keyVal) {
+                window.showToast('សូមបញ្ចូលឈ្មោះ Key!', 'error');
+                return;
+            }
+
+            let expDate = 'LIFETIME';
+            const isLifetime = document.getElementById('adminLifetime').checked;
+            if (!isLifetime) {
+                const duration = parseInt(document.getElementById('adminDuration').value) || 1;
+                const unit = document.getElementById('adminDurationUnit').value;
+                const now = new Date();
+                if (unit === 'MONTHS') now.setMonth(now.getMonth() + duration);
+                if (unit === 'YEARS') now.setFullYear(now.getFullYear() + duration);
+                expDate = now.toISOString().split('T')[0];
+            }
+
+            const newLicObj = { key: keyVal, expiryDate: expDate, status: 'ACTIVE', createdDate: new Date().toISOString().split('T')[0] };
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'licenses/' + keyVal), newLicObj).then(() => {
+                    window.showToast(`✅ បានបង្កើត License: ${keyVal} រួចរាល់!`, 'success');
+                    document.getElementById('adminNewKey').value = '';
+                }).catch((error) => {
+                    window.showToast('មានបញ្ហាក្នុងការបង្កើត Key: ' + error.message, 'error');
+                });
+            } else {
+                window.showToast('ប្រព័ន្ធ Cloud មិនទាន់តភ្ជាប់រូចរាល់ទេ', 'error');
+            }
+        };
+
+        window.handleLocalBgUpload = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                window.state.bgImageUrl = e.target.result;
+                document.getElementById('cfgBgImageUrl').value = '';
+                window.applyUiConfig();
+                window.saveUiConfigToLocal();
+                window.saveUiConfigToCloud();
+                window.showToast('បានអាប់ដេត Background រក្សាទុក!', 'success');
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.clearBgImage = function() {
+            document.getElementById('cfgBgImageUrl').value = '';
+            document.getElementById('cfgBgFileInput').value = '';
+            window.state.bgImageUrl = '';
+            document.body.style.backgroundImage = 'none';
+            window.saveUiConfigToLocal();
+            window.saveUiConfigToCloud();
+            window.showToast('បានលុបរូប', 'info');
+        };
+
+        window.saveUiCustomizations = function() {
+            window.state.appTitle = document.getElementById('cfgAppTitle').value.trim() || 'ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុផ្ទាល់ខ្លួន (Pro Cloud)';
+            window.state.appSubtitle = document.getElementById('cfgAppSubtitle').value.trim() || 'ទិន្នន័យ Sync ស្វ័យប្រវត្តិ ☁️';
+            const urlVal = document.getElementById('cfgBgImageUrl').value.trim();
+            if (urlVal) window.state.bgImageUrl = urlVal;
+            window.state.titleColor = document.getElementById('cfgTitleColor').value || '#ffffff';
+            window.state.subtitleColor = document.getElementById('cfgSubtitleColor').value || '#bfdbfe';
+
+            window.applyUiConfig();
+            window.saveUiConfigToLocal();
+            window.saveUiConfigToCloud();
+            window.closeCustomizeModal();
+            window.showToast('បានរក្សាទុកការកំណត់អេក្រង់', 'success');
+        };
+
+        window.setThemeStyle = function(theme) {
+            window.state.themeStyle = theme;
+            window.applyUiConfig();
+            window.saveUiConfigToLocal();
+            window.saveUiConfigToCloud();
+        };
+
+        window.toggleSection = function(secId, isVisible) {
+            if (!window.state.visibleSections) window.state.visibleSections = {};
+            window.state.visibleSections[secId] = isVisible;
+            
+            const el = document.getElementById(secId);
+            if (el) {
+                if (isVisible) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            }
+
+            window.saveUiConfigToLocal();
+            window.saveUiConfigToCloud();
+        };
+
+        window.applyUiConfig = function() {
+            const titleEl = document.getElementById('displayAppTitle');
+            const subTitleEl = document.getElementById('displayAppSubtitle');
+            
+            if (titleEl) {
+                titleEl.textContent = window.state.appTitle;
+                titleEl.style.color = window.state.titleColor || '#ffffff';
+            }
+            if (subTitleEl) {
+                subTitleEl.textContent = window.state.appSubtitle;
+                subTitleEl.style.color = window.state.subtitleColor || '#bfdbfe';
+            }
+
+            const body = document.getElementById('appBody');
+            const hero = document.getElementById('heroCard');
+
+            if (window.state.bgImageUrl) {
+                body.style.backgroundImage = `url('${window.state.bgImageUrl}')`;
+            } else {
+                body.style.backgroundImage = 'none';
+            }
+
+            body.className = "text-slate-800 antialiased min-h-screen pb-10";
+            body.classList.remove('theme-aba-dark', 'theme-slate', 'theme-dark');
+
+            if (window.state.themeStyle === 'aba-dark') {
+                body.classList.add('theme-aba-dark', 'theme-dark');
+                if (hero) hero.className = "bg-gradient-to-br from-neutral-900 via-amber-950 to-neutral-950 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden border border-amber-500/30";
+            } else if (window.state.themeStyle === 'slate') {
+                body.classList.add('theme-slate', 'theme-dark');
+                body.style.backgroundColor = '#0f172a';
+                if (hero) hero.className = "bg-gradient-to-br from-slate-800 to-slate-950 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden border border-slate-700";
+            } else {
+                body.style.backgroundColor = '#f1f5f9';
+                if (hero) hero.className = "bg-gradient-to-br from-blue-800 to-indigo-900 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden";
+            }
+
+            // Apply section visibility states
+            if (window.state.visibleSections) {
+                Object.keys(window.state.visibleSections).forEach(secId => {
+                    const isVis = window.state.visibleSections[secId];
+                    const secEl = document.getElementById(secId);
+                    if (secEl) {
+                        if (isVis) secEl.classList.remove('hidden');
+                        else secEl.classList.add('hidden');
+                    }
+                    if (secId === 'sec-accounts' && document.getElementById('chkAccounts')) document.getElementById('chkAccounts').checked = isVis;
+                    if (secId === 'sec-goals' && document.getElementById('chkGoals')) document.getElementById('chkGoals').checked = isVis;
+                    if (secId === 'sec-budgets' && document.getElementById('chkBudgets')) document.getElementById('chkBudgets').checked = isVis;
+                    if (secId === 'sec-charts' && document.getElementById('chkCharts')) document.getElementById('chkCharts').checked = isVis;
+                });
+            }
+            
+            window.updateDashboard();
+        };
+
+        window.saveUiConfigToLocal = function() {
+            localStorage.setItem('finance_ui_config', JSON.stringify({
+                appTitle: window.state.appTitle,
+                appSubtitle: window.state.appSubtitle,
+                themeStyle: window.state.themeStyle,
+                bgImageUrl: window.state.bgImageUrl,
+                titleColor: window.state.titleColor,
+                subtitleColor: window.state.subtitleColor,
+                hideAmounts: window.state.hideAmounts,
+                hiddenAccounts: window.state.hiddenAccounts || [],
+                visibleSections: window.state.visibleSections || {},
+                pinCode: window.state.pinCode
+            }));
+        };
+
+        window.saveUiConfigToCloud = function() {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'uiConfig'), {
+                    appTitle: window.state.appTitle,
+                    appSubtitle: window.state.appSubtitle,
+                    themeStyle: window.state.themeStyle,
+                    bgImageUrl: window.state.bgImageUrl,
+                    titleColor: window.state.titleColor,
+                    subtitleColor: window.state.subtitleColor,
+                    hiddenAccounts: window.state.hiddenAccounts || [],
+                    visibleSections: window.state.visibleSections || {},
+                    pinCode: window.state.pinCode
+                });
+            }
+        };
+
+        window.saveGoalsToCloud = function() {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'goals'), window.state.goals);
+            }
+            window.updateDashboard();
+        };
+
+        window.renderFilterAccounts = function() {
+            const sel = document.getElementById('filterAccount');
+            if (!sel) return;
+            const currentVal = sel.value || 'ALL';
+            sel.innerHTML = `<option value="ALL">គ្រប់គណនី</option>`;
+            window.state.accounts.forEach(a => {
+                sel.innerHTML += `<option value="${a}">${a}</option>`;
+            });
+            sel.value = window.state.accounts.includes(currentVal) ? currentVal : 'ALL';
+        };
+
+        window.saveAccountsToCloud = function() {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'accounts'), window.state.accounts);
+            }
+            window.renderFilterAccounts();
+            window.renderTable();
+            window.updateDashboard();
+        };
+
+        window.saveCurrenciesToCloud = function() {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'currencies'), window.state.currencies);
+            }
+            window.renderTable();
+            window.updateDashboard();
+        };
+
+        window.saveCategoriesToCloud = function() {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'categories'), window.state.categories);
+            }
+            window.renderTable();
+            window.updateDashboard();
+        };
+
+        window.saveBudgetsToCloud = function() {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'budgets'), window.state.budgets);
+            }
+            window.updateDashboard();
+        };
+
+        window.saveShortcutsToCloud = function() {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'shortcuts'), window.state.shortcuts);
+            }
+            window.renderShortcuts();
+        };
+
+        window.pushTxToFirebase = function(tx) {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'transactions/' + tx.id), tx);
+            }
+        };
+
+        window.removeTxFromFirebase = function(id) {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseRemove) {
+                window.firebaseRemove(window.firebaseRef(window.firebaseDb, 'transactions/' + id));
+            }
+        };
+
+        window.clearAllFromFirebase = function() {
+            if (window.firebaseDb && window.firebaseRef && window.firebaseRemove) {
+                window.firebaseRemove(window.firebaseRef(window.firebaseDb, 'transactions'));
+            }
+        };
+
+        window.switchTab = function(tabId) {
+            ['dashboard', 'entry', 'report'].forEach(t => {
+                const viewEl = document.getElementById('view-' + t);
+                const tabEl = document.getElementById('tab-' + t);
+                if (viewEl) viewEl.classList.add('hidden');
+                if (tabEl) tabEl.classList.remove('active');
+            });
+            const targetView = document.getElementById('view-' + tabId);
+            const targetTab = document.getElementById('tab-' + tabId);
+            if (targetView) targetView.classList.remove('hidden');
+            if (targetTab) targetTab.classList.add('active');
+
+            if (tabId === 'report') window.renderReports();
+            if (tabId === 'dashboard') window.updateDashboard();
+        };
+
+        window.updateExchangeRate = function() {
+            window.state.exchangeRate = parseFloat(document.getElementById('exchangeRate').value) || 4100;
+            window.renderTable();
+            window.updateDashboard();
+        };
+
+        window.filterByAccountFromCard = function(accName) {
+            const sel = document.getElementById('filterAccount');
+            if (sel) {
+                sel.value = accName;
+                window.switchTab('entry');
+                window.renderTable();
+                window.showToast(`បង្ហាញប្រតិបត្តិការរបស់៖ ${accName}`, 'info');
+            }
+        };
+
+        // Custom Date-Time Filter Toggle Handler
+        window.toggleCustomDateTimeFilter = function() {
+            const periodVal = document.getElementById('filterDatePeriod').value;
+            const container = document.getElementById('filterDateTimeContainer');
+            if (container) {
+                if (periodVal === 'CUSTOM_DATETIME') {
+                    container.classList.remove('hidden');
+                } else {
+                    container.classList.add('hidden');
+                }
+            }
+            window.renderTable();
+        };
+
+        // Render Shortcuts Toolbar
+        window.renderShortcuts = function() {
+            const container = document.getElementById('shortcutsContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            window.state.shortcuts.forEach(sc => {
+                container.innerHTML += `
+                    <button onclick="executeShortcut('${sc.id}')" class="px-3 py-1.5 bg-blue-50 dark:bg-zinc-800 hover:bg-blue-100 dark:hover:bg-zinc-700 text-blue-700 dark:text-amber-300 border border-blue-200 dark:border-zinc-700 text-xs font-bold rounded-lg transition whitespace-nowrap flex items-center gap-1 shadow-sm">
+                        ⚡ ${sc.name}
+                    </button>
+                `;
             });
         };
 
-        window.switchTab = function(id) {
-            ['dashboard','entry','report'].forEach(t => {
-                document.getElementById('view-'+t).classList.add('hidden');
-                document.getElementById('tab-'+t).classList.remove('active');
-            });
-            document.getElementById('view-'+id).classList.remove('hidden');
-            document.getElementById('tab-'+id).classList.add('active');
+        window.executeShortcut = function(shortcutId) {
+            window.playChimeSound();
+            const sc = window.state.shortcuts.find(s => s.id === shortcutId);
+            if (!sc) return;
+            const now = new Date();
+            const nowIso = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 19);
+            const newTx = {
+                id: window.generateId(),
+                date: nowIso, cat: sc.cat, desc: sc.desc || sc.name, acc: sc.acc, cur: sc.cur, inc: sc.inc||0, exp: sc.exp||0
+            };
+            window.state.transactions.push(newTx);
+            window.pushTxToFirebase(newTx);
+            window.renderTable();
+            window.updateDashboard();
+            window.showToast(`បានកត់ត្រា ${sc.name} រួចរាល់!`, 'success');
         };
 
-        window.updateDashboard = function() {
-            let accBalances = {}; window.state.accounts.forEach(a => accBalances[a] = {USD:0});
-            window.state.transactions.forEach(tx => {
-                if(!accBalances[tx.acc]) accBalances[tx.acc] = {USD:0};
-                accBalances[tx.acc][tx.cur||'USD'] = (accBalances[tx.acc][tx.cur||'USD']||0) + (tx.inc||0) - (tx.exp||0);
-            });
-            let totalNet = 0;
-            const cardGrid = document.getElementById('dashboardCards'); cardGrid.innerHTML = '';
-            Object.keys(accBalances).forEach(k => {
-                const bal = accBalances[k]['USD'] || 0;
-                totalNet += bal;
-                cardGrid.innerHTML += `
-                    <div class="bg-white p-4 rounded-xl border shadow-sm">
-                        <div class="text-xs text-gray-500 font-bold mb-1">${k}</div>
-                        <div class="text-lg font-black text-slate-800">${window.formatMoney(bal, 'USD')}</div>
+        window.moveShortcut = function(index, dir) {
+            const newIndex = index + dir;
+            if (newIndex < 0 || newIndex >= window.state.shortcuts.length) return;
+            const temp = window.state.shortcuts[index];
+            window.state.shortcuts[index] = window.state.shortcuts[newIndex];
+            window.state.shortcuts[newIndex] = temp;
+            window.saveShortcutsToCloud();
+            window.renderShortcutList();
+            window.renderShortcuts();
+        };
+
+        window.openShortcutModal = function(editId = null) {
+            const catSel = document.getElementById('newScCat');
+            const accSel = document.getElementById('newScAcc');
+            const curSel = document.getElementById('newScCur');
+            const saveBtn = document.getElementById('scSaveBtn');
+            
+            if (catSel) catSel.innerHTML = window.state.categories.map(c => `<option value="${c}">${c}</option>`).join('');
+            if (accSel) accSel.innerHTML = window.state.accounts.map(a => `<option value="${a}">${a}</option>`).join('');
+            if (curSel) curSel.innerHTML = window.state.currencies.map(c => `<option value="${c}">${c}</option>`).join('');
+            
+            if (editId) {
+                const sc = window.state.shortcuts.find(s => s.id === editId);
+                if (sc) {
+                    document.getElementById('newScName').value = sc.name;
+                    document.getElementById('newScCat').value = sc.cat;
+                    document.getElementById('newScAcc').value = sc.acc;
+                    document.getElementById('newScCur').value = sc.cur;
+                    document.getElementById('newScAmount').value = sc.exp;
+                    document.getElementById('shortcutModal').setAttribute('data-edit-id', editId);
+                    if (saveBtn) saveBtn.textContent = '✏️ រក្សាទុកការកែប្រែ';
+                }
+            } else {
+                document.getElementById('newScName').value = '';
+                document.getElementById('newScAmount').value = '';
+                document.getElementById('shortcutModal').removeAttribute('data-edit-id');
+                if (saveBtn) saveBtn.textContent = 'បន្ថែមប៊ូតុងថ្មី';
+            }
+
+            window.renderShortcutList();
+            document.getElementById('shortcutModal').classList.remove('hidden');
+        };
+
+        window.closeShortcutModal = function() {
+            document.getElementById('shortcutModal').classList.add('hidden');
+        };
+
+        window.addNewShortcut = function() {
+            const name = document.getElementById('newScName').value.trim();
+            const cat = document.getElementById('newScCat').value;
+            const acc = document.getElementById('newScAcc').value;
+            const cur = document.getElementById('newScCur').value;
+            const amount = parseFloat(document.getElementById('newScAmount').value) || 0;
+            const editId = document.getElementById('shortcutModal').getAttribute('data-edit-id');
+
+            if (!name || amount <= 0) {
+                window.showToast('សូមបញ្ចូលឈ្មោះ និងចំនួនប្រាក់ចំណាយឱ្យបានត្រឹមត្រូវ!', 'error');
+                return;
+            }
+
+            if (editId) {
+                const sc = window.state.shortcuts.find(s => s.id === editId);
+                if (sc) {
+                    sc.name = name;
+                    sc.cat = cat;
+                    sc.acc = acc;
+                    sc.cur = cur;
+                    sc.exp = amount;
+                    sc.desc = name;
+                }
+                window.showToast('បានកែប្រែប៊ូតុងរហ័ស', 'success');
+            } else {
+                const newShortcut = {
+                    id: window.generateId(),
+                    name: name,
+                    cat: cat,
+                    acc: acc,
+                    cur: cur,
+                    inc: 0,
+                    exp: amount,
+                    desc: name
+                };
+                window.state.shortcuts.push(newShortcut);
+                window.showToast('បានបន្ថែមប៊ូតុងរហ័សថ្មី', 'success');
+            }
+
+            window.saveShortcutsToCloud();
+            window.renderShortcutList();
+            
+            document.getElementById('shortcutModal').removeAttribute('data-edit-id');
+            const saveBtn = document.getElementById('scSaveBtn');
+            if (saveBtn) saveBtn.textContent = 'បន្ថែមប៊ូតុងថ្មី';
+            document.getElementById('newScName').value = '';
+            document.getElementById('newScAmount').value = '';
+        };
+
+        window.deleteShortcut = function(id) {
+            window.state.shortcuts = window.state.shortcuts.filter(s => s.id !== id);
+            window.saveShortcutsToCloud();
+            window.renderShortcutList();
+            window.showToast('បានលុបប៊ូតុងរហ័ស', 'info');
+        };
+
+        window.renderShortcutList = function() {
+            const container = document.getElementById('shortcutListContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            window.state.shortcuts.forEach((sc, idx) => {
+                container.innerHTML += `
+                    <div class="flex items-center justify-between p-2 bg-blue-50/50 dark:bg-zinc-800/50 rounded border border-blue-100 dark:border-zinc-700 text-xs">
+                        <div class="flex items-center gap-1">
+                            <button onclick="moveShortcut(${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold"'} title="រំកិលទៅឆ្វេង/ឡើងលើ">⬅️</button>
+                            <button onclick="moveShortcut(${idx}, 1)" ${idx === window.state.shortcuts.length - 1 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold"'} title="រំកិលទៅស្ដាំ/ចុះក្រោម">➡️</button>
+                            <span class="font-bold modal-label-text ml-1">${sc.name} (${window.formatMoney(sc.exp, sc.cur)}) <span class="text-[10px] text-gray-500">កាត់ពី ${sc.acc}</span></span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="openShortcutModal('${sc.id}')" class="text-blue-500 font-bold hover:underline">✏️ កែ</button>
+                            <button onclick="deleteShortcut('${sc.id}')" class="text-red-500 font-bold hover:underline">🗑️ លុប</button>
+                        </div>
                     </div>
                 `;
             });
-            document.getElementById('globalNetWorth').textContent = window.formatMoney(totalNet, 'USD');
         };
 
-        window.renderTable = function() {
-            const tbody = document.getElementById('tableBody'); if(!tbody) return; tbody.innerHTML = '';
-            window.state.transactions.forEach(tx => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
-                tr.innerHTML = `
-                    <td class="px-3 py-2 text-xs font-mono">${(tx.date||'').slice(0,16)}</td>
-                    <td class="px-3 py-2 text-xs font-bold">${tx.cat}</td>
-                    <td class="px-3 py-2 text-xs">${tx.desc}</td>
-                    <td class="px-3 py-2 text-xs font-bold text-blue-600">${tx.acc}</td>
-                    <td class="px-3 py-2 text-xs text-right font-bold text-emerald-600">${window.formatMoney(tx.inc, tx.cur)}</td>
-                    <td class="px-3 py-2 text-xs text-right font-bold text-rose-500">${window.formatMoney(tx.exp, tx.cur)}</td>
-                    <td class="px-3 py-2 text-center"><button onclick="deleteTx('${tx.id}')" class="text-rose-500 font-bold">🗑️</button></td>
+        // Savings Goals Handler Functions
+        window.renderSavingsGoals = function(accBalances = {}) {
+            const container = document.getElementById('goalsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            window.state.goals.forEach(g => {
+                let currentVal = g.current || 0;
+                let isLinked = false;
+
+                if (g.linkedAcc && g.linkedAcc !== 'NONE' && accBalances[g.linkedAcc]) {
+                    isLinked = true;
+                    const bObj = accBalances[g.linkedAcc];
+                    let totalUSD = 0;
+                    Object.keys(bObj).forEach(c => {
+                        if (c === 'USD') totalUSD += bObj[c];
+                        else if (c === 'KHR') totalUSD += bObj[c] / window.state.exchangeRate;
+                    });
+                    currentVal = Math.max(0, totalUSD);
+                }
+
+                const pct = g.target > 0 ? Math.min(Math.round((currentVal / g.target) * 100), 100) : 0;
+                container.innerHTML += `
+                    <div class="bg-gray-50 dark:bg-zinc-800 p-3 rounded-lg border border-gray-200 dark:border-zinc-700">
+                        <div class="flex justify-between items-center mb-1 text-xs font-bold">
+                            <span class="text-slate-800 dark:text-slate-100 flex items-center gap-1">
+                                ${g.name}
+                                ${isLinked ? `<span class="text-[10px] bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded border border-blue-300" title="ភ្ជាប់ជាមួយកុង ${g.linkedAcc}">🔗 ${g.linkedAcc}</span>` : ''}
+                            </span>
+                            <span class="text-emerald-600 dark:text-emerald-400">${window.formatMoney(currentVal, 'USD')} / ${window.formatMoney(g.target, 'USD')} (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-zinc-700 rounded-full h-2 overflow-hidden">
+                            <div class="bg-emerald-500 h-2 rounded-full transition-all duration-300" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
                 `;
-                tbody.appendChild(tr);
+            });
+
+            if (window.state.goals.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 col-span-3">មិនទាន់មានគោលដៅសន្សំ។ ចុច "+ បន្ថែមគោលដៅ" ដើម្បីកំណត់។</p>`;
+            }
+        };
+
+        window.openGoalModal = function(editId = null) {
+            const sel = document.getElementById('glLinkedAcc');
+            const saveBtn = document.getElementById('glSaveBtn');
+            if (sel) {
+                sel.innerHTML = `<option value="NONE">គ្មាន (កំណត់ចំនួនដោយដៃ)</option>`;
+                window.state.accounts.forEach(a => {
+                    sel.innerHTML += `<option value="${a}">🔗 ភ្ជាប់កុង ${a}</option>`;
+                });
+            }
+
+            if (editId) {
+                const goal = window.state.goals.find(g => g.id === editId);
+                if (goal) {
+                    document.getElementById('glName').value = goal.name;
+                    if (sel) sel.value = goal.linkedAcc || 'NONE';
+                    document.getElementById('glTarget').value = goal.target;
+                    document.getElementById('glCurrent').value = goal.current || 0;
+                    document.getElementById('goalModal').setAttribute('data-edit-id', editId);
+                    if (saveBtn) saveBtn.textContent = '✏️ រក្សាទុកការកែប្រែ';
+                }
+            } else {
+                document.getElementById('glName').value = '';
+                document.getElementById('glTarget').value = '';
+                document.getElementById('glCurrent').value = '';
+                if (sel) sel.value = 'NONE';
+                document.getElementById('goalModal').removeAttribute('data-edit-id');
+                if (saveBtn) saveBtn.textContent = 'បន្ថែម/រក្សាទុកគោលដៅ';
+            }
+
+            window.toggleGoalCurrentInput();
+            window.renderGoalList();
+            document.getElementById('goalModal').classList.remove('hidden');
+        };
+
+        window.toggleGoalCurrentInput = function() {
+            const linkedVal = document.getElementById('glLinkedAcc')?.value;
+            const currentWrapper = document.getElementById('glCurrentWrapper');
+            if (linkedVal && linkedVal !== 'NONE') {
+                if (currentWrapper) currentWrapper.classList.add('hidden');
+            } else {
+                if (currentWrapper) currentWrapper.classList.remove('hidden');
+            }
+        };
+
+        window.closeGoalModal = function() { document.getElementById('goalModal').classList.add('hidden'); };
+
+        window.saveSavingsGoal = function() {
+            const name = document.getElementById('glName').value.trim();
+            const linkedAcc = document.getElementById('glLinkedAcc').value;
+            const target = parseFloat(document.getElementById('glTarget').value) || 0;
+            const current = parseFloat(document.getElementById('glCurrent').value) || 0;
+            const editId = document.getElementById('goalModal').getAttribute('data-edit-id');
+
+            if (!name || target <= 0) {
+                window.showToast('សូមបញ្ចូលឈ្មោះ និងចំនួនដៅសរុបឱ្យបានត្រឹមត្រូវ!', 'error');
+                return;
+            }
+
+            if (editId) {
+                const goal = window.state.goals.find(g => g.id === editId);
+                if (goal) {
+                    goal.name = name;
+                    goal.linkedAcc = linkedAcc;
+                    goal.target = target;
+                    goal.current = current;
+                }
+                window.showToast('បានកែប្រែគោលដៅសន្សំប្រាក់', 'success');
+            } else {
+                window.state.goals.push({ id: window.generateId(), name, linkedAcc, target, current });
+                window.showToast('បានបន្ថែមគោលដៅសន្សំប្រាក់ថ្មី', 'success');
+            }
+
+            window.saveGoalsToCloud();
+            window.renderGoalList();
+            document.getElementById('goalModal').removeAttribute('data-edit-id');
+            const saveBtn = document.getElementById('glSaveBtn');
+            if (saveBtn) saveBtn.textContent = 'បន្ថែម/រក្សាទុកគោលដៅ';
+            document.getElementById('glName').value = '';
+            document.getElementById('glTarget').value = '';
+            document.getElementById('glCurrent').value = '';
+        };
+
+        window.deleteGoal = function(id) {
+            window.state.goals = window.state.goals.filter(g => g.id !== id);
+            window.saveGoalsToCloud();
+            window.renderGoalList();
+            window.showToast('បានលុបគោលដៅសន្សំ', 'info');
+        };
+
+        window.renderGoalList = function() {
+            const container = document.getElementById('goalListContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            window.state.goals.forEach(g => {
+                const linkLabel = (g.linkedAcc && g.linkedAcc !== 'NONE') ? ` 🔗 (${g.linkedAcc})` : '';
+                container.innerHTML += `
+                    <div class="flex items-center justify-between p-2 bg-emerald-50/50 dark:bg-zinc-800/50 rounded border border-emerald-100 dark:border-zinc-700 text-xs">
+                        <span class="font-bold modal-label-text">${g.name}${linkLabel}: គោលដៅ ${window.formatMoney(g.target, 'USD')}</span>
+                        <div class="flex gap-2">
+                            <button onclick="openGoalModal('${g.id}')" class="text-blue-500 font-bold hover:underline">✏️ កែ</button>
+                            <button onclick="deleteGoal('${g.id}')" class="text-red-500 font-bold hover:underline">🗑️ លុប</button>
+                        </div>
+                    </div>
+                `;
             });
         };
 
-        window.addRow = function() {
-            const id = Date.now().toString(36);
-            const newTx = { id, date: new Date().toISOString().slice(0,19), cat: 'ផ្សេងៗ', desc: 'ប្រតិបត្តិការថ្មី', acc: window.state.accounts[0], cur: 'USD', inc: 0, exp: 0 };
-            window.state.transactions.push(newTx);
-            if (window.firebaseSet) {
-                window.firebaseSet(window.firebaseRef(window.firebaseDb, `tenant_data/${window.state.licenseKey}/transactions/${id}`), newTx);
+        // Budget Widget Handlers
+        window.renderBudgetWidget = function() {
+            const container = document.getElementById('budgetProgressContainer');
+            if(!container) return;
+            container.innerHTML = '';
+
+            const currentMonth = new Date().toISOString().substring(0, 7);
+            
+            window.state.budgets.forEach(b => {
+                let spent = 0;
+                window.state.transactions.forEach(tx => {
+                    const matchAcc = (!b.linkedAcc || b.linkedAcc === 'ALL' || tx.acc === b.linkedAcc);
+                    if (tx.date && tx.date.substring(0, 7) === currentMonth && tx.cat === b.cat && tx.cur === b.cur && matchAcc) {
+                        spent += (tx.exp || 0);
+                    }
+                });
+
+                const pct = b.limit > 0 ? Math.min(Math.round((spent / b.limit) * 100), 100) : 0;
+                let colorClass = "bg-emerald-500";
+                let textClass = "text-emerald-600 dark:text-emerald-400";
+                if (pct >= 80 && pct < 100) { colorClass = "bg-amber-500"; textClass = "text-amber-600 dark:text-amber-400"; }
+                if (pct >= 100) { colorClass = "bg-red-500"; textClass = "text-red-600 dark:text-rose-400"; }
+
+                const isLinked = b.linkedAcc && b.linkedAcc !== 'ALL';
+
+                container.innerHTML += `
+                    <div class="bg-gray-50 dark:bg-zinc-800 p-3 rounded-lg border border-gray-200 dark:border-zinc-700">
+                        <div class="flex justify-between items-center mb-1 text-xs font-bold">
+                            <span class="text-slate-800 dark:text-slate-100 flex items-center gap-1">
+                                ${b.cat} (${b.cur})
+                                ${isLinked ? `<span class="text-[10px] bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded border border-blue-300" title="គិតតែពីកុង ${b.linkedAcc}">🔗 ${b.linkedAcc}</span>` : ''}
+                            </span>
+                            <span class="${textClass}">${window.formatMoney(spent, b.cur)} / ${window.formatMoney(b.limit, b.cur)} (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-zinc-700 rounded-full h-2 overflow-hidden">
+                            <div class="${colorClass} h-2 rounded-full transition-all duration-300" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (window.state.budgets.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 col-span-3">មិនទាន់បានកំណត់ថវិកា។ ចុច "⚙️ កំណត់ថវិកា" ដើម្បីកំណត់។</p>`;
             }
-            window.renderTable(); window.updateDashboard();
         };
 
-        window.deleteTx = function(id) {
-            window.state.transactions = window.state.transactions.filter(t => t.id !== id);
-            if (window.firebaseRemove) {
-                window.firebaseRemove(window.firebaseRef(window.firebaseDb, `tenant_data/${window.state.licenseKey}/transactions/${id}`));
+        window.openBudgetModal = function(editId = null) {
+            const catSel = document.getElementById('bgCategory');
+            const curSel = document.getElementById('bgCurrency');
+            const accSel = document.getElementById('bgLinkedAcc');
+            const saveBtn = document.getElementById('bgSaveBtn');
+
+            if (catSel) catSel.innerHTML = window.state.categories.map(c => `<option value="${c}">${c}</option>`).join('');
+            if (curSel) curSel.innerHTML = window.state.currencies.map(c => `<option value="${c}">${c}</option>`).join('');
+            if (accSel) {
+                accSel.innerHTML = `<option value="ALL">គ្រប់គណនីទាំងអស់ (ALL)</option>` +
+                    window.state.accounts.map(a => `<option value="${a}">🔗 ភ្ជាប់កុង ${a}</option>`).join('');
             }
-            window.renderTable(); window.updateDashboard();
+            
+            if (editId) {
+                const budget = window.state.budgets.find(b => b.id === editId);
+                if (budget) {
+                    if (catSel) catSel.value = budget.cat;
+                    if (curSel) curSel.value = budget.cur;
+                    if (accSel) accSel.value = budget.linkedAcc || 'ALL';
+                    document.getElementById('bgLimit').value = budget.limit;
+                    document.getElementById('budgetModal').setAttribute('data-edit-id', editId);
+                    if (saveBtn) saveBtn.textContent = '✏️ រក្សាទុកការកែប្រែ';
+                }
+            } else {
+                document.getElementById('bgLimit').value = '';
+                if (accSel) accSel.value = 'ALL';
+                document.getElementById('budgetModal').removeAttribute('data-edit-id');
+                if (saveBtn) saveBtn.textContent = 'បន្ថែម/រក្សាទុកថវិកា';
+            }
+
+            window.renderBudgetList();
+            document.getElementById('budgetModal').classList.remove('hidden');
+        };
+        window.closeBudgetModal = function() { document.getElementById('budgetModal').classList.add('hidden'); };
+
+        window.saveBudgetLimit = function() {
+            const cat = document.getElementById('bgCategory').value;
+            const limit = parseFloat(document.getElementById('bgLimit').value) || 0;
+            const cur = document.getElementById('bgCurrency').value;
+            const linkedAcc = document.getElementById('bgLinkedAcc')?.value || 'ALL';
+            const editId = document.getElementById('budgetModal').getAttribute('data-edit-id');
+
+            if (limit <= 0) return;
+            
+            if (editId) {
+                const budget = window.state.budgets.find(b => b.id === editId);
+                if (budget) {
+                    budget.cat = cat;
+                    budget.limit = limit;
+                    budget.cur = cur;
+                    budget.linkedAcc = linkedAcc;
+                }
+                window.showToast('បានកែប្រែថវិកា', 'success');
+            } else {
+                const existing = window.state.budgets.find(b => b.cat === cat && b.cur === cur && (b.linkedAcc || 'ALL') === linkedAcc);
+                if (existing) {
+                    existing.limit = limit;
+                } else {
+                    window.state.budgets.push({ id: window.generateId(), cat, limit, cur, linkedAcc });
+                }
+                window.showToast('បានរក្សាទុកថវិកា', 'success');
+            }
+            
+            window.saveBudgetsToCloud();
+            window.renderBudgetList();
+            document.getElementById('budgetModal').removeAttribute('data-edit-id');
+            const saveBtn = document.getElementById('bgSaveBtn');
+            if (saveBtn) saveBtn.textContent = 'បន្ថែម/រក្សាទុកថវិកា';
+            document.getElementById('bgLimit').value = '';
+        };
+
+        window.deleteBudget = function(id) {
+            window.state.budgets = window.state.budgets.filter(b => b.id !== id);
+            window.saveBudgetsToCloud();
+            window.renderBudgetList();
+            window.showToast('បានលុបថវិកា', 'info');
+        };
+
+        window.renderBudgetList = function() {
+            const container = document.getElementById('budgetListContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            window.state.budgets.forEach(b => {
+                const accLabel = (b.linkedAcc && b.linkedAcc !== 'ALL') ? ` 🔗 (${b.linkedAcc})` : '';
+                container.innerHTML += `
+                    <div class="flex items-center justify-between p-2 bg-indigo-50/50 dark:bg-zinc-800/50 rounded border border-indigo-100 dark:border-zinc-700 text-xs">
+                        <span class="font-bold modal-label-text">${b.cat}${accLabel}: ${window.formatMoney(b.limit, b.cur)}</span>
+                        <div class="flex gap-2">
+                            <button onclick="openBudgetModal('${b.id}')" class="text-blue-500 font-bold hover:underline">✏️ កែ</button>
+                            <button onclick="deleteBudget('${b.id}')" class="text-red-500 font-bold hover:underline">🗑️ លុប</button>
+                        </div>
+                    </div>
+                `;
+            });
+        };
+
+        // Charts Renderer
+        window.drawCharts = function() {
+            const isDark = window.state.themeStyle === 'aba-dark' || window.state.themeStyle === 'slate' || document.body.classList.contains('theme-dark');
+            const textColor = isDark ? '#ffffff' : '#0f172a';
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)';
+
+            const currentMonth = new Date().toISOString().substring(0, 7);
+            let catExpenses = {}; let monthTrend = {}; 
+
+            for(let i=5; i>=0; i--) {
+                const d = new Date(); d.setMonth(d.getMonth() - i);
+                monthTrend[d.toISOString().substring(0,7)] = { inc: 0, exp: 0 };
+            }
+
+            window.state.transactions.forEach(tx => {
+                if(!tx.date) return;
+                const mKey = tx.date.substring(0,7);
+                const isUSD = tx.cur === 'USD';
+                const incConverted = isUSD ? tx.inc : tx.inc / window.state.exchangeRate;
+                const expConverted = isUSD ? tx.exp : tx.exp / window.state.exchangeRate;
+
+                if(mKey === currentMonth && expConverted > 0) {
+                    catExpenses[tx.cat] = (catExpenses[tx.cat] || 0) + expConverted;
+                }
+                if(monthTrend[mKey]) {
+                    monthTrend[mKey].inc += incConverted;
+                    monthTrend[mKey].exp += expConverted;
+                }
+            });
+
+            if(window.charts.expense) window.charts.expense.destroy();
+            if(window.charts.trend) window.charts.trend.destroy();
+
+            const expCanvas = document.getElementById('expenseChart');
+            if (expCanvas) {
+                const ctxPie = expCanvas.getContext('2d');
+                window.charts.expense = new Chart(ctxPie, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(catExpenses).length ? Object.keys(catExpenses) : ['គ្មានចំណាយ'],
+                        datasets: [{
+                            data: Object.keys(catExpenses).length ? Object.values(catExpenses) : [1],
+                            backgroundColor: ['#ef4444', '#f97316', '#f59e0b', '#84cc16', '#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#d946ef', '#f43f5e'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { 
+                                position: 'right',
+                                labels: { color: textColor, font: { weight: 'bold' } }
+                            } 
+                        } 
+                    }
+                });
+            }
+
+            const trendCanvas = document.getElementById('trendChart');
+            if (trendCanvas) {
+                const ctxBar = trendCanvas.getContext('2d');
+                window.charts.trend = new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(monthTrend).map(m => m.split('-')[1] + '/' + m.split('-')[0].substring(2)),
+                        datasets: [
+                            { label: 'ចំណូល ($)', data: Object.values(monthTrend).map(m=>m.inc), backgroundColor: '#10b981', borderRadius: 4 },
+                            { label: 'ចំណាយ ($)', data: Object.values(monthTrend).map(m=>m.exp), backgroundColor: '#ef4444', borderRadius: 4 }
+                        ]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: {
+                            legend: {
+                                labels: { color: textColor, font: { weight: 'bold' } }
+                            }
+                        },
+                        scales: { 
+                            x: {
+                                ticks: { color: textColor, font: { weight: 'bold' } },
+                                grid: { color: gridColor }
+                            },
+                            y: { 
+                                beginAtZero: true,
+                                ticks: { color: textColor, font: { weight: 'bold' } },
+                                grid: { color: gridColor }
+                            } 
+                        } 
+                    }
+                });
+            }
+        };
+
+        // Dashboard Updater
+        window.updateDashboard = function() {
+            let accBalances = {};
+            window.state.accounts.forEach(acc => accBalances[acc] = {});
+
+            window.state.transactions.forEach(tx => {
+                if (!accBalances[tx.acc]) accBalances[tx.acc] = {};
+                const cur = tx.cur || 'USD';
+                if (!accBalances[tx.acc][cur]) accBalances[tx.acc][cur] = 0;
+                const bal = (tx.inc || 0) - (tx.exp || 0);
+                accBalances[tx.acc][cur] += bal;
+            });
+
+            let totalUSD = 0, totalKHR = 0;
+            if (!window.state.hiddenAccounts) window.state.hiddenAccounts = [];
+
+            Object.keys(accBalances).forEach(key => {
+                if (!window.state.hiddenAccounts.includes(key)) {
+                    if (accBalances[key]['USD']) totalUSD += accBalances[key]['USD'];
+                    if (accBalances[key]['KHR']) totalKHR += accBalances[key]['KHR'];
+                }
+            });
+
+            const combinedNet = totalUSD + (totalKHR / window.state.exchangeRate);
+            const netWorthEl = document.getElementById('globalNetWorth');
+            if (netWorthEl) netWorthEl.textContent = window.formatMoney(combinedNet, 'USD');
+
+            const cardGrid = document.getElementById('dashboardCards');
+            if (cardGrid) {
+                cardGrid.innerHTML = '';
+                const isDark = window.state.themeStyle === 'aba-dark' || window.state.themeStyle === 'slate';
+                const cardBg = isDark ? 'bg-slate-900/90 border-slate-700' : 'bg-white border-slate-200 shadow-md';
+                const textMain = isDark ? 'text-slate-100' : 'text-slate-900';
+
+                Object.keys(accBalances).forEach(key => {
+                    if (window.state.hiddenAccounts.includes(key)) return;
+                    const bObj = accBalances[key];
+                    let cardContent = ''; let hasData = false;
+                    Object.keys(bObj).forEach(c => {
+                        if (bObj[c] !== 0) {
+                            hasData = true;
+                            cardContent += `<div class="text-base font-extrabold ${bObj[c] < 0 ? 'text-red-500' : textMain}">${window.formatMoney(bObj[c], c)}</div>`;
+                        }
+                    });
+                    if (!hasData) cardContent = `<div class="text-base font-extrabold text-slate-400">${window.formatMoney(0, 'USD')}</div>`;
+                    cardGrid.innerHTML += `
+                        <div class="${cardBg} backdrop-blur-md p-5 rounded-2xl border flex flex-col justify-between ${!hasData ? 'opacity-85' : ''}">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="p-1.5 bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-amber-400 rounded-lg text-xs font-bold">💳</span>
+                                    <span class="font-black ${textMain} text-sm">${key}</span>
+                                </div>
+                                <button onclick="filterByAccountFromCard('${key}')" class="text-slate-400 hover:text-blue-600 dark:hover:text-amber-300 p-1 rounded transition" title="មើលប្រតិបត្តិការកុងនេះ">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                            </div>
+                            <div class="space-y-1">${cardContent}</div>
+                        </div>
+                    `;
+                });
+            }
+
+            if (typeof window.renderBudgetWidget === 'function') window.renderBudgetWidget();
+            if (typeof window.renderSavingsGoals === 'function') window.renderSavingsGoals(accBalances);
+            if (typeof window.drawCharts === 'function') window.drawCharts();
+        };
+
+        // Account management functions
+        window.openAccountsModal = function() { window.renderAccountsList(); document.getElementById('accountsModal').classList.remove('hidden'); };
+        window.closeAccountsModal = function() { document.getElementById('accountsModal').classList.add('hidden'); };
+        window.renderAccountsList = function() {
+            const c = document.getElementById('accountsListContainer'); if(!c) return; c.innerHTML = '';
+            if (!window.state.hiddenAccounts) window.state.hiddenAccounts = [];
+            window.state.accounts.forEach((acc, i) => {
+                const isHidden = window.state.hiddenAccounts.includes(acc);
+                c.innerHTML += `
+                    <div class="flex items-center justify-between p-2 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-sm gap-2">
+                        <button onclick="toggleAccountVisibility('${acc}')" class="px-2 py-1.5 rounded-lg border text-xs font-bold transition flex items-center gap-1 ${isHidden ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-emerald-100 text-emerald-800 border-emerald-300'}" title="${isHidden ? 'ចុចដើម្បីបង្ហាញលើ Dashboard' : 'ចុចដើម្បីលាក់ពី Dashboard'}">
+                            ${isHidden ? '🙈 លាក់' : '👁️ បង្ហាញ'}
+                        </button>
+                        <input type="text" value="${acc}" onchange="editAccountName(${i}, this.value)" class="modal-item-input flex-1 outline-none">
+                        <button onclick="deleteAccount(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button>
+                    </div>`;
+            });
+        };
+
+        window.toggleAccountVisibility = function(accName) {
+            if (!window.state.hiddenAccounts) window.state.hiddenAccounts = [];
+            if (window.state.hiddenAccounts.includes(accName)) {
+                window.state.hiddenAccounts = window.state.hiddenAccounts.filter(a => a !== accName);
+                window.showToast(`បានបង្ហាញ៖ ${accName} លើ Dashboard`, 'success');
+            } else {
+                window.state.hiddenAccounts.push(accName);
+                window.showToast(`បានលាក់៖ ${accName} ពី Dashboard`, 'info');
+            }
+            window.saveUiConfigToLocal();
+            window.saveUiConfigToCloud();
+            window.renderAccountsList();
+            window.updateDashboard();
+        };
+
+        window.addNewAccount = function() { const name = document.getElementById('newAccountName').value.trim(); if(!name || window.state.accounts.includes(name)) return; window.state.accounts.push(name); window.saveAccountsToCloud(); window.renderAccountsList(); document.getElementById('newAccountName').value = ''; window.showToast('បានបន្ថែមគណនីថ្មី', 'success'); };
+        window.editAccountName = function(i, val) { val = val.trim(); if(!val) return; window.state.accounts[i] = val; window.saveAccountsToCloud(); window.renderAccountsList(); };
+        window.deleteAccount = function(i) { window.state.accounts.splice(i, 1); window.saveAccountsToCloud(); window.renderAccountsList(); window.showToast('បានលុបគណនី', 'info'); };
+
+        window.openCurrenciesModal = function() { window.renderCurrenciesList(); document.getElementById('currenciesModal').classList.remove('hidden'); };
+        window.closeCurrenciesModal = function() { document.getElementById('currenciesModal').classList.add('hidden'); };
+        window.renderCurrenciesList = function() {
+            const c = document.getElementById('currenciesListContainer'); if(!c) return; c.innerHTML = '';
+            window.state.currencies.forEach((cur, i) => {
+                c.innerHTML += `<div class="flex items-center justify-between p-2 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-sm gap-2"><input type="text" value="${cur}" onchange="editCurrencyName(${i}, this.value)" class="modal-item-input flex-1 outline-none"><button onclick="deleteCurrency(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button></div>`;
+            });
+        };
+        window.addNewCurrency = function() { const name = document.getElementById('newCurrencyName').value.trim(); if(!name || window.state.currencies.includes(name)) return; window.state.currencies.push(name); window.saveCurrenciesToCloud(); window.renderCurrenciesList(); document.getElementById('newCurrencyName').value = ''; window.showToast('បានបន្ថែមខ្នាតថ្មី', 'success'); };
+        window.editCurrencyName = function(i, val) { val = val.trim(); if(!val) return; window.state.currencies[i] = val; window.saveCurrenciesToCloud(); window.renderCurrenciesList(); };
+        window.deleteCurrency = function(i) { window.state.currencies.splice(i, 1); window.saveCurrenciesToCloud(); window.renderCurrenciesList(); window.showToast('បានលុបខ្នាត', 'info'); };
+
+        window.openCategoriesModal = function() { window.renderCategoriesList(); document.getElementById('categoriesModal').classList.remove('hidden'); };
+        window.closeCategoriesModal = function() { document.getElementById('categoriesModal').classList.add('hidden'); };
+        window.renderCategoriesList = function() {
+            const c = document.getElementById('categoriesListContainer'); if(!c) return; c.innerHTML = '';
+            window.state.categories.forEach((cat, i) => {
+                c.innerHTML += `<div class="flex items-center justify-between p-2 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-sm gap-2"><input type="text" value="${cat}" onchange="editCategoryName(${i}, this.value)" class="modal-item-input flex-1 outline-none"><button onclick="deleteCategory(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button></div>`;
+            });
+        };
+        window.addNewCategory = function() { const name = document.getElementById('newCategoryName').value.trim(); if(!name || window.state.categories.includes(name)) return; window.state.categories.push(name); window.saveCategoriesToCloud(); window.renderCategoriesList(); document.getElementById('newCategoryName').value = ''; window.showToast('បានបន្ថែមប្រភេទថ្មី', 'success'); };
+        window.editCategoryName = function(i, val) { val = val.trim(); if(!val) return; window.state.categories[i] = val; window.saveCategoriesToCloud(); window.renderCategoriesList(); };
+        window.deleteCategory = function(i) { window.state.categories.splice(i, 1); window.saveCategoriesToCloud(); window.renderCategoriesList(); window.showToast('បានលុបប្រភេទ', 'info'); };
+
+        window.openTransferModal = function() {
+            document.getElementById('transferFromAcc').innerHTML = window.state.accounts.map(a => `<option value="${a}">${a}</option>`).join('');
+            document.getElementById('transferToAcc').innerHTML = window.state.accounts.map(a => `<option value="${a}">${a}</option>`).join('');
+            if(window.state.accounts.length > 1) document.getElementById('transferToAcc').selectedIndex = 1;
+            document.getElementById('transferCurrency').innerHTML = window.state.currencies.map(c => `<option value="${c}">${c}</option>`).join('');
+            document.getElementById('transferModal').classList.remove('hidden');
+        };
+        window.closeTransferModal = function() { document.getElementById('transferModal').classList.add('hidden'); };
+        
+        window.executeTransfer = function() {
+            window.playChimeSound();
+            const fromAcc = document.getElementById('transferFromAcc').value;
+            const toAcc = document.getElementById('transferToAcc').value;
+            const amount = parseFloat(document.getElementById('transferAmount').value) || 0;
+            const cur = document.getElementById('transferCurrency').value;
+            const desc = document.getElementById('transferDesc').value || 'ផ្ទេរប្រាក់រវាងគណនី';
+            if (fromAcc === toAcc || amount <= 0) return;
+
+            const now = new Date();
+            const nowIso = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 19);
+            const outTx = { id: window.generateId(), date: nowIso, cat: 'ផ្ទេរប្រាក់', desc: `${desc} -> ទៅ ${toAcc}`, acc: fromAcc, cur, inc: 0, exp: amount };
+            const inTx = { id: window.generateId(), date: nowIso, cat: 'ផ្ទេរប្រាក់', desc: `${desc} <- ពី ${fromAcc}`, acc: toAcc, cur, inc: amount, exp: 0 };
+
+            window.state.transactions.push(outTx, inTx);
+            window.pushTxToFirebase(outTx); window.pushTxToFirebase(inTx);
+            window.renderTable(); window.updateDashboard(); window.closeTransferModal();
+            window.showToast(`បានផ្ទេរប្រាក់ពី ${fromAcc} ទៅ ${toAcc}`, 'success');
+        };
+
+        window.deleteTargetId = null; 
+        window.isClearAll = false;
+        
+        window.confirmDelete = function(id) { window.deleteTargetId = id; window.isClearAll = false; document.getElementById('modalTitle').textContent = "លុបប្រតិបត្តិការ"; document.getElementById('confirmModal').classList.remove('hidden'); };
+        window.confirmClearData = function() { window.isClearAll = true; document.getElementById('modalTitle').textContent = "លុបទិន្នន័យទាំងអស់"; document.getElementById('confirmModal').classList.remove('hidden'); };
+        window.executeDelete = function() {
+            if (window.isClearAll) { window.state.transactions = []; window.clearAllFromFirebase(); window.showToast('បានលុបទិន្នន័យទាំងអស់', 'info'); }
+            else if (window.deleteTargetId) { window.state.transactions = window.state.transactions.filter(t => t.id !== window.deleteTargetId); window.removeTxFromFirebase(window.deleteTargetId); window.showToast('បានលុបប្រតិបត្តិការ', 'info'); }
+            window.renderTable(); window.updateDashboard(); window.closeModal();
+        };
+        window.closeModal = function() { document.getElementById('confirmModal').classList.add('hidden'); window.deleteTargetId = null; };
+
+        // Duplicate Row Functionality
+        window.duplicateRow = function(id) {
+            window.playChimeSound();
+            const original = window.state.transactions.find(t => t.id === id);
+            if (!original) return;
+
+            const now = new Date();
+            const nowIso = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 19);
+
+            const duplicatedTx = {
+                ...original,
+                id: window.generateId(),
+                date: nowIso,
+                desc: (original.desc || '') + ' (ចម្លង)'
+            };
+
+            window.state.transactions.push(duplicatedTx);
+            window.pushTxToFirebase(duplicatedTx);
+            window.renderTable();
+            window.updateDashboard();
+            window.showToast('បានចម្លងប្រតិបត្តិការ!', 'success');
+        };
+
+        // Table renderer & transactions handlers (with Exact DateTime Filter)
+        window.renderTable = function() {
+            const tbody = document.getElementById('tableBody');
+            if (!tbody) return;
+            const searchQ = (document.getElementById('searchInput')?.value || '').toLowerCase();
+            const filterAcc = document.getElementById('filterAccount')?.value || 'ALL';
+            const filterDate = document.getElementById('filterDatePeriod')?.value || 'TODAY';
+            
+            tbody.innerHTML = '';
+            let totals = {}; 
+            window.state.currencies.forEach(c => totals[c] = { in: 0, out: 0 });
+
+            // Prepare Date Filter thresholds
+            const now = new Date();
+            const todayStr = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+            
+            const yesterday = new Date(now); yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+            
+            const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay());
+            const startOfWeekStr = new Date(startOfWeek.getTime() - startOfWeek.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+            
+            const startOfMonthStr = todayStr.substring(0, 7);
+
+            // Custom Start / End Datetime Values
+            const startDTVal = document.getElementById('filterStartDateTime')?.value || '';
+            const endDTVal = document.getElementById('filterEndDateTime')?.value || '';
+
+            let rowCount = 1;
+            let summaryIncUSD = 0, summaryExpUSD = 0;
+
+            window.state.transactions.forEach(tx => {
+                if(!tx.date) return;
+                const txDateOnly = tx.date.split('T')[0];
+                const txFullDT = tx.date.length === 10 ? tx.date + 'T00:00:00' : tx.date;
+
+                // Apply Account Filter
+                if (filterAcc !== 'ALL' && tx.acc !== filterAcc) return;
+
+                // Apply Date/Time Filters
+                if (filterDate === 'TODAY' && txDateOnly !== todayStr) return;
+                if (filterDate === 'YESTERDAY' && txDateOnly !== yesterdayStr) return;
+                if (filterDate === 'THIS_WEEK' && txDateOnly < startOfWeekStr) return;
+                if (filterDate === 'THIS_MONTH' && !txDateOnly.startsWith(startOfMonthStr)) return;
+                if (filterDate === 'CUSTOM_DATETIME') {
+                    if (startDTVal && txFullDT < startDTVal) return;
+                    if (endDTVal && txFullDT > endDTVal) return;
+                }
+
+                const matchStr = `${tx.cat} ${tx.desc}`.toLowerCase();
+                if (searchQ && !matchStr.includes(searchQ)) return;
+
+                const incVal = tx.cur === 'USD' ? tx.inc : (tx.inc / window.state.exchangeRate);
+                const expVal = tx.cur === 'USD' ? tx.exp : (tx.exp / window.state.exchangeRate);
+                summaryIncUSD += incVal;
+                summaryExpUSD += expVal;
+
+                const curKey = tx.cur || 'USD';
+                if (!totals[curKey]) totals[curKey] = { in: 0, out: 0 };
+                totals[curKey].in += (tx.inc || 0);
+                totals[curKey].out += (tx.exp || 0);
+
+                let accOptsHtml = window.state.accounts.map(a => `<option value="${a}" ${tx.acc===a?'selected':''}>${a}</option>`).join('');
+                let curOptsHtml = window.state.currencies.map(c => `<option value="${c}" ${tx.cur===c?'selected':''}>${c}</option>`).join('');
+                let catOptsHtml = window.state.categories.map(c => `<option value="${c}" ${tx.cat===c?'selected':''}>${c}</option>`).join('');
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-blue-50/50 dark:hover:bg-zinc-800/50 transition-colors group";
+                
+                tr.innerHTML = `
+                    <td class="px-3 py-2 text-sm text-gray-500 dark:text-gray-300 text-center">${rowCount++}</td>
+                    <td class="px-3 py-2"><input type="datetime-local" step="1" value="${window.formatForDateTimeInput(tx.date)}" onchange="updateTx('${tx.id}', 'date', this.value)" class="editable-input text-xs font-mono text-slate-800 dark:text-slate-100"></td>
+                    <td class="px-3 py-2">
+                        <select onchange="updateTx('${tx.id}', 'cat', this.value)" class="editable-input text-sm font-medium text-slate-800 dark:text-slate-100">
+                            ${catOptsHtml}
+                        </select>
+                    </td>
+                    <td class="px-3 py-2"><input type="text" value="${tx.desc}" onchange="updateTx('${tx.id}', 'desc', this.value)" class="editable-input text-sm text-slate-800 dark:text-slate-100"></td>
+                    <td class="px-3 py-2">
+                        <select onchange="updateTx('${tx.id}', 'acc', this.value)" class="editable-input text-sm font-medium text-slate-800 dark:text-slate-100">
+                            ${accOptsHtml}
+                        </select>
+                    </td>
+                    <td class="px-3 py-2">
+                        <select onchange="updateTx('${tx.id}', 'cur', this.value)" class="editable-input text-sm font-bold text-amber-700 dark:text-amber-400">
+                            ${curOptsHtml}
+                        </select>
+                    </td>
+                    <td class="px-3 py-2"><input type="${window.state.hideAmounts ? 'text' : 'number'}" step="any" min="0" value="${window.state.hideAmounts ? '••••••' : (tx.inc||0)}" onchange="updateTx('${tx.id}', 'inc', this.value)" class="editable-input text-sm font-semibold text-green-600 dark:text-emerald-400 text-right"></td>
+                    <td class="px-3 py-2"><input type="${window.state.hideAmounts ? 'text' : 'number'}" step="any" min="0" value="${window.state.hideAmounts ? '••••••' : (tx.exp||0)}" onchange="updateTx('${tx.id}', 'exp', this.value)" class="editable-input text-sm font-semibold text-red-500 dark:text-rose-400 text-right"></td>
+                    <td class="px-3 py-2 text-center flex items-center justify-center gap-1">
+                        <button onclick="duplicateRow('${tx.id}')" class="text-blue-500 hover:text-blue-700 p-1 rounded opacity-0 group-hover:opacity-100 transition" title="ចម្លងប្រតិបត្តិការនេះ">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                        <button onclick="confirmDelete('${tx.id}')" class="text-red-400 hover:text-red-600 p-1 rounded hover:bg-red-50 opacity-0 group-hover:opacity-100 transition" title="លុប">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update summary banner text & savings rate %
+            const todayIncEl = document.getElementById('todayIncText');
+            const todayExpEl = document.getElementById('todayExpText');
+            const todaySavingsEl = document.getElementById('todaySavingsRate');
+            
+            if (todayIncEl) todayIncEl.textContent = window.formatMoney(summaryIncUSD, 'USD');
+            if (todayExpEl) todayExpEl.textContent = window.formatMoney(summaryExpUSD, 'USD');
+            if (todaySavingsEl) {
+                const savingsPct = summaryIncUSD > 0 ? Math.max(0, Math.round(((summaryIncUSD - summaryExpUSD) / summaryIncUSD) * 100)) : 0;
+                todaySavingsEl.textContent = savingsPct + '%';
+            }
+
+            let incText = '', expText = '';
+            Object.keys(totals).forEach(c => {
+                if (totals[c].in > 0) incText += `<div class="font-bold text-green-600 dark:text-emerald-400">${window.formatMoney(totals[c].in, c)}</div>`;
+                if (totals[c].out > 0) expText += `<div class="font-bold text-red-500 dark:text-rose-400">${window.formatMoney(totals[c].out, c)}</div>`;
+            });
+            document.getElementById('totIncCell').innerHTML = incText || '<div class="font-bold text-green-600 dark:text-emerald-400">$ 0.00</div>';
+            document.getElementById('totExpCell').innerHTML = expText || '<div class="font-bold text-red-500 dark:text-rose-400">$ 0.00</div>';
+        };
+
+        window.updateTx = function(id, field, val) {
+            const tx = window.state.transactions.find(t => t.id === id);
+            if (tx) {
+                if (field === 'inc' || field === 'exp') tx[field] = parseFloat(val) || 0;
+                else tx[field] = val;
+                window.pushTxToFirebase(tx);
+                window.renderTable();
+                window.updateDashboard();
+            }
+        };
+
+        window.addRow = function() {
+            window.playChimeSound();
+            const now = new Date();
+            const nowIso = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 19);
+            const newTx = {
+                id: window.generateId(),
+                date: nowIso,
+                cat: window.state.categories[0] || 'ផ្សេងៗ',
+                desc: 'ចំណាយថ្មី',
+                acc: window.state.accounts[0] || '🏦 ABA',
+                cur: 'USD',
+                inc: 0,
+                exp: 0
+            };
+            window.state.transactions.push(newTx);
+            window.pushTxToFirebase(newTx);
+            window.renderTable();
+            window.updateDashboard();
+        };
+
+        // Report helper functions
+        window.toggleCustomPeriod = function() {
+            const periodType = document.getElementById('reportPeriod').value;
+            const container = document.getElementById('customPeriodContainer');
+            if (periodType === 'custom') container.classList.remove('hidden');
+            else container.classList.add('hidden');
+            window.renderReports();
+        };
+
+        window.getPeriodKey = function(dateStr, period) {
+            if(!dateStr) return 'គ្មានកាលបរិច្ឆេទ';
+            const d = new Date(dateStr);
+            if (isNaN(d.getTime())) return dateStr;
+            const year = d.getFullYear(), month = d.getMonth();
+
+            switch(period) {
+                case 'daily': return dateStr.split('T')[0] || dateStr;
+                case 'weekly': 
+                    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+                    const w = Math.ceil((((d - new Date(Date.UTC(d.getUTCFullYear(),0,1)))/86400000)+1)/7);
+                    return `${year} សប្តាហ៍ទី ${w}`;
+                case 'monthly': return `${year}-${(month+1).toString().padStart(2,'0')}`;
+                case 'quarterly':
+                    return `${year} ត្រីមាសទី ${Math.floor(month / 3) + 1} (Q${Math.floor(month / 3) + 1})`;
+                case 'yearly': return `${year}`;
+                default: return dateStr;
+            }
+        };
+
+        window.renderReports = function() {
+            const periodType = document.getElementById('reportPeriod')?.value || 'monthly';
+            let pData = {}, cData = {};
+
+            window.state.transactions.forEach(r => {
+                if(!r.date && r.inc === 0 && r.exp === 0) return; 
+                const pKey = window.getPeriodKey(r.date, periodType);
+                const cat = r.cat || 'ផ្សេងៗ'; const cur = r.cur || 'USD';
+
+                if(!pData[pKey]) pData[pKey] = {};
+                if(!pData[pKey][cur]) pData[pKey][cur] = { in: 0, out: 0 };
+                pData[pKey][cur].in += r.inc; pData[pKey][cur].out += r.exp;
+
+                if(!cData[cat]) cData[cat] = {};
+                if(!cData[cat][cur]) cData[cat][cur] = { in: 0, out: 0 };
+                cData[cat][cur].in += r.inc; cData[cat][cur].out += r.exp;
+            });
+
+            function buildRows(dataObj, showBal = true) {
+                let html = '';
+                Object.keys(dataObj).sort().reverse().forEach(key => {
+                    const d = dataObj[key];
+                    Object.keys(d).forEach(cur => {
+                        if(d[cur].in > 0 || d[cur].out > 0) {
+                            const bal = d[cur].in - d[cur].out;
+                            html += `
+                            <tr class="hover:bg-slate-50 dark:hover:bg-zinc-800 border-b border-gray-100 dark:border-zinc-800">
+                                <td class="px-4 py-2.5 text-sm font-bold text-slate-900 dark:text-slate-100">${key}</td>
+                                <td class="px-4 py-2.5 text-sm text-right font-medium text-gray-700 dark:text-slate-300">${cur}</td>
+                                <td class="px-4 py-2.5 text-sm text-right font-bold text-green-600 dark:text-emerald-400">${window.formatMoney(d[cur].in, cur)}</td>
+                                <td class="px-4 py-2.5 text-sm text-right font-bold text-red-500 dark:text-rose-400">${window.formatMoney(d[cur].out, cur)}</td>
+                                ${showBal ? `<td class="px-4 py-2.5 text-sm text-right font-black ${bal<0?'text-red-500 dark:text-rose-400':'text-blue-600 dark:text-sky-400'}">${window.formatMoney(bal, cur)}</td>` : ''}
+                            </tr>`;
+                        }
+                    });
+                });
+                return html || `<tr><td colspan="5" class="text-center py-4 text-sm text-gray-500 dark:text-slate-400">គ្មានទិន្នន័យ</td></tr>`;
+            }
+
+            const pBody = document.getElementById('repPeriodBody');
+            const cBody = document.getElementById('repCatBody');
+            if (pBody) pBody.innerHTML = buildRows(pData, true);
+            if (cBody) cBody.innerHTML = buildRows(cData, false);
+        };
+
+        // Export and Import handlers
+        window.exportToPDF = function() {
+            const element = document.getElementById('reportPrintArea');
+            const opt = {
+                margin:       0.5,
+                filename:     `Financial_Report_${new Date().toISOString().split('T')[0]}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
+            };
+            html2pdf().set(opt).from(element).save();
+            window.showToast('កំពុងទាញយកឯកសារ PDF...', 'info');
+        };
+
+        window.exportToJSON = function() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.state, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Finance_Backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            window.showToast('បានទាញយក Backup JSON', 'success');
+        };
+
+        window.importFromJSON = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported) {
+                        if (imported.appTitle) window.state.appTitle = imported.appTitle;
+                        if (imported.appSubtitle) window.state.appSubtitle = imported.appSubtitle;
+                        if (imported.accounts) window.state.accounts = imported.accounts;
+                        if (imported.currencies) window.state.currencies = imported.currencies;
+                        if (imported.categories) window.state.categories = imported.categories;
+                        if (imported.budgets) window.state.budgets = imported.budgets;
+                        if (imported.goals) window.state.goals = imported.goals;
+                        if (imported.shortcuts) window.state.shortcuts = imported.shortcuts;
+                        if (imported.transactions) window.state.transactions = imported.transactions;
+
+                        window.applyUiConfig();
+                        window.saveAccountsToCloud();
+                        window.saveCurrenciesToCloud();
+                        window.saveCategoriesToCloud();
+                        window.saveBudgetsToCloud();
+                        window.saveGoalsToCloud();
+                        window.saveShortcutsToCloud();
+                        window.saveUiConfigToCloud();
+
+                        if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                            const txMap = {};
+                            window.state.transactions.forEach(tx => txMap[tx.id] = tx);
+                            window.firebaseSet(window.firebaseRef(window.firebaseDb, 'transactions'), txMap);
+                        }
+                        window.renderTable();
+                        window.updateDashboard();
+                        window.showToast('បាន Restore ទិន្នន័យជោគជ័យ!', 'success');
+                    }
+                } catch (err) {
+                    window.showToast('ឯកសារ JSON មិនត្រឹមត្រូវ', 'error');
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        window.exportToExcel = function() {
+            const expData = window.state.transactions.map(t => ({
+                'កាលបរិច្ឆេទ': t.date, 'ផ្នែក/ប្រភេទ': t.cat, 'ការពិពណ៌នា': t.desc,
+                'គណនី': t.acc, 'រូបិយប័ណ្ណ': t.cur, 'ចំណូល': t.inc, 'ចំណាយ': t.exp
+            }));
+            const ws = XLSX.utils.json_to_sheet(expData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "ទិន្នន័យ");
+            XLSX.writeFile(wb, 'បញ្ជីចំណូលចំណាយ.xlsx');
+            window.showToast('បានទាញយកឯកសារ Excel', 'success');
+        };
+
+        window.importData = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {header: 1});
+                let start = (rows.length > 0 && isNaN(parseFloat(rows[0][5]))) ? 1 : 0;
+                
+                for(let i=start; i<rows.length; i++) {
+                    const r = rows[i];
+                    if(!r || r.length===0 || r.every(c=>!c)) continue;
+                    let dateStr = r[0] || new Date().toISOString().split('T')[0];
+                    const newTx = {
+                        id: window.generateId(), date: dateStr, cat: r[1]||'ផ្សេងៗ', desc: r[2]||'',
+                        acc: window.state.accounts.includes(r[3]) ? r[3] : window.state.accounts[0],
+                        cur: window.state.currencies.includes(r[4]) ? r[4] : 'USD',
+                        inc: parseFloat(r[5]) || 0, exp: parseFloat(r[6]) || 0
+                    };
+                    window.state.transactions.push(newTx);
+                    window.pushTxToFirebase(newTx);
+                }
+                event.target.value = '';
+                window.renderTable(); window.updateDashboard();
+                window.showToast('បាននាំចូលទិន្នន័យ Excel ជោគជ័យ!', 'success');
+            };
+            reader.readAsArrayBuffer(file);
+        };
+
+        // Onload initializations
+        window.onload = () => {
+            const savedUi = localStorage.getItem('finance_ui_config');
+            if (savedUi) {
+                try {
+                    const parsed = JSON.parse(savedUi);
+                    window.state.appTitle = parsed.appTitle || window.state.appTitle;
+                    window.state.appSubtitle = parsed.appSubtitle || window.state.appSubtitle;
+                    window.state.themeStyle = parsed.themeStyle || window.state.themeStyle;
+                    window.state.bgImageUrl = parsed.bgImageUrl || '';
+                    window.state.hideAmounts = parsed.hideAmounts || false;
+                    window.state.hiddenAccounts = parsed.hiddenAccounts || [];
+                    if (parsed.visibleSections) window.state.visibleSections = parsed.visibleSections;
+                    window.state.titleColor = parsed.titleColor || '#ffffff';
+                    window.state.subtitleColor = parsed.subtitleColor || '#bfdbfe';
+                    window.state.pinCode = parsed.pinCode || '';
+                } catch(e) {}
+            }
+
+            window.checkPinLock();
+            window.applyUiConfig();
+            window.renderFilterAccounts();
+            window.renderShortcuts();
+            window.renderTable();
+            window.updateDashboard();
+
+            window.fetchLiveExchangeRate(true);
         };
     </script>
 
-    <!-- FIREBASE SDK -->
+    <!-- Firebase SDK Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getDatabase, ref, onValue, set, remove, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBo9Wq8tNJ5UC0HULZaH2TjZDa6oBEQtl0",
+            authDomain: "my-finance-app-531c4.firebaseapp.com",
             databaseURL: "https://my-finance-app-531c4-default-rtdb.firebaseio.com",
-            projectId: "my-finance-app-531c4"
+            projectId: "my-finance-app-531c4",
+            storageBucket: "my-finance-app-531c4.firebasestorage.app",
+            messagingSenderId: "465702728125",
+            appId: "1:465702728125:web:850252ec0c20a09ebd62d4"
         };
 
         try {
             const app = initializeApp(firebaseConfig);
             const db = getDatabase(app);
-            window.firebaseDb = db; window.firebaseRef = ref; window.firebaseSet = set; window.firebaseRemove = remove; window.firebaseGet = get;
 
-            const badge = document.getElementById('cloudStatusBadge');
-            if (badge) badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> 🟢 Cloud រួចរាល់`;
+            window.firebaseDb = db;
+            window.firebaseRef = ref;
+            window.firebaseSet = set;
+            window.firebaseRemove = remove;
 
-            const savedLicKey = localStorage.getItem('finance_app_license_key');
-            if (savedLicKey) {
-                get(ref(db, 'licenses/' + savedLicKey)).then((snapshot) => {
-                    if (snapshot.exists() && window.checkLicenseValidity(snapshot.val()).valid) {
-                        window.state.licenseKey = savedLicKey;
-                        document.getElementById('licenseModalOverlay').classList.add('hidden');
-                        document.getElementById('licenseBadgeText').textContent = savedLicKey;
-                        window.attachFirebaseListenersForLicense(savedLicKey);
-                    } else {
-                        document.getElementById('licenseModalOverlay').classList.remove('hidden');
-                    }
-                }).catch(() => document.getElementById('licenseModalOverlay').classList.remove('hidden'));
-            } else {
-                document.getElementById('licenseModalOverlay').classList.remove('hidden');
+            const statusBadge = document.getElementById('cloudStatusBadge');
+            if (statusBadge) {
+                statusBadge.className = "bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-xs px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5";
+                statusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> 🟢 ភ្ជាប់ Cloud រួចរាល់`;
             }
 
-            window.attachFirebaseListenersForLicense = function(lKey) {
-                onValue(ref(db, `tenant_data/${lKey}/transactions`), (snapshot) => {
-                    const data = snapshot.val(); window.state.transactions = [];
-                    if (data) Object.keys(data).forEach(k => window.state.transactions.push({id: k, ...data[k]}));
-                    window.renderTable(); window.updateDashboard();
-                });
-            };
-        } catch(e) {}
+            onValue(ref(db, 'transactions'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const loadedTxs = [];
+                    Object.keys(data).forEach(key => {
+                        loadedTxs.push({ id: key, ...data[key] });
+                    });
+                    window.state.transactions = loadedTxs;
+                } else {
+                    window.state.transactions = [];
+                }
+                if (typeof window.renderTable === 'function') window.renderTable();
+                if (typeof window.updateDashboard === 'function') window.updateDashboard();
+            });
+
+            onValue(ref(db, 'accounts'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) window.state.accounts = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.renderFilterAccounts === 'function') window.renderFilterAccounts();
+                if (typeof window.renderTable === 'function') window.renderTable();
+                if (typeof window.updateDashboard === 'function') window.updateDashboard();
+            });
+
+            onValue(ref(db, 'currencies'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) window.state.currencies = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.renderTable === 'function') window.renderTable();
+                if (typeof window.updateDashboard === 'function') window.updateDashboard();
+            });
+
+            onValue(ref(db, 'categories'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) window.state.categories = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.renderTable === 'function') window.renderTable();
+                if (typeof window.updateDashboard === 'function') window.updateDashboard();
+            });
+
+            onValue(ref(db, 'budgets'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) window.state.budgets = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.updateDashboard === 'function') window.updateDashboard();
+            });
+
+            onValue(ref(db, 'goals'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) window.state.goals = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.updateDashboard === 'function') window.updateDashboard();
+            });
+
+            onValue(ref(db, 'shortcuts'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) window.state.shortcuts = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.renderShortcuts === 'function') window.renderShortcuts();
+            });
+
+            onValue(ref(db, 'uiConfig'), (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    if (data.appTitle) window.state.appTitle = data.appTitle;
+                    if (data.appSubtitle) window.state.appSubtitle = data.appSubtitle;
+                    if (data.themeStyle) window.state.themeStyle = data.themeStyle;
+                    if (data.bgImageUrl !== undefined) window.state.bgImageUrl = data.bgImageUrl;
+                    if (data.titleColor) window.state.titleColor = data.titleColor;
+                    if (data.subtitleColor) window.state.subtitleColor = data.subtitleColor;
+                    if (data.pinCode) window.state.pinCode = data.pinCode;
+                    if (data.hiddenAccounts) window.state.hiddenAccounts = data.hiddenAccounts;
+                    if (data.visibleSections) window.state.visibleSections = data.visibleSections;
+                    if (typeof window.applyUiConfig === 'function') window.applyUiConfig();
+                }
+            });
+
+        } catch (e) {
+            console.error("Firebase Init Error:", e);
+        }
     </script>
 </body>
 </html>
