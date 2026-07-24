@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុ Pro Cloud</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Kantumruy Pro', sans-serif;
+            background-color: #f1f5f9;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .editable-input { width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; outline: none; transition: all 0.2s; }
+        .editable-input:hover { background-color: rgba(200, 200, 200, 0.15); border-color: #cbd5e1; }
+        .editable-input:focus { background-color: #ffffff; color: #0f172a !important; border-color: #2563eb; }
+        .tab-btn.active { border-bottom: 3px solid #2563eb; color: #1d4ed8; font-weight: 700; background-color: #eff6ff; }
+        
+        /* Modals & Dark Theme Styles */
+        .modal-content-card { background-color: #ffffff !important; color: #0f172a !important; border: 1px solid #cbd5e1 !important; }
+        .modal-sub-card { background-color: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
+        .modal-item-input { background-color: #ffffff !important; color: #0f172a !important; border: 1px solid #cbd5e1 !important; border-radius: 6px; padding: 6px 10px; font-weight: 600; }
+        
+        body.theme-aba-dark, body.theme-slate, body.theme-dark { color: #f8fafc; }
+        body.theme-aba-dark { background-color: #121212; }
+        body.theme-slate { background-color: #0f172a; }
+        body.theme-aba-dark .bg-white, body.theme-slate .bg-white { background-color: #1e1e1e !important; color: #f8fafc !important; border-color: #334155 !important; }
+        body.theme-aba-dark .tab-btn.active, body.theme-slate .tab-btn.active { border-bottom: 3px solid #d4af37; color: #f3e5ab; background-color: #2a2415; }
+        body.theme-aba-dark td, body.theme-aba-dark th, body.theme-slate td, body.theme-slate th { color: #ffffff !important; }
+        
+        #toastContainer { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+        .toast-msg { pointer-events: auto; animation: slideIn 0.3s ease-out forwards; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #3b82f6; transition: background-color 0.2s; }
+        .pin-dot.filled { background-color: #3b82f6; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen pb-10" id="appBody">
+
+    <!-- 🔑 LICENSE ACTIVATION OVERLAY -->
+    <div id="licenseModalOverlay" class="fixed inset-0 z-[150] bg-slate-950/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 text-white">
+        <div class="max-w-md w-full bg-slate-900 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden text-center">
+            <div class="w-20 h-20 bg-blue-600/20 border border-blue-500/40 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-400 text-3xl shadow-lg">
+                <i class="fa-solid fa-key"></i>
+            </div>
+            <h2 class="text-2xl font-black mb-2 text-white">បញ្ចូលកូដអាជ្ញាប័ណ្ណ (License Key)</h2>
+            <p class="text-xs text-slate-300 mb-6 leading-relaxed">
+                សូមបញ្ចូលកូដអាជ្ញាប័ណ្ណរបស់អ្នក ដើម្បីចូលប្រើប្រាស់ប្រព័ន្ធហិរញ្ញវត្ថុ Pro Cloud។
+            </p>
+
+            <div class="space-y-4 mb-6">
+                <div>
+                    <input type="text" id="licenseKeyInput" placeholder="ឧ. PRO-8888-9999" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-center text-lg font-mono font-bold tracking-widest text-amber-300 focus:outline-none focus:border-blue-500 uppercase transition shadow-inner">
+                </div>
+                <button onclick="activateLicenseKey()" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-extrabold text-sm shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>ផ្ទៀងផ្ទាត់ & ចូលប្រើប្រាស់</span>
+                </button>
+            </div>
+
+            <div class="border-t border-slate-800 pt-4 text-left bg-slate-950/50 p-3 rounded-xl border">
+                <p class="text-[11px] font-bold text-slate-400 mb-1">📞 ត្រូវការទិញ License Key ឬបន្តសុពលភាព៖</p>
+                <div class="flex items-center justify-between text-xs font-mono text-blue-300 font-bold">
+                    <span>Telegram Admin:</span>
+                    <a href="https://t.me/Heng6912" target="_blank" class="text-amber-400 hover:underline">@Heng6912 ↗</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIN Lock Overlay -->
+    <div id="pinLockOverlay" class="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-xl flex flex-col items-center justify-center text-white hidden">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-blue-600/20 border border-blue-500/40 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-400 text-2xl"><i class="fa-solid fa-lock"></i></div>
+            <h2 class="text-xl font-bold">វាយបញ្ចូលលេខកូដ PIN ៤ ខ្ទង់</h2>
+        </div>
+        <div class="flex gap-4 mb-8 justify-center">
+            <div class="pin-dot" id="dot-0"></div><div class="pin-dot" id="dot-1"></div><div class="pin-dot" id="dot-2"></div><div class="pin-dot" id="dot-3"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-4 w-64 mx-auto text-center">
+            <button onclick="pressPin('1')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">1</button>
+            <button onclick="pressPin('2')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">2</button>
+            <button onclick="pressPin('3')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">3</button>
+            <button onclick="pressPin('4')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">4</button>
+            <button onclick="pressPin('5')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">5</button>
+            <button onclick="pressPin('6')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">6</button>
+            <button onclick="pressPin('7')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">7</button>
+            <button onclick="pressPin('8')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">8</button>
+            <button onclick="pressPin('9')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">9</button>
+            <div></div>
+            <button onclick="pressPin('0')" class="h-14 bg-slate-800/80 hover:bg-slate-700 rounded-2xl text-xl font-bold">0</button>
+            <button onclick="clearPin()" class="h-14 bg-rose-900/40 text-rose-300 rounded-2xl text-sm font-bold"><i class="fa-solid fa-delete-left"></i></button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer"></div>
+
+    <div class="max-w-[1400px] mx-auto pt-4 px-2 md:px-6">
+        <!-- Hero Header Card -->
+        <div id="heroCard" class="bg-gradient-to-br from-blue-800 to-indigo-900 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold flex items-center gap-3">
+                        <i class="fa-solid fa-wallet text-amber-300"></i>
+                        <span id="displayAppTitle">ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុ Pro Cloud</span>
+                    </h1>
+                    <div class="flex flex-wrap items-center gap-3 mt-2">
+                        <span id="cloudStatusBadge" class="bg-amber-500/20 text-amber-200 border border-amber-400/30 text-xs px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> កំពុងភ្ជាប់ Cloud...
+                        </span>
+                        <span id="currentLicenseBadge" class="bg-blue-500/20 text-blue-200 border border-blue-400/30 text-xs px-2.5 py-1 rounded-full font-bold">
+                            🔑 Key: <span id="licenseBadgeText" class="font-mono text-amber-300">...</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="bg-black/40 backdrop-blur-md border border-white/20 p-4 rounded-xl flex items-center justify-between gap-6 min-w-[280px]">
+                        <div>
+                            <div class="text-blue-200 text-xs font-medium uppercase mb-1">ទ្រព្យសកម្មសរុបរួម (Net Worth)</div>
+                            <div class="text-2xl font-black text-emerald-400 font-mono tracking-tight" id="globalNetWorth">$ 0.00</div>
+                        </div>
+                        <div class="h-10 w-px bg-white/20"></div>
+                        <div>
+                            <div class="text-blue-200 text-xs font-medium uppercase mb-1">អត្រាប្តូរប្រាក់</div>
+                            <div class="flex items-center gap-1 bg-white/20 px-2 py-1 rounded text-sm">
+                                <span>៛</span>
+                                <input type="number" id="exchangeRate" value="4100" onchange="updateExchangeRate()" class="bg-transparent text-white font-bold w-16 outline-none text-right font-mono">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6 flex overflow-x-auto">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 font-bold transition-colors flex items-center justify-center gap-2"><i class="fa-solid fa-gauge"></i> ផ្ទាំងសង្ខេប (Dashboard)</button>
+            <button onclick="switchTab('entry')" id="tab-entry" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 font-bold transition-colors flex items-center justify-center gap-2"><i class="fa-solid fa-list-check"></i> ប្រតិបត្តិការ (Transactions)</button>
+            <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 font-bold transition-colors flex items-center justify-center gap-2"><i class="fa-solid fa-chart-column"></i> របាយការណ៍លម្អិត</button>
+        </div>
+
+        <!-- DASHBOARD VIEW -->
+        <div id="view-dashboard" class="space-y-6">
+            <div id="sec-accounts">
+                <h2 class="text-lg font-extrabold mb-3 flex items-center gap-2"><i class="fa-solid fa-credit-card text-blue-600"></i> សមតុល្យតាមគណនី</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="dashboardCards"></div>
+            </div>
+
+            <div id="sec-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-5 rounded-xl shadow-sm border"><h3 class="text-md font-bold mb-4 text-center">ចំណាយតាមផ្នែក (ខែនេះ)</h3><div class="relative h-[300px] w-full"><canvas id="expenseChart"></canvas></div></div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border"><h3 class="text-md font-bold mb-4 text-center">ចំណូល vs ចំណាយ (៦ ខែចុងក្រោយ)</h3><div class="relative h-[300px] w-full"><canvas id="trendChart"></canvas></div></div>
+            </div>
+        </div>
+
+        <!-- TRANSACTIONS VIEW -->
+        <div id="view-entry" class="hidden space-y-4">
+            <div class="bg-white p-4 rounded-xl shadow-sm border flex flex-col sm:flex-row justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="ស្វែងរក..." class="border p-2 rounded-lg text-sm font-bold">
+                    <select id="filterAccount" onchange="renderTable()" class="border p-2 rounded-lg text-sm font-bold"></select>
+                </div>
+                <button onclick="addRow()" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold text-sm">+ បន្ថែមជួរដេកថ្មី</button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                <table class="min-w-full divide-y" id="mainTable">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-3 py-3 text-left text-xs font-bold uppercase">កាលបរិច្ឆេទ & ម៉ោង</th>
+                            <th class="px-3 py-3 text-left text-xs font-bold uppercase">ផ្នែក/ប្រភេទ</th>
+                            <th class="px-3 py-3 text-left text-xs font-bold uppercase">ការពិពណ៌នា</th>
+                            <th class="px-3 py-3 text-left text-xs font-bold uppercase">គណនី</th>
+                            <th class="px-3 py-3 text-right text-xs font-bold uppercase">ចំណូល</th>
+                            <th class="px-3 py-3 text-right text-xs font-bold uppercase">ចំណាយ</th>
+                            <th class="px-3 py-3 text-center">លុប</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- REPORT VIEW -->
+        <div id="view-report" class="hidden space-y-6">
+            <div class="bg-white p-5 rounded-xl border">
+                <h3 class="font-bold mb-4">របាយការណ៍សរុប</h3>
+                <div id="repPeriodBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.state = {
+            licenseKey: '', licenseInfo: null, exchangeRate: 4100, hideAmounts: false, hiddenAccounts: [],
+            appTitle: 'Finance Pro Cloud', themeStyle: 'default',
+            accounts: ['🏦 ABA', '💳 AC', '👛 Wallet', '🐖 Savings'], currencies: ['USD', 'KHR'],
+            categories: ['ប្រាក់ខែ', 'អាហារ', 'សាំង', 'ទិញទំនិញ', 'ផ្សេងៗ'], transactions: []
+        };
+        window.charts = { expense: null, trend: null };
+
+        window.formatMoney = function(amount, cur) {
+            if (cur === 'KHR') return (amount || 0).toLocaleString('en-US') + ' ៛';
+            return (amount || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' $';
+        };
+
+        window.checkLicenseValidity = function(licObj) {
+            if (!licObj) return { valid: false, reason: 'NOT_FOUND' };
+            if (licObj.status !== 'ACTIVE') return { valid: false, reason: 'INACTIVE' };
+            if (licObj.expiryDate === 'LIFETIME') return { valid: true, reason: 'LIFETIME' };
+            if (new Date().toISOString().split('T')[0] > licObj.expiryDate) return { valid: false, reason: 'EXPIRED' };
+            return { valid: true, reason: 'ACTIVE' };
+        };
+
+        window.activateLicenseKey = function() {
+            const inputVal = document.getElementById('licenseKeyInput').value.trim().toUpperCase();
+            if (!inputVal) return alert('សូមបញ្ចូល License Key!');
+            
+            window.firebaseGet(window.firebaseRef(window.firebaseDb, 'licenses/' + inputVal)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const licData = snapshot.val();
+                    const check = window.checkLicenseValidity(licData);
+                    if (check.valid) {
+                        window.state.licenseKey = inputVal;
+                        window.state.licenseInfo = licData;
+                        localStorage.setItem('finance_app_license_key', inputVal);
+                        document.getElementById('licenseModalOverlay').classList.add('hidden');
+                        document.getElementById('licenseBadgeText').textContent = inputVal;
+                        window.attachFirebaseListenersForLicense(inputVal);
+                    } else { alert("License Key នេះបានផុតកំណត់ ឬអសកម្ម!"); }
+                } else { alert("រកមិនឃើញ License Key នេះទេ!"); }
+            });
+        };
+
+        window.switchTab = function(id) {
+            ['dashboard','entry','report'].forEach(t => {
+                document.getElementById('view-'+t).classList.add('hidden');
+                document.getElementById('tab-'+t).classList.remove('active');
+            });
+            document.getElementById('view-'+id).classList.remove('hidden');
+            document.getElementById('tab-'+id).classList.add('active');
+        };
+
+        window.updateDashboard = function() {
+            let accBalances = {}; window.state.accounts.forEach(a => accBalances[a] = {USD:0});
+            window.state.transactions.forEach(tx => {
+                if(!accBalances[tx.acc]) accBalances[tx.acc] = {USD:0};
+                accBalances[tx.acc][tx.cur||'USD'] = (accBalances[tx.acc][tx.cur||'USD']||0) + (tx.inc||0) - (tx.exp||0);
+            });
+            let totalNet = 0;
+            const cardGrid = document.getElementById('dashboardCards'); cardGrid.innerHTML = '';
+            Object.keys(accBalances).forEach(k => {
+                const bal = accBalances[k]['USD'] || 0;
+                totalNet += bal;
+                cardGrid.innerHTML += `
+                    <div class="bg-white p-4 rounded-xl border shadow-sm">
+                        <div class="text-xs text-gray-500 font-bold mb-1">${k}</div>
+                        <div class="text-lg font-black text-slate-800">${window.formatMoney(bal, 'USD')}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('globalNetWorth').textContent = window.formatMoney(totalNet, 'USD');
+        };
+
+        window.renderTable = function() {
+            const tbody = document.getElementById('tableBody'); if(!tbody) return; tbody.innerHTML = '';
+            window.state.transactions.forEach(tx => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50";
+                tr.innerHTML = `
+                    <td class="px-3 py-2 text-xs font-mono">${(tx.date||'').slice(0,16)}</td>
+                    <td class="px-3 py-2 text-xs font-bold">${tx.cat}</td>
+                    <td class="px-3 py-2 text-xs">${tx.desc}</td>
+                    <td class="px-3 py-2 text-xs font-bold text-blue-600">${tx.acc}</td>
+                    <td class="px-3 py-2 text-xs text-right font-bold text-emerald-600">${window.formatMoney(tx.inc, tx.cur)}</td>
+                    <td class="px-3 py-2 text-xs text-right font-bold text-rose-500">${window.formatMoney(tx.exp, tx.cur)}</td>
+                    <td class="px-3 py-2 text-center"><button onclick="deleteTx('${tx.id}')" class="text-rose-500 font-bold">🗑️</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        window.addRow = function() {
+            const id = Date.now().toString(36);
+            const newTx = { id, date: new Date().toISOString().slice(0,19), cat: 'ផ្សេងៗ', desc: 'ប្រតិបត្តិការថ្មី', acc: window.state.accounts[0], cur: 'USD', inc: 0, exp: 0 };
+            window.state.transactions.push(newTx);
+            if (window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, `tenant_data/${window.state.licenseKey}/transactions/${id}`), newTx);
+            }
+            window.renderTable(); window.updateDashboard();
+        };
+
+        window.deleteTx = function(id) {
+            window.state.transactions = window.state.transactions.filter(t => t.id !== id);
+            if (window.firebaseRemove) {
+                window.firebaseRemove(window.firebaseRef(window.firebaseDb, `tenant_data/${window.state.licenseKey}/transactions/${id}`));
+            }
+            window.renderTable(); window.updateDashboard();
+        };
+    </script>
+
+    <!-- FIREBASE SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getDatabase, ref, onValue, set, remove, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBo9Wq8tNJ5UC0HULZaH2TjZDa6oBEQtl0",
+            databaseURL: "https://my-finance-app-531c4-default-rtdb.firebaseio.com",
+            projectId: "my-finance-app-531c4"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+            window.firebaseDb = db; window.firebaseRef = ref; window.firebaseSet = set; window.firebaseRemove = remove; window.firebaseGet = get;
+
+            const badge = document.getElementById('cloudStatusBadge');
+            if (badge) badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> 🟢 Cloud រួចរាល់`;
+
+            const savedLicKey = localStorage.getItem('finance_app_license_key');
+            if (savedLicKey) {
+                get(ref(db, 'licenses/' + savedLicKey)).then((snapshot) => {
+                    if (snapshot.exists() && window.checkLicenseValidity(snapshot.val()).valid) {
+                        window.state.licenseKey = savedLicKey;
+                        document.getElementById('licenseModalOverlay').classList.add('hidden');
+                        document.getElementById('licenseBadgeText').textContent = savedLicKey;
+                        window.attachFirebaseListenersForLicense(savedLicKey);
+                    } else {
+                        document.getElementById('licenseModalOverlay').classList.remove('hidden');
+                    }
+                }).catch(() => document.getElementById('licenseModalOverlay').classList.remove('hidden'));
+            } else {
+                document.getElementById('licenseModalOverlay').classList.remove('hidden');
+            }
+
+            window.attachFirebaseListenersForLicense = function(lKey) {
+                onValue(ref(db, `tenant_data/${lKey}/transactions`), (snapshot) => {
+                    const data = snapshot.val(); window.state.transactions = [];
+                    if (data) Object.keys(data).forEach(k => window.state.transactions.push({id: k, ...data[k]}));
+                    window.renderTable(); window.updateDashboard();
+                });
+            };
+        } catch(e) {}
+    </script>
+</body>
+</html>
