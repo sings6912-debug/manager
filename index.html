@@ -48,6 +48,43 @@
             background: #94a3b8; 
         }
 
+        /* Column Resizer Styles (Excel Like Drag-to-Resize with Highlights) */
+        th {
+            position: relative;
+        }
+        .resizer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            cursor: col-resize;
+            user-select: none;
+            height: 100%;
+            z-index: 20;
+            transition: background-color 0.2s ease;
+        }
+        .resizer::after {
+            content: '';
+            position: absolute;
+            right: 2px;
+            top: 15%;
+            bottom: 15%;
+            width: 3px;
+            background-color: #cbd5e1;
+            border-radius: 2px;
+            transition: background-color 0.2s ease, width 0.2s ease;
+        }
+        /* Highlight effects when hovering and dragging */
+        .resizer:hover, .resizer.resizing {
+            background-color: rgba(37, 99, 235, 0.2) !important;
+        }
+        .resizer:hover::after, .resizer.resizing::after {
+            background-color: #2563eb !important; /* Bright Blue Highlight */
+            width: 4px;
+            right: 1px;
+            box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
+        }
+
         .editable-input {
             width: 100%;
             background: transparent;
@@ -573,31 +610,31 @@
                 </div>
             </div>
 
-            <!-- The Data Table -->
+            <!-- The Data Table with Vertical & Horizontal Scrolling + Excel Resizer -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700" id="mainTable">
-                        <thead class="bg-slate-50 dark:bg-zinc-800">
+                <div class="overflow-x-auto overflow-y-auto max-h-[550px] pb-2 relative">
+                    <table class="w-full min-w-[1200px] divide-y divide-gray-200 dark:divide-gray-700 border-collapse" id="mainTable">
+                        <thead class="bg-slate-100 dark:bg-zinc-800 sticky top-0 z-30 shadow-sm">
                             <tr>
-                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-12">ល.រ</th>
-                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-52">កាលបរិច្ឆេទ & ម៉ោង</th>
-                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-44">ផ្នែក/ប្រភេទ</th>
-                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase">ការពិពណ៌នា</th>
-                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-36">គណនី</th>
-                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-28">ខ្នាត/រូបិយប័ណ្ណ</th>
-                                <th class="px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-32">ចំណូល</th>
-                                <th class="px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-32">ចំណាយ</th>
-                                <th class="px-3 py-3 text-center text-xs font-bold text-gray-600 dark:text-gray-300 uppercase w-20">
-                                    <button onclick="addRow()" class="text-blue-600 hover:text-blue-800 bg-blue-50 px-2 py-1 rounded border border-blue-200 font-black" title="បន្ថែមថ្មី">+</button>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-12 bg-slate-100 dark:bg-zinc-800">ល.រ<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-56 bg-slate-100 dark:bg-zinc-800">កាលបរិច្ឆេទ & ម៉ោង<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-48 bg-slate-100 dark:bg-zinc-800">ផ្នែក/ប្រភេទ<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap min-w-[200px] bg-slate-100 dark:bg-zinc-800">ការពិពណ៌នា<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-40 bg-slate-100 dark:bg-zinc-800">គណនី<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-32 bg-slate-100 dark:bg-zinc-800">ខ្នាត/រូបិយប័ណ្ណ<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
+                                <th class="relative px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-36 bg-slate-100 dark:bg-zinc-800">ចំណូល<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
+                                <th class="relative px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-36 bg-slate-100 dark:bg-zinc-800">ចំណាយ<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
+                                <th class="relative px-3 py-3 text-center text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-20 bg-slate-100 dark:bg-zinc-800">
+                                    <button onclick="addRow()" class="text-blue-600 hover:text-blue-800 bg-blue-50 px-2.5 py-1 rounded border border-blue-200 font-black shadow-sm active:scale-95 transition" title="បន្ថែមថ្មី">+</button>
                                 </th>
                             </tr>
                         </thead>
                         <tbody id="tableBody" class="bg-white dark:bg-zinc-900 divide-y divide-gray-100 dark:divide-zinc-800"></tbody>
-                        <tfoot class="bg-slate-100 dark:bg-zinc-800 border-t-2 border-gray-300 dark:border-zinc-700">
+                        <tfoot class="bg-slate-100 dark:bg-zinc-800 border-t-2 border-gray-300 dark:border-zinc-700 sticky bottom-0 z-20 shadow-md">
                             <tr>
-                                <td colspan="6" class="px-4 py-4 text-sm font-bold text-slate-900 dark:text-slate-100 text-right">សរុប (រាយតាមខ្នាត/រូបិយប័ណ្ណ):</td>
-                                <td class="px-3 py-4 text-right text-sm font-bold text-green-600 dark:text-emerald-400" id="totIncCell"></td>
-                                <td class="px-3 py-4 text-right text-sm font-bold text-red-500 dark:text-rose-400" id="totExpCell"></td>
+                                <td colspan="6" class="px-4 py-4 text-sm font-bold text-slate-900 dark:text-slate-100 text-right whitespace-nowrap">សរុប (រាយតាមខ្នាត/រូបិយប័ណ្ណ):</td>
+                                <td class="px-3 py-4 text-right text-sm font-bold text-green-600 dark:text-emerald-400 whitespace-nowrap" id="totIncCell"></td>
+                                <td class="px-3 py-4 text-right text-sm font-bold text-red-500 dark:text-rose-400 whitespace-nowrap" id="totExpCell"></td>
                                 <td></td>
                             </tr>
                         </tfoot>
@@ -1149,6 +1186,47 @@
             if (cur === 'KHR') return (amount || 0).toLocaleString('en-US') + ' ៛';
             if (cur === 'USD') return (amount || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' $';
             return (amount || 0).toLocaleString('en-US', {maximumFractionDigits: 2}) + ' ' + (cur || '');
+        };
+
+        // Excel-like Drag-to-Resize Column Initialization Logic
+        window.initResizers = function() {
+            const table = document.getElementById('mainTable');
+            if(!table) return;
+            const cols = table.querySelectorAll('th');
+            [].forEach.call(cols, function (col) {
+                const resizer = col.querySelector('.resizer');
+                if (!resizer) return;
+
+                let x = 0;
+                let w = 0;
+
+                const mouseDownHandler = function (e) {
+                    x = e.clientX;
+                    const styles = window.getComputedStyle(col);
+                    w = parseInt(styles.width, 10);
+
+                    document.addEventListener('mousemove', mouseMoveHandler);
+                    document.addEventListener('mouseup', mouseUpHandler);
+                    resizer.classList.add('resizing');
+                    document.body.style.cursor = 'col-resize';
+                };
+
+                const mouseMoveHandler = function (e) {
+                    const dx = e.clientX - x;
+                    const newWidth = Math.max(40, w + dx);
+                    col.style.width = `${newWidth}px`;
+                    col.style.minWidth = `${newWidth}px`;
+                };
+
+                const mouseUpHandler = function () {
+                    document.removeEventListener('mousemove', mouseMoveHandler);
+                    document.removeEventListener('mouseup', mouseUpHandler);
+                    resizer.classList.remove('resizing');
+                    document.body.style.cursor = '';
+                };
+
+                resizer.addEventListener('mousedown', mouseDownHandler);
+            });
         };
 
         window.playChimeSound = function() {
@@ -2251,6 +2329,17 @@
         // Account management functions
         window.openAccountsModal = function() { window.renderAccountsList(); document.getElementById('accountsModal').classList.remove('hidden'); };
         window.closeAccountsModal = function() { document.getElementById('accountsModal').classList.add('hidden'); };
+        
+        window.moveAccount = function(i, dir) {
+            const newIndex = i + dir;
+            if (newIndex < 0 || newIndex >= window.state.accounts.length) return;
+            const temp = window.state.accounts[i];
+            window.state.accounts[i] = window.state.accounts[newIndex];
+            window.state.accounts[newIndex] = temp;
+            window.saveAccountsToCloud();
+            window.renderAccountsList();
+        };
+
         window.renderAccountsList = function() {
             const c = document.getElementById('accountsListContainer'); if(!c) return; c.innerHTML = '';
             if (!window.state.hiddenAccounts) window.state.hiddenAccounts = [];
@@ -2258,6 +2347,10 @@
                 const isHidden = window.state.hiddenAccounts.includes(acc);
                 c.innerHTML += `
                     <div class="flex items-center justify-between p-2 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-sm gap-2">
+                        <div class="flex items-center gap-1">
+                            <button onclick="moveAccount(${i}, -1)" ${i === 0 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលឡើងលើ">⬆️</button>
+                            <button onclick="moveAccount(${i}, 1)" ${i === window.state.accounts.length - 1 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលចុះក្រោម">⬇️</button>
+                        </div>
                         <button onclick="toggleAccountVisibility('${acc}')" class="px-2 py-1.5 rounded-lg border text-xs font-bold transition flex items-center gap-1 ${isHidden ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-emerald-100 text-emerald-800 border-emerald-300'}" title="${isHidden ? 'ចុចដើម្បីបង្ហាញលើ Dashboard' : 'ចុចដើម្បីលាក់ពី Dashboard'}">
                             ${isHidden ? '🙈 លាក់' : '👁️ បង្ហាញ'}
                         </button>
@@ -2288,10 +2381,29 @@
 
         window.openCurrenciesModal = function() { window.renderCurrenciesList(); document.getElementById('currenciesModal').classList.remove('hidden'); };
         window.closeCurrenciesModal = function() { document.getElementById('currenciesModal').classList.add('hidden'); };
+        
+        window.moveCurrency = function(i, dir) {
+            const newIndex = i + dir;
+            if (newIndex < 0 || newIndex >= window.state.currencies.length) return;
+            const temp = window.state.currencies[i];
+            window.state.currencies[i] = window.state.currencies[newIndex];
+            window.state.currencies[newIndex] = temp;
+            window.saveCurrenciesToCloud();
+            window.renderCurrenciesList();
+        };
+
         window.renderCurrenciesList = function() {
             const c = document.getElementById('currenciesListContainer'); if(!c) return; c.innerHTML = '';
             window.state.currencies.forEach((cur, i) => {
-                c.innerHTML += `<div class="flex items-center justify-between p-2 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-sm gap-2"><input type="text" value="${cur}" onchange="editCurrencyName(${i}, this.value)" class="modal-item-input flex-1 outline-none"><button onclick="deleteCurrency(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button></div>`;
+                c.innerHTML += `
+                    <div class="flex items-center justify-between p-2 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-sm gap-2">
+                        <div class="flex items-center gap-1">
+                            <button onclick="moveCurrency(${i}, -1)" ${i === 0 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលឡើងលើ">⬆️</button>
+                            <button onclick="moveCurrency(${i}, 1)" ${i === window.state.currencies.length - 1 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលចុះក្រោម">⬇️</button>
+                        </div>
+                        <input type="text" value="${cur}" onchange="editCurrencyName(${i}, this.value)" class="modal-item-input flex-1 outline-none">
+                        <button onclick="deleteCurrency(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button>
+                    </div>`;
             });
         };
         window.addNewCurrency = function() { const name = document.getElementById('newCurrencyName').value.trim(); if(!name || window.state.currencies.includes(name)) return; window.state.currencies.push(name); window.saveCurrenciesToCloud(); window.renderCurrenciesList(); document.getElementById('newCurrencyName').value = ''; window.showToast('បានបន្ថែមខ្នាតថ្មី', 'success'); };
@@ -2300,10 +2412,29 @@
 
         window.openCategoriesModal = function() { window.renderCategoriesList(); document.getElementById('categoriesModal').classList.remove('hidden'); };
         window.closeCategoriesModal = function() { document.getElementById('categoriesModal').classList.add('hidden'); };
+        
+        window.moveCategory = function(i, dir) {
+            const newIndex = i + dir;
+            if (newIndex < 0 || newIndex >= window.state.categories.length) return;
+            const temp = window.state.categories[i];
+            window.state.categories[i] = window.state.categories[newIndex];
+            window.state.categories[newIndex] = temp;
+            window.saveCategoriesToCloud();
+            window.renderCategoriesList();
+        };
+
         window.renderCategoriesList = function() {
             const c = document.getElementById('categoriesListContainer'); if(!c) return; c.innerHTML = '';
             window.state.categories.forEach((cat, i) => {
-                c.innerHTML += `<div class="flex items-center justify-between p-2 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-sm gap-2"><input type="text" value="${cat}" onchange="editCategoryName(${i}, this.value)" class="modal-item-input flex-1 outline-none"><button onclick="deleteCategory(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button></div>`;
+                c.innerHTML += `
+                    <div class="flex items-center justify-between p-2 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-sm gap-2">
+                        <div class="flex items-center gap-1">
+                            <button onclick="moveCategory(${i}, -1)" ${i === 0 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលឡើងលើ">⬆️</button>
+                            <button onclick="moveCategory(${i}, 1)" ${i === window.state.categories.length - 1 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលចុះក្រោម">⬇️</button>
+                        </div>
+                        <input type="text" value="${cat}" onchange="editCategoryName(${i}, this.value)" class="modal-item-input flex-1 outline-none">
+                        <button onclick="deleteCategory(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button>
+                    </div>`;
             });
         };
         window.addNewCategory = function() { const name = document.getElementById('newCategoryName').value.trim(); if(!name || window.state.categories.includes(name)) return; window.state.categories.push(name); window.saveCategoriesToCloud(); window.renderCategoriesList(); document.getElementById('newCategoryName').value = ''; window.showToast('បានបន្ថែមប្រភេទថ្មី', 'success'); };
@@ -2464,12 +2595,12 @@
                     </td>
                     <td class="px-3 py-2"><input type="${window.state.hideAmounts ? 'text' : 'number'}" step="any" min="0" value="${window.state.hideAmounts ? '••••••' : (tx.inc||0)}" onchange="updateTx('${tx.id}', 'inc', this.value)" class="editable-input text-sm font-semibold text-green-600 dark:text-emerald-400 text-right"></td>
                     <td class="px-3 py-2"><input type="${window.state.hideAmounts ? 'text' : 'number'}" step="any" min="0" value="${window.state.hideAmounts ? '••••••' : (tx.exp||0)}" onchange="updateTx('${tx.id}', 'exp', this.value)" class="editable-input text-sm font-semibold text-red-500 dark:text-rose-400 text-right"></td>
-                    <td class="px-3 py-2 text-center flex items-center justify-center gap-1">
-                        <button onclick="duplicateRow('${tx.id}')" class="text-blue-500 hover:text-blue-700 p-1 rounded opacity-0 group-hover:opacity-100 transition" title="ចម្លងប្រតិបត្តិការនេះ">
-                            <i class="fa-solid fa-copy"></i>
+                    <td class="px-3 py-2 text-center flex items-center justify-center gap-2">
+                        <button onclick="duplicateRow('${tx.id}')" class="text-blue-600 dark:text-sky-300 hover:text-blue-800 bg-blue-100 dark:bg-sky-950 hover:bg-blue-200 dark:hover:bg-sky-900 px-2 py-1 rounded-md border border-blue-300 dark:border-sky-700 transition shadow-sm flex items-center justify-center" title="ចម្លងប្រតិបត្តិការនេះ">
+                            <i class="fa-solid fa-copy text-xs"></i>
                         </button>
-                        <button onclick="confirmDelete('${tx.id}')" class="text-red-400 hover:text-red-600 p-1 rounded hover:bg-red-50 opacity-0 group-hover:opacity-100 transition" title="លុប">
-                            <i class="fa-solid fa-trash-can"></i>
+                        <button onclick="confirmDelete('${tx.id}')" class="text-rose-600 dark:text-rose-300 hover:text-rose-800 bg-rose-100 dark:bg-rose-950 hover:bg-rose-200 dark:hover:bg-rose-900 px-2 py-1 rounded-md border border-rose-300 dark:border-rose-700 transition shadow-sm flex items-center justify-center" title="លុប">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
                         </button>
                     </td>
                 `;
@@ -2737,6 +2868,7 @@
             window.renderShortcuts();
             window.renderTable();
             window.updateDashboard();
+            window.initResizers(); // Initialize Excel drag-to-resize column handlers
 
             window.fetchLiveExchangeRate(true);
         };
