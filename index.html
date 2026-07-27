@@ -7,6 +7,11 @@
 
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -32,23 +37,90 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Custom Scrollbar */
+        /* 💻 Desktop & Mobile Custom Scrollbars */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: transparent; 
+            background: rgba(200, 200, 200, 0.2); 
+            border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
+            background: #94a3b8; 
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
+            background: #64748b; 
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.5);
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
         }
 
-        /* Column Resizer Styles (Excel Like Drag-to-Resize with Highlights) */
+        /* 📱 Mobile & Desktop Scroll Container */
+        .scroll-container {
+            -webkit-overflow-scrolling: touch !important;
+            touch-action: pan-x pan-y !important;
+            overflow-x: auto !important;
+            overflow-y: auto !important;
+            cursor: grab;
+            user-select: none;
+        }
+        .scroll-container.cursor-grabbing {
+            cursor: grabbing !important;
+        }
+
+        /* Input Elements inside Table */
+        .editable-input {
+            width: 100%;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 4px 8px;
+            outline: none;
+            transition: all 0.2s;
+            color: #0f172a;
+            touch-action: pan-x pan-y !important;
+        }
+        .editable-input:hover {
+            background-color: rgba(200, 200, 200, 0.15);
+            border-color: #cbd5e1;
+        }
+        .editable-input:focus {
+            background-color: #ffffff;
+            color: #0f172a !important;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        /* 🟢 FIX FOR DARK MODE: Clear White Text for Inputs & Dropdowns */
+        body.theme-dark .editable-input,
+        body.theme-aba-dark .editable-input,
+        body.theme-slate .editable-input,
+        .dark .editable-input {
+            color: #ffffff !important;
+        }
+
+        body.theme-dark select.editable-input option,
+        body.theme-aba-dark select.editable-input option,
+        body.theme-slate select.editable-input option,
+        .dark select.editable-input option {
+            background-color: #1e293b !important;
+            color: #ffffff !important;
+        }
+
+        body.theme-dark input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+        body.theme-aba-dark input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+        body.theme-slate input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+        .dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
+        /* 💻 Desktop Excel Drag-to-Resize Columns Styling */
         th {
             position: relative;
         }
@@ -74,35 +146,21 @@
             border-radius: 2px;
             transition: background-color 0.2s ease, width 0.2s ease;
         }
-        /* Highlight effects when hovering and dragging */
         .resizer:hover, .resizer.resizing {
-            background-color: rgba(37, 99, 235, 0.2) !important;
+            background-color: rgba(37, 99, 235, 0.3) !important;
         }
         .resizer:hover::after, .resizer.resizing::after {
-            background-color: #2563eb !important; /* Bright Blue Highlight */
+            background-color: #2563eb !important;
             width: 4px;
             right: 1px;
             box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
         }
 
-        .editable-input {
-            width: 100%;
-            background: transparent;
-            border: 1px solid transparent;
-            border-radius: 6px;
-            padding: 4px 8px;
-            outline: none;
-            transition: all 0.2s;
-        }
-        .editable-input:hover {
-            background-color: rgba(200, 200, 200, 0.15);
-            border-color: #cbd5e1;
-        }
-        .editable-input:focus {
-            background-color: #ffffff;
-            color: #0f172a !important;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        /* Hide column resizer on mobile screen widths */
+        @media (max-width: 768px) {
+            .resizer {
+                display: none !important;
+            }
         }
 
         .tab-btn.active {
@@ -112,30 +170,21 @@
             background-color: #eff6ff;
         }
 
-        /* Modal Text & Item Contrast Rules */
+        /* Modal Customizations */
         .modal-content-card {
             background-color: #ffffff !important;
             color: #0f172a !important;
             border: 1px solid #cbd5e1 !important;
         }
-        
-        .modal-content-card label,
-        .modal-content-card span,
-        .modal-content-card h3,
-        .modal-content-card h4,
-        .modal-content-card p,
-        .modal-content-card legend,
-        .modal-label-text {
+        .modal-content-card label, .modal-content-card span, .modal-content-card h3, .modal-content-card p, .modal-label-text {
             color: #0f172a !important;
             font-weight: 700;
         }
-
         .modal-sub-card {
             background-color: #f8fafc !important;
             border: 1px solid #e2e8f0 !important;
             color: #0f172a !important;
         }
-
         .modal-item-input {
             background-color: #ffffff !important;
             color: #0f172a !important;
@@ -145,68 +194,34 @@
             font-weight: 600;
         }
 
-        /* Dark Theme Scoped Overrides for Modals */
-        body.theme-dark .modal-content-card,
-        body.theme-aba-dark .modal-content-card,
-        body.theme-slate .modal-content-card {
+        /* Dark Theme Modals */
+        body.theme-dark, body.theme-aba-dark, body.theme-slate, body.dark {
+            color: #f8fafc;
+        }
+        body.theme-aba-dark { background-color: #121212; }
+        body.theme-slate { background-color: #0f172a; }
+
+        body.theme-dark .modal-content-card, body.theme-aba-dark .modal-content-card, body.theme-slate .modal-content-card {
             background-color: #18181b !important;
             color: #ffffff !important;
             border: 1px solid #3f3f46 !important;
         }
-
-        body.theme-dark .modal-content-card label,
-        body.theme-dark .modal-content-card span,
-        body.theme-dark .modal-content-card h3,
-        body.theme-dark .modal-content-card h4,
-        body.theme-dark .modal-content-card p,
-        body.theme-dark .modal-content-card legend,
-        body.theme-dark .modal-content-card div,
-        body.theme-dark .modal-label-text,
-        body.theme-aba-dark .modal-content-card label,
-        body.theme-aba-dark .modal-content-card span,
-        body.theme-aba-dark .modal-content-card h3,
-        body.theme-aba-dark .modal-content-card h4,
-        body.theme-aba-dark .modal-content-card p,
-        body.theme-aba-dark .modal-content-card legend,
-        body.theme-aba-dark .modal-content-card div,
-        body.theme-aba-dark .modal-label-text,
-        body.theme-slate .modal-content-card label,
-        body.theme-slate .modal-content-card span,
-        body.theme-slate .modal-content-card h3,
-        body.theme-slate .modal-content-card h4,
-        body.theme-slate .modal-content-card p,
-        body.theme-slate .modal-content-card legend,
-        body.theme-slate .modal-content-card div,
-        body.theme-slate .modal-label-text {
+        body.theme-dark .modal-content-card label, body.theme-dark .modal-content-card span, body.theme-dark .modal-content-card h3, body.theme-dark .modal-content-card p, body.theme-dark .modal-label-text,
+        body.theme-aba-dark .modal-content-card label, body.theme-aba-dark .modal-content-card span, body.theme-aba-dark .modal-content-card h3, body.theme-aba-dark .modal-content-card p, body.theme-aba-dark .modal-label-text,
+        body.theme-slate .modal-content-card label, body.theme-slate .modal-content-card span, body.theme-slate .modal-content-card h3, body.theme-slate .modal-content-card p, body.theme-slate .modal-label-text {
             color: #ffffff !important;
         }
-
-        body.theme-dark .modal-sub-card,
-        body.theme-aba-dark .modal-sub-card,
-        body.theme-slate .modal-sub-card {
+        body.theme-dark .modal-sub-card, body.theme-aba-dark .modal-sub-card, body.theme-slate .modal-sub-card {
             background-color: #27272a !important;
             border-color: #3f3f46 !important;
             color: #ffffff !important;
         }
-
-        body.theme-dark .modal-item-input,
-        body.theme-aba-dark .modal-item-input,
-        body.theme-slate .modal-item-input {
+        body.theme-dark .modal-item-input, body.theme-aba-dark .modal-item-input, body.theme-slate .modal-item-input {
             background-color: #1e1e24 !important;
             color: #ffffff !important;
             border-color: #52525b !important;
         }
 
-        /* Custom Dark Theme Rules for Main Layout */
-        body.theme-aba-dark, body.theme-slate, body.theme-dark {
-            color: #f8fafc;
-        }
-        body.theme-aba-dark {
-            background-color: #121212;
-        }
-        body.theme-slate {
-            background-color: #0f172a;
-        }
         body.theme-aba-dark .bg-white, body.theme-slate .bg-white {
             background-color: #1e1e1e !important;
             color: #f8fafc !important;
@@ -220,66 +235,25 @@
         body.theme-aba-dark .tab-btn, body.theme-slate .tab-btn {
             color: #94a3b8;
         }
-        body.theme-aba-dark input, body.theme-aba-dark select,
-        body.theme-slate input, body.theme-slate select {
-            color: #f8fafc;
-        }
-        body.theme-aba-dark option, body.theme-slate option {
-            background-color: #1e1e1e;
-            color: #f8fafc;
-        }
         body.theme-aba-dark .bg-slate-50, body.theme-slate .bg-slate-50 {
             background-color: #27272a !important;
             color: #f8fafc !important;
         }
 
-        /* Widget Headers Contrast Fix */
-        .widget-card-title {
+        .widget-card-title, .shortcuts-toolbar-label {
             color: #0f172a !important;
             font-weight: 800;
         }
-        body.theme-dark .widget-card-title,
-        body.theme-aba-dark .widget-card-title,
-        body.theme-slate .widget-card-title {
+        body.theme-dark .widget-card-title, body.theme-dark .shortcuts-toolbar-label,
+        body.theme-aba-dark .widget-card-title, body.theme-aba-dark .shortcuts-toolbar-label,
+        body.theme-slate .widget-card-title, body.theme-slate .shortcuts-toolbar-label {
             color: #ffffff !important;
         }
 
-        .shortcuts-toolbar-label {
-            color: #0f172a !important;
-            font-weight: 800;
-        }
-        body.theme-dark .shortcuts-toolbar-label,
-        body.theme-aba-dark .shortcuts-toolbar-label,
-        body.theme-slate .shortcuts-toolbar-label {
+        body.theme-dark td, body.theme-dark th, body.theme-aba-dark td, body.theme-aba-dark th, body.theme-slate td, body.theme-slate th {
             color: #ffffff !important;
         }
-        
-        #searchInput, #filterAccount, #filterDatePeriod {
-            background-color: #ffffff;
-            color: #0f172a !important;
-            border: 1px solid #cbd5e1;
-        }
-        body.theme-dark #searchInput, body.theme-dark #filterAccount, body.theme-dark #filterDatePeriod,
-        body.theme-aba-dark #searchInput, body.theme-aba-dark #filterAccount, body.theme-aba-dark #filterDatePeriod,
-        body.theme-slate #searchInput, body.theme-slate #filterAccount, body.theme-slate #filterDatePeriod {
-            background-color: #27272a !important;
-            color: #ffffff !important;
-            border-color: #52525b !important;
-        }
-
-        body.theme-dark td, body.theme-dark th,
-        body.theme-aba-dark td, body.theme-aba-dark th,
-        body.theme-slate td, body.theme-slate th {
-            color: #ffffff !important;
-        }
-        body.theme-dark .text-gray-800, body.theme-dark .text-gray-500, body.theme-dark .text-gray-600,
-        body.theme-aba-dark .text-gray-800, body.theme-aba-dark .text-gray-500, body.theme-aba-dark .text-gray-600,
-        body.theme-slate .text-gray-800, body.theme-slate .text-gray-500, body.theme-slate .text-gray-600 {
-            color: #e2e8f0 !important;
-        }
-        body.theme-dark tfoot, body.theme-dark tfoot td,
-        body.theme-aba-dark tfoot, body.theme-aba-dark tfoot td,
-        body.theme-slate tfoot, body.theme-slate tfoot td {
+        body.theme-dark tfoot, body.theme-dark tfoot td, body.theme-aba-dark tfoot, body.theme-aba-dark tfoot td, body.theme-slate tfoot, body.theme-slate tfoot td {
             background-color: #18181b !important;
             color: #ffffff !important;
         }
@@ -382,7 +356,7 @@
                     <div class="flex items-center gap-3">
                         <h1 class="text-2xl md:text-3xl font-bold flex items-center gap-3 cursor-pointer group" onclick="openCustomizeModal()" title="ចុចដើម្បីកែឈ្មោះ">
                             <i class="fa-solid fa-wallet text-amber-300"></i>
-                            <span id="displayAppTitle">ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុផ្ទាល់ខ្លួន (Pro Cloud)</span>
+                            <span id="displayAppTitle">ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុ Pro Cloud</span>
                             <i class="fa-solid fa-pen-to-square text-xs opacity-50 group-hover:opacity-100 text-amber-300 transition"></i>
                         </h1>
                     </div>
@@ -395,10 +369,7 @@
                     </div>
                 </div>
 
-                <!-- Right Action Header Controls -->
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
-                    
-                    <!-- Net Worth Card -->
                     <div class="bg-black/40 backdrop-blur-md border border-white/20 p-4 rounded-xl flex items-center justify-between gap-6 min-w-[280px]">
                         <div>
                             <div class="text-blue-200 text-xs font-medium uppercase tracking-wider mb-1 flex items-center gap-2">
@@ -409,15 +380,12 @@
                             </div>
                             <div class="text-2xl font-black text-emerald-400 font-mono tracking-tight" id="globalNetWorth">$ 0.00</div>
                         </div>
-                        
                         <div class="h-10 w-px bg-white/20"></div>
-
                         <div>
                             <div class="flex items-center justify-between text-blue-200 text-xs font-medium uppercase tracking-wider mb-1">
                                 <span>អត្រាប្តូរប្រាក់</span>
                                 <button onclick="fetchLiveExchangeRate()" class="text-xs text-amber-300 hover:underline flex items-center gap-1" title="ទាញយកអត្រាប្តូរប្រាក់ជាក់ស្តែង">
-                                    <i class="fa-solid fa-rotate text-[10px]" id="rateSyncSpin"></i>
-                                    <span>Live</span>
+                                    <i class="fa-solid fa-rotate text-[10px]" id="rateSyncSpin"></i> <span>Live</span>
                                 </button>
                             </div>
                             <div class="flex items-center gap-1 bg-white/20 px-2 py-1 rounded text-sm">
@@ -426,40 +394,32 @@
                             </div>
                         </div>
                     </div>
-
                     <button onclick="openCustomizeModal()" class="px-3.5 py-3 bg-amber-400 hover:bg-amber-300 text-slate-900 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition">
-                        <i class="fa-solid fa-sliders"></i>
-                        <span>🎨 កែសម្រួលអេក្រង់</span>
+                        <i class="fa-solid fa-sliders"></i> <span>🎨 កែសម្រួលអេក្រង់</span>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Navigation Tabs -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6 flex overflow-x-auto">
-            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 focus:outline-none transition-colors flex items-center justify-center gap-2">
-                <i class="fa-solid fa-gauge"></i>
-                ផ្ទាំងសង្ខេប (Dashboard)
+        <div class="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden mb-6 flex overflow-x-auto">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active flex-1 whitespace-nowrap px-6 py-4 font-bold transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-gauge"></i> ផ្ទាំងសង្ខេប (Dashboard)
             </button>
-            <button onclick="switchTab('entry')" id="tab-entry" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 focus:outline-none transition-colors flex items-center justify-center gap-2">
-                <i class="fa-solid fa-list-check"></i>
-                ប្រតិបត្តិការ (Transactions)
+            <button onclick="switchTab('entry')" id="tab-entry" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 font-bold transition-colors flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
+                <i class="fa-solid fa-list-check"></i> ប្រតិបត្តិការ (Transactions)
             </button>
-            <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 text-gray-600 hover:text-blue-600 focus:outline-none transition-colors flex items-center justify-center gap-2">
-                <i class="fa-solid fa-chart-column"></i>
-                របាយការណ៍លម្អិត
+            <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex-1 whitespace-nowrap px-6 py-4 font-bold transition-colors flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
+                <i class="fa-solid fa-chart-column"></i> របាយការណ៍លម្អិត
             </button>
         </div>
 
         <!-- VIEW: DASHBOARD -->
         <div id="view-dashboard" class="space-y-6">
-            
-            <!-- Cards: Account Balances -->
             <div id="sec-accounts">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-lg font-extrabold text-slate-900 dark:text-amber-300 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-xl border border-slate-300 dark:border-amber-500/30 shadow-md flex items-center gap-2">
-                        <i class="fa-solid fa-credit-card text-blue-600 dark:text-amber-400"></i>
-                        <span>សមតុល្យតាមគណនី (Account Balances)</span>
+                        <i class="fa-solid fa-credit-card text-blue-600 dark:text-amber-400"></i> <span>សមតុល្យតាមគណនី</span>
                     </h2>
                     <button onclick="toggleHideAmounts()" class="text-xs bg-white/90 dark:bg-slate-900/90 px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-blue-700 dark:text-amber-300 hover:underline font-extrabold flex items-center gap-1.5 shadow-md">
                         <i class="fa-solid fa-eye-slash"></i> <span id="eyeBtnText">បាំង/បង្ហាញសមតុល្យ</span>
@@ -468,45 +428,30 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="dashboardCards"></div>
             </div>
 
-            <!-- Savings Goals Widget -->
-            <div id="sec-goals" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <div id="sec-goals" class="bg-white dark:bg-zinc-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold widget-card-title flex items-center gap-2">
-                        🐖 គោលដៅសន្សំប្រាក់ (Savings Goals)
-                    </h2>
-                    <button onclick="openGoalModal()" class="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-lg border border-emerald-200 transition">
-                        + បន្ថែមគោលដៅ
-                    </button>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">🐖 គោលដៅសន្សំប្រាក់</h2>
+                    <button onclick="openGoalModal()" class="text-xs bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-bold px-3 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800">+ បន្ថែមគោលដៅ</button>
                 </div>
                 <div id="goalsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
 
-            <!-- Monthly Budget Progress Bar Widget -->
-            <div id="sec-budgets" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <div id="sec-budgets" class="bg-white dark:bg-zinc-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold widget-card-title flex items-center gap-2">
-                        🎯 ថវិកាចំណាយប្រចាំខែ (Monthly Spending Budget)
-                    </h2>
-                    <button onclick="openBudgetModal()" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-3 py-1.5 rounded-lg border border-indigo-200 transition">
-                        ⚙️ កំណត់ថវិកា
-                    </button>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">🎯 ថវិកាចំណាយប្រចាំខែ</h2>
+                    <button onclick="openBudgetModal()" class="text-xs bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 font-bold px-3 py-1.5 rounded-lg border border-indigo-200 dark:border-indigo-800">⚙️ កំណត់ថវិកា</button>
                 </div>
                 <div id="budgetProgressContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
 
-            <!-- Charts Section -->
             <div id="sec-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-                    <h3 class="text-md font-bold widget-card-title mb-4 text-center">ចំណាយតាមផ្នែក (ខែនេះ)</h3>
-                    <div class="relative h-[300px] w-full flex justify-center">
-                        <canvas id="expenseChart"></canvas>
-                    </div>
+                <div class="bg-white dark:bg-zinc-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700">
+                    <h3 class="text-md font-bold text-slate-900 dark:text-white mb-4 text-center">ចំណាយតាមផ្នែក (ខែនេះ)</h3>
+                    <div class="relative h-[300px] w-full flex justify-center"><canvas id="expenseChart"></canvas></div>
                 </div>
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-                    <h3 class="text-md font-bold widget-card-title mb-4 text-center">ចំណូល vs ចំណាយ (៦ ខែចុងក្រោយ)</h3>
-                    <div class="relative h-[300px] w-full flex justify-center">
-                        <canvas id="trendChart"></canvas>
-                    </div>
+                <div class="bg-white dark:bg-zinc-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700">
+                    <h3 class="text-md font-bold text-slate-900 dark:text-white mb-4 text-center">ចំណូល vs ចំណាយ (៦ ខែចុងក្រោយ)</h3>
+                    <div class="relative h-[300px] w-full flex justify-center"><canvas id="trendChart"></canvas></div>
                 </div>
             </div>
         </div>
@@ -514,95 +459,59 @@
         <!-- VIEW: TRANSACTIONS (DATA ENTRY) -->
         <div id="view-entry" class="hidden space-y-4">
             
-            <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <div class="bg-white dark:bg-zinc-800 p-3 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold shortcuts-toolbar-label flex items-center gap-1">
-                        ⚡ កត់ត្រារហ័ស (1-Click Shortcuts)៖
-                    </span>
-                    <button onclick="openShortcutModal()" class="text-[11px] text-blue-600 dark:text-amber-400 hover:underline font-bold">+ កែសម្រួលប៊ូតុងរហ័ស</button>
+                    <span class="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1">⚡ កត់ត្រារហ័ស (1-Click Shortcuts)៖</span>
+                    <button onclick="openShortcutModal()" class="text-[11px] text-blue-600 dark:text-amber-400 hover:underline font-bold">+ កែសម្រួលប៊ូតុង</button>
                 </div>
                 <div class="flex items-center gap-2 overflow-x-auto pb-1" id="shortcutsContainer"></div>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                
+            <div class="bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto flex-wrap">
                     <div class="relative w-full sm:w-48">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
-                        </div>
-                        <input type="text" id="searchInput" oninput="renderTable()" placeholder="ស្វែងរក..." class="block w-full pl-9 pr-3 py-2 border rounded-lg text-sm font-bold outline-none">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-xs text-gray-400 dark:text-gray-500"></i>
+                        <input type="text" id="searchInput" oninput="renderTable()" placeholder="ស្វែងរក..." class="block w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg text-sm font-bold bg-white dark:bg-zinc-700 text-slate-900 dark:text-white outline-none focus:border-blue-500">
                     </div>
                     
-                    <!-- Enhanced Date Filter Dropdown with Custom Date-Time Picker -->
-                    <select id="filterDatePeriod" onchange="toggleCustomDateTimeFilter()" class="block w-44 py-2 px-3 border rounded-lg text-sm shadow-sm focus:outline-none font-bold">
+                    <select id="filterDatePeriod" onchange="toggleCustomDateTimeFilter()" class="block w-44 py-2 px-3 border border-gray-300 dark:border-zinc-600 rounded-lg text-sm font-bold bg-white dark:bg-zinc-700 text-slate-900 dark:text-white shadow-sm focus:outline-none focus:border-blue-500">
                         <option value="ALL">📅 គ្រប់កាលបរិច្ឆេទ</option>
                         <option value="TODAY" selected>☀️ ថ្ងៃនេះ (Today)</option>
                         <option value="YESTERDAY">🌙 ម្សិលមិញ</option>
                         <option value="THIS_WEEK">🗓️ សប្តាហ៍នេះ</option>
                         <option value="THIS_MONTH">📆 ខែនេះ</option>
-                        <option value="CUSTOM_DATETIME">🎯 រើសថ្ងៃ/ម៉ោង/នាទី/វិនាទី</option>
+                        <option value="CUSTOM_DATETIME">🎯 រើសថ្ងៃ/ម៉ោងផ្ទាល់</option>
                     </select>
 
-                    <!-- Exact Custom Date-Time Pickers (Appears when selected) -->
-                    <div id="filterDateTimeContainer" class="hidden flex flex-wrap items-center gap-2 bg-blue-50/80 dark:bg-zinc-800/80 p-1.5 rounded-lg border border-blue-200 dark:border-zinc-700">
-                        <div class="flex items-center gap-1 text-[11px] font-bold">
-                            <span>ចាប់ពី៖</span>
-                            <input type="datetime-local" step="1" id="filterStartDateTime" onchange="renderTable()" class="bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded px-1.5 py-1 text-xs font-mono">
-                        </div>
-                        <div class="flex items-center gap-1 text-[11px] font-bold">
-                            <span>ដល់៖</span>
-                            <input type="datetime-local" step="1" id="filterEndDateTime" onchange="renderTable()" class="bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded px-1.5 py-1 text-xs font-mono">
-                        </div>
+                    <div id="filterDateTimeContainer" class="hidden flex flex-wrap items-center gap-2 bg-blue-50 dark:bg-zinc-900 p-1.5 rounded-lg border border-blue-200 dark:border-zinc-700">
+                        <input type="datetime-local" step="1" id="filterStartDateTime" onchange="renderTable()" class="bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded px-1.5 py-1 text-xs font-mono dark:text-white">
+                        <span class="text-xs font-bold dark:text-gray-400">-</span>
+                        <input type="datetime-local" step="1" id="filterEndDateTime" onchange="renderTable()" class="bg-white dark:bg-zinc-700 border border-gray-300 dark:border-zinc-600 rounded px-1.5 py-1 text-xs font-mono dark:text-white">
                     </div>
 
                     <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-                        <select id="filterAccount" onchange="renderTable()" class="block w-32 py-2 px-3 border rounded-lg text-sm shadow-sm focus:outline-none font-bold">
-                        </select>
-                        <button onclick="openAccountsModal()" class="px-2.5 py-2 text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-lg border border-slate-300 flex items-center gap-1 transition whitespace-nowrap">
-                            ⚙️ គណនី
-                        </button>
-                        <button onclick="openCurrenciesModal()" class="px-2.5 py-2 text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold rounded-lg border border-amber-300 flex items-center gap-1 transition whitespace-nowrap">
-                            ⛽ ខ្នាត
-                        </button>
-                        <button onclick="openCategoriesModal()" class="px-2.5 py-2 text-xs bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold rounded-lg border border-purple-300 flex items-center gap-1 transition whitespace-nowrap">
-                            📁 ប្រភេទ
-                        </button>
-                        <button onclick="openTransferModal()" class="px-2.5 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-sm flex items-center gap-1 transition whitespace-nowrap">
-                            🔄 ផ្ទេរប្រាក់
-                        </button>
+                        <select id="filterAccount" onchange="renderTable()" class="block w-32 py-2 px-3 border border-gray-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-slate-900 dark:text-white rounded-lg text-sm font-bold shadow-sm focus:outline-none focus:border-blue-500"></select>
+                        <button onclick="openAccountsModal()" class="px-2.5 py-2 text-xs bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white font-bold rounded-lg border border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600 transition">⚙️ គណនី</button>
+                        <button onclick="openCurrenciesModal()" class="px-2.5 py-2 text-xs bg-amber-50 dark:bg-amber-900/40 text-amber-800 dark:text-amber-400 font-bold rounded-lg border border-amber-300 dark:border-amber-700 hover:bg-amber-100 dark:hover:bg-amber-900 transition">⛽ ខ្នាត</button>
+                        <button onclick="openCategoriesModal()" class="px-2.5 py-2 text-xs bg-purple-50 dark:bg-purple-900/40 text-purple-800 dark:text-purple-400 font-bold rounded-lg border border-purple-300 dark:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900 transition">📁 ប្រភេទ</button>
+                        <button onclick="openTransferModal()" class="px-2.5 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-sm transition">🔄 ផ្ទេរប្រាក់</button>
                     </div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
                     <input type="file" id="fileInput" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="hidden" onchange="importData(event)">
-                    <button onclick="document.getElementById('fileInput').click()" class="px-3 py-2 text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition font-medium flex items-center gap-1">
-                        📥 នាំចូល Excel
-                    </button>
-                    <button onclick="exportToExcel()" class="px-3 py-2 text-xs bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition font-medium">
-                        Excel
-                    </button>
-
-                    <button onclick="exportToJSON()" class="px-3 py-2 text-xs bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition font-bold" title="ទាញយក Backup កូដ JSON">
-                        💾 Backup JSON
-                    </button>
+                    <button onclick="document.getElementById('fileInput').click()" class="px-3 py-2 text-xs bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-700 rounded-lg hover:bg-indigo-100 transition font-medium">📥 នាំចូល Excel</button>
+                    <button onclick="exportToExcel()" class="px-3 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition font-medium">Export Excel</button>
+                    <button onclick="exportToJSON()" class="px-3 py-2 text-xs bg-sky-600 hover:bg-sky-700 text-white rounded-lg transition font-bold">💾 Backup JSON</button>
                     <input type="file" id="jsonFileInput" accept=".json" class="hidden" onchange="importFromJSON(event)">
-                    <button onclick="document.getElementById('jsonFileInput').click()" class="px-3 py-2 text-xs bg-sky-100 text-sky-800 border border-sky-300 rounded-lg hover:bg-sky-200 transition font-bold" title="ចាក់បញ្ចូល Backup JSON">
-                        📂 Restore JSON
-                    </button>
-
-                    <button onclick="confirmClearData()" class="px-3 py-2 text-xs bg-red-50 text-red-600 border border-red-200 rounded-lg hover:bg-red-100 transition font-medium ml-auto">
-                        លុបទិន្នន័យ
-                    </button>
+                    <button onclick="document.getElementById('jsonFileInput').click()" class="px-3 py-2 text-xs bg-sky-100 dark:bg-sky-900/40 text-sky-800 dark:text-sky-400 border border-sky-300 dark:border-sky-700 rounded-lg hover:bg-sky-200 transition font-bold">📂 Restore JSON</button>
+                    <button onclick="confirmClearData()" class="px-3 py-2 text-xs bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-100 transition font-medium ml-auto">លុបទិន្នន័យ</button>
                 </div>
             </div>
 
-            <!-- Today's Summary Banner + Savings Rate % -->
+            <!-- Summary Banner -->
             <div id="todaySummaryBanner" class="bg-blue-50 dark:bg-zinc-800 border border-blue-200 dark:border-zinc-700 p-3 rounded-xl flex flex-wrap items-center justify-between text-xs font-bold gap-2">
-                <span class="text-blue-900 dark:text-blue-300 flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-day text-blue-600 dark:text-amber-400"></i>
-                    <span>សង្ខេបចំណូលចំណាយ (Summary)៖</span>
-                </span>
+                <span class="text-blue-900 dark:text-blue-300 flex items-center gap-2"><i class="fa-solid fa-calendar-day text-blue-600 dark:text-amber-400"></i> <span>សង្ខេបចំណូលចំណាយ (Summary)៖</span></span>
                 <div class="flex items-center gap-4 flex-wrap">
                     <span class="text-emerald-600 dark:text-emerald-400">ចំណូល៖ <span id="todayIncText">$0.00</span></span>
                     <span class="text-rose-600 dark:text-rose-400">ចំណាយ៖ <span id="todayExpText">$0.00</span></span>
@@ -610,22 +519,22 @@
                 </div>
             </div>
 
-            <!-- The Data Table with Vertical & Horizontal Scrolling + Excel Resizer -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div class="overflow-x-auto overflow-y-auto max-h-[550px] pb-2 relative">
+            <!-- 📱 Mobile Touch + 💻 Desktop Drag-Scroll Table Container -->
+            <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
+                <div class="scroll-container w-full max-h-[550px] relative rounded-xl" id="tableScrollContainer">
                     <table class="w-full min-w-[1200px] divide-y divide-gray-200 dark:divide-gray-700 border-collapse" id="mainTable">
                         <thead class="bg-slate-100 dark:bg-zinc-800 sticky top-0 z-30 shadow-sm">
                             <tr>
-                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-12 bg-slate-100 dark:bg-zinc-800">ល.រ<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
-                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-56 bg-slate-100 dark:bg-zinc-800">កាលបរិច្ឆេទ & ម៉ោង<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
-                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-48 bg-slate-100 dark:bg-zinc-800">ផ្នែក/ប្រភេទ<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
-                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap min-w-[200px] bg-slate-100 dark:bg-zinc-800">ការពិពណ៌នា<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
-                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-40 bg-slate-100 dark:bg-zinc-800">គណនី<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
-                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-32 bg-slate-100 dark:bg-zinc-800">ខ្នាត/រូបិយប័ណ្ណ<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
-                                <th class="relative px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-36 bg-slate-100 dark:bg-zinc-800">ចំណូល<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
-                                <th class="relative px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-36 bg-slate-100 dark:bg-zinc-800">ចំណាយ<div class="resizer" title="ចុចសង្កត់ដើម្បីអូសពង្រីក/បង្រួម"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-12 bg-slate-100 dark:bg-zinc-800">ល.រ<div class="resizer" title="អូសពង្រីក/បង្រួម (Desktop)"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-56 bg-slate-100 dark:bg-zinc-800">កាលបរិច្ឆេទ & ម៉ោង<div class="resizer" title="អូសពង្រីក/បង្រួម (Desktop)"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-48 bg-slate-100 dark:bg-zinc-800">ផ្នែក/ប្រភេទ<div class="resizer" title="អូសពង្រីក/បង្រួម (Desktop)"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap min-w-[200px] bg-slate-100 dark:bg-zinc-800">ការពិពណ៌នា<div class="resizer" title="អូសពង្រីក/បង្រួម (Desktop)"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-40 bg-slate-100 dark:bg-zinc-800">គណនី<div class="resizer" title="អូសពង្រីក/បង្រួម (Desktop)"></div></th>
+                                <th class="relative px-3 py-3 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-32 bg-slate-100 dark:bg-zinc-800">ខ្នាត/រូបិយប័ណ្ណ<div class="resizer" title="អូសពង្រីក/បង្រួម (Desktop)"></div></th>
+                                <th class="relative px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-36 bg-slate-100 dark:bg-zinc-800">ចំណូល<div class="resizer" title="អូសពង្រីក/បង្រួម (Desktop)"></div></th>
+                                <th class="relative px-3 py-3 text-right text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-36 bg-slate-100 dark:bg-zinc-800">ចំណាយ<div class="resizer" title="អូសពង្រីក/បង្រួម (Desktop)"></div></th>
                                 <th class="relative px-3 py-3 text-center text-xs font-bold text-gray-600 dark:text-gray-300 uppercase whitespace-nowrap w-20 bg-slate-100 dark:bg-zinc-800">
-                                    <button onclick="addRow()" class="text-blue-600 hover:text-blue-800 bg-blue-50 px-2.5 py-1 rounded border border-blue-200 font-black shadow-sm active:scale-95 transition" title="បន្ថែមថ្មី">+</button>
+                                    <button onclick="addRow()" class="text-blue-600 hover:text-blue-800 bg-blue-50 dark:bg-blue-900/50 dark:text-blue-400 px-2.5 py-1 rounded border border-blue-200 dark:border-blue-800 font-black shadow-sm active:scale-95 transition" title="បន្ថែមថ្មី">+</button>
                                 </th>
                             </tr>
                         </thead>
@@ -726,8 +635,8 @@
     </div>
 
     <!-- Modal for UI Customization -->
-    <div id="customizeModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
-        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-lg mx-4 transform transition-all">
+    <div id="customizeModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
+        <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-lg mx-4 transform transition-all max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
                 <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
                     <i class="fa-solid fa-palette text-amber-500"></i> កែសម្រួលអេក្រង់ & Theme
@@ -735,23 +644,23 @@
                 <button onclick="closeCustomizeModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
             </div>
             
-            <div class="space-y-4 mb-6 max-h-[70vh] overflow-y-auto pr-1">
+            <div class="space-y-4 mb-6 pr-1">
                 <div class="modal-sub-card p-3 rounded-xl space-y-2">
                     <label class="block text-xs font-bold modal-label-text">✏️ កែប្រែឈ្មោះប្រព័ន្ធ & ការរៀបរាប់៖</label>
                     <div>
                         <span class="text-[11px] font-bold modal-label-text block mb-1">ឈ្មោះប្រព័ន្ធ (App Title):</span>
-                        <input type="text" id="cfgAppTitle" placeholder="ឈ្មោះប្រព័ន្ធ..." class="modal-item-input w-full p-2 text-sm font-bold">
+                        <input type="text" id="cfgAppTitle" placeholder="ឈ្មោះប្រព័ន្ធ..." class="modal-item-input w-full p-2 text-sm font-bold text-slate-900 dark:text-white">
                     </div>
                     <div>
                         <span class="text-[11px] font-bold modal-label-text block mb-1">ការរៀបរាប់ (Subtitle):</span>
-                        <input type="text" id="cfgAppSubtitle" placeholder="ការរៀបរាប់..." class="modal-item-input w-full p-2 text-xs">
+                        <input type="text" id="cfgAppSubtitle" placeholder="ការរៀបរាប់..." class="modal-item-input w-full p-2 text-xs text-slate-900 dark:text-white">
                     </div>
                 </div>
 
                 <div class="modal-sub-card p-3 rounded-xl space-y-2">
                     <label class="block text-xs font-bold modal-label-text">🔒 កំណត់សោរ PIN Code ៤ ខ្ទង់៖</label>
                     <div class="flex items-center gap-2">
-                        <input type="password" maxlength="4" id="cfgPinInput" placeholder="លេខ ៤ ខ្ទង់" class="modal-item-input w-32 p-2 text-center font-bold tracking-widest">
+                        <input type="password" maxlength="4" id="cfgPinInput" placeholder="លេខ ៤ ខ្ទង់" class="modal-item-input w-32 p-2 text-center font-bold tracking-widest text-slate-900 dark:text-white">
                         <button onclick="savePinCode()" class="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow">រក្សាទុក PIN</button>
                         <button onclick="clearPinCode()" class="px-3 py-2 bg-rose-100 text-rose-700 rounded-lg text-xs font-bold shadow">លុប PIN</button>
                     </div>
@@ -776,7 +685,7 @@
                     
                     <div>
                         <label class="block text-[11px] font-bold mb-1 modal-label-text">ជ្រើសរើសរូបភាពពីទូរស័ព្ទ/កុំព្យូទ័រ (Local Image)៖</label>
-                        <input type="file" id="cfgBgFileInput" accept="image/*" onchange="handleLocalBgUpload(event)" class="block w-full text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                        <input type="file" id="cfgBgFileInput" accept="image/*" onchange="handleLocalBgUpload(event)" class="block w-full text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer text-slate-900 dark:text-white">
                     </div>
 
                     <div class="flex items-center gap-2 my-1">
@@ -786,7 +695,7 @@
                     </div>
 
                     <div class="flex gap-2">
-                        <input type="text" id="cfgBgImageUrl" placeholder="https://example.com/wallpaper.jpg" class="modal-item-input flex-1 p-2 text-xs">
+                        <input type="text" id="cfgBgImageUrl" placeholder="https://example.com/wallpaper.jpg" class="modal-item-input flex-1 p-2 text-xs text-slate-900 dark:text-white">
                         <button onclick="clearBgImage()" class="px-3 py-1 bg-rose-100 hover:bg-rose-200 text-xs font-bold rounded-lg text-rose-700 transition">លុបរូប</button>
                     </div>
                 </div>
@@ -812,7 +721,7 @@
                     <div class="modal-sub-card p-4 rounded-xl border border-amber-300 dark:border-amber-600 shadow-sm space-y-3 bg-amber-50/30 dark:bg-amber-900/10">
                         <div>
                             <span class="text-[10px] font-bold block mb-1 modal-label-text">ឈ្មោះ Key:</span>
-                            <input type="text" id="adminNewKey" placeholder="ឧ. PRO-001" class="modal-item-input w-full p-2 text-xs uppercase font-mono font-bold">
+                            <input type="text" id="adminNewKey" placeholder="ឧ. PRO-001" class="modal-item-input w-full p-2 text-xs uppercase font-mono font-bold text-slate-900 dark:text-white">
                         </div>
                         
                         <div class="flex items-center gap-3">
@@ -824,8 +733,8 @@
                         
                         <div class="flex gap-2 items-center" id="durationContainer">
                             <span class="text-[10px] font-bold modal-label-text">កំណត់ចំនួន:</span>
-                            <input type="number" id="adminDuration" value="1" min="1" class="modal-item-input w-20 p-2 text-xs text-center font-bold">
-                            <select id="adminDurationUnit" class="modal-item-input flex-1 p-2 text-xs font-bold">
+                            <input type="number" id="adminDuration" value="1" min="1" class="modal-item-input w-20 p-2 text-xs text-center font-bold text-slate-900 dark:text-white">
+                            <select id="adminDurationUnit" class="modal-item-input flex-1 p-2 text-xs font-bold text-slate-900 dark:text-white">
                                 <option value="MONTHS">ខែ (Months)</option>
                                 <option value="YEARS">ឆ្នាំ (Years)</option>
                             </select>
@@ -869,7 +778,7 @@
     </div>
 
     <!-- Modal for Managing Savings Goals -->
-    <div id="goalModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+    <div id="goalModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
                 <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
@@ -881,7 +790,7 @@
             <div class="space-y-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold mb-1 modal-label-text">ឈ្មោះគោលដៅ (ឧ. 🛵 ទិញម៉ូតូ)៖</label>
-                    <input type="text" id="glName" placeholder="ឈ្មោះគោលដៅ..." class="modal-item-input w-full p-2.5 text-sm font-medium">
+                    <input type="text" id="glName" placeholder="ឈ្មោះគោលដៅ..." class="modal-item-input w-full p-2.5 text-sm font-medium text-slate-900 dark:text-white">
                 </div>
 
                 <div>
@@ -892,11 +801,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold mb-1 modal-label-text">ចំនួនដៅសរុប ($)៖</label>
-                        <input type="number" step="any" id="glTarget" placeholder="ឧ. 1500" class="modal-item-input w-full p-2.5 text-sm font-bold text-emerald-600">
+                        <input type="number" step="any" id="glTarget" placeholder="ឧ. 1500" class="modal-item-input w-full p-2.5 text-sm font-bold text-emerald-600 dark:text-emerald-400">
                     </div>
                     <div id="glCurrentWrapper">
                         <label class="block text-xs font-bold mb-1 modal-label-text">សន្សំបានបច្ចុប្បន្ន ($)៖</label>
-                        <input type="number" step="any" id="glCurrent" placeholder="ឧ. 400" class="modal-item-input w-full p-2.5 text-sm font-bold text-blue-600">
+                        <input type="number" step="any" id="glCurrent" placeholder="ឧ. 400" class="modal-item-input w-full p-2.5 text-sm font-bold text-blue-600 dark:text-blue-400">
                     </div>
                 </div>
 
@@ -913,7 +822,7 @@
     </div>
 
     <!-- Modal for Managing Budget Limits -->
-    <div id="budgetModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+    <div id="budgetModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
                 <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
@@ -925,7 +834,7 @@
             <div class="space-y-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold mb-1 modal-label-text">ជ្រើសរើសផ្នែក/ប្រភេទ៖</label>
-                    <select id="bgCategory" class="modal-item-input w-full p-2.5 text-sm font-medium"></select>
+                    <select id="bgCategory" class="modal-item-input w-full p-2.5 text-sm font-medium text-slate-900 dark:text-white"></select>
                 </div>
                 <div>
                     <label class="block text-xs font-bold mb-1 modal-label-text">🔗 ភ្ជាប់ជាមួយគណនីធនាគារ/កាបូបលុយ៖</label>
@@ -934,11 +843,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold mb-1 modal-label-text">កំណត់ថវិកាអតិបរមា៖</label>
-                        <input type="number" step="any" id="bgLimit" placeholder="ឧ. 200" class="modal-item-input w-full p-2.5 text-sm font-bold text-indigo-600">
+                        <input type="number" step="any" id="bgLimit" placeholder="ឧ. 200" class="modal-item-input w-full p-2.5 text-sm font-bold text-indigo-600 dark:text-indigo-400">
                     </div>
                     <div>
                         <label class="block text-xs font-bold mb-1 modal-label-text">ខ្នាត/រូបិយប័ណ្ណ៖</label>
-                        <select id="bgCurrency" class="modal-item-input w-full p-2.5 text-sm font-bold text-amber-700"></select>
+                        <select id="bgCurrency" class="modal-item-input w-full p-2.5 text-sm font-bold text-amber-700 dark:text-amber-400"></select>
                     </div>
                 </div>
                 <button id="bgSaveBtn" onclick="saveBudgetLimit()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition shadow">បន្ថែម/រក្សាទុកថវិកា</button>
@@ -954,7 +863,7 @@
     </div>
 
     <!-- Modal for Managing 1-Click Shortcuts -->
-    <div id="shortcutModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+    <div id="shortcutModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
                 <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
@@ -968,16 +877,16 @@
                 <div class="modal-sub-card p-3 rounded-lg space-y-3">
                     <div>
                         <label class="block text-xs font-bold mb-1 modal-label-text">ឈ្មោះប៊ូតុង (ឧ. ☕ កាហ្វេ)៖</label>
-                        <input type="text" id="newScName" placeholder="ឈ្មោះប៊ូតុង..." class="modal-item-input w-full p-2 text-sm">
+                        <input type="text" id="newScName" placeholder="ឈ្មោះប៊ូតុង..." class="modal-item-input w-full p-2 text-sm text-slate-900 dark:text-white">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-xs font-bold mb-1 modal-label-text">ប្រភេទ៖</label>
-                            <select id="newScCat" class="modal-item-input w-full p-2 text-sm font-medium"></select>
+                            <select id="newScCat" class="modal-item-input w-full p-2 text-sm font-medium text-slate-900 dark:text-white"></select>
                         </div>
                         <div>
                             <label class="block text-xs font-bold mb-1 modal-label-text">គណនីដកលុយ៖</label>
-                            <select id="newScAcc" class="modal-item-input w-full p-2 text-sm font-medium"></select>
+                            <select id="newScAcc" class="modal-item-input w-full p-2 text-sm font-medium text-slate-900 dark:text-white"></select>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
@@ -987,7 +896,7 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold mb-1 modal-label-text">ខ្នាត៖</label>
-                            <select id="newScCur" class="modal-item-input w-full p-2 text-sm font-bold text-amber-600"></select>
+                            <select id="newScCur" class="modal-item-input w-full p-2 text-sm font-bold text-amber-600 dark:text-amber-400"></select>
                         </div>
                     </div>
                     <button id="scSaveBtn" onclick="addNewShortcut()" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition shadow">បន្ថែមប៊ូតុងថ្មី</button>
@@ -1004,7 +913,7 @@
     </div>
 
     <!-- Modal for Managing Custom Accounts -->
-    <div id="accountsModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+    <div id="accountsModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
                 <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
@@ -1016,7 +925,7 @@
             <div class="space-y-4 mb-6">
                 <div>
                     <div class="flex gap-2">
-                        <input type="text" id="newAccountName" placeholder="ឈ្មោះគណនីថ្មី (ឧ. 🏦 ABA, 💳 Wing...)" class="modal-item-input flex-1 px-3 py-2 text-sm">
+                        <input type="text" id="newAccountName" placeholder="ឈ្មោះគណនីថ្មី (ឧ. 🏦 ABA, 💳 Wing...)" class="modal-item-input flex-1 px-3 py-2 text-sm text-slate-900 dark:text-white">
                         <button onclick="addNewAccount()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition">បន្ថែម</button>
                     </div>
                     <div class="flex items-center gap-1 mt-1.5 text-xs overflow-x-auto py-1 modal-label-text">
@@ -1038,7 +947,7 @@
     </div>
 
     <!-- Modal for Managing Currencies -->
-    <div id="currenciesModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+    <div id="currenciesModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
                 <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
@@ -1049,7 +958,7 @@
             
             <div class="space-y-4 mb-6">
                 <div class="flex gap-2">
-                    <input type="text" id="newCurrencyName" placeholder="ឈ្មោះខ្នាតថ្មី (ឧ. THB, L...)" class="modal-item-input flex-1 px-3 py-2 text-sm">
+                    <input type="text" id="newCurrencyName" placeholder="ឈ្មោះខ្នាតថ្មី (ឧ. THB, L...)" class="modal-item-input flex-1 px-3 py-2 text-sm text-slate-900 dark:text-white">
                     <button onclick="addNewCurrency()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded-lg transition">បន្ថែម</button>
                 </div>
                 <div class="max-h-60 overflow-y-auto space-y-2 pr-1" id="currenciesListContainer"></div>
@@ -1062,7 +971,7 @@
     </div>
 
     <!-- Modal for Managing Categories -->
-    <div id="categoriesModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+    <div id="categoriesModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
                 <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
@@ -1073,7 +982,7 @@
             
             <div class="space-y-4 mb-6">
                 <div class="flex gap-2">
-                    <input type="text" id="newCategoryName" placeholder="ឈ្មោះប្រភេទថ្មី..." class="modal-item-input flex-1 px-3 py-2 text-sm">
+                    <input type="text" id="newCategoryName" placeholder="ឈ្មោះប្រភេទថ្មី..." class="modal-item-input flex-1 px-3 py-2 text-sm text-slate-900 dark:text-white">
                     <button onclick="addNewCategory()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold rounded-lg transition">បន្ថែម</button>
                 </div>
                 <div class="max-h-60 overflow-y-auto space-y-2 pr-1" id="categoriesListContainer"></div>
@@ -1086,7 +995,7 @@
     </div>
 
     <!-- Modal for Account Transfer -->
-    <div id="transferModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+    <div id="transferModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
                 <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
@@ -1098,25 +1007,25 @@
             <div class="space-y-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold mb-1 modal-label-text">ពីគណនី (ចេញ)៖</label>
-                    <select id="transferFromAcc" class="modal-item-input w-full p-2.5 text-sm font-medium"></select>
+                    <select id="transferFromAcc" class="modal-item-input w-full p-2.5 text-sm font-medium text-slate-900 dark:text-white"></select>
                 </div>
                 <div>
                     <label class="block text-xs font-bold mb-1 modal-label-text">ទៅគណនី (ចូល)៖</label>
-                    <select id="transferToAcc" class="modal-item-input w-full p-2.5 text-sm font-medium"></select>
+                    <select id="transferToAcc" class="modal-item-input w-full p-2.5 text-sm font-medium text-slate-900 dark:text-white"></select>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold mb-1 modal-label-text">ចំនួន៖</label>
-                        <input type="number" step="any" id="transferAmount" placeholder="0.00" class="modal-item-input w-full p-2.5 text-sm font-bold text-blue-600">
+                        <input type="number" step="any" id="transferAmount" placeholder="0.00" class="modal-item-input w-full p-2.5 text-sm font-bold text-blue-600 dark:text-blue-400">
                     </div>
                     <div>
                         <label class="block text-xs font-bold mb-1 modal-label-text">ខ្នាត/រូបិយប័ណ្ណ៖</label>
-                        <select id="transferCurrency" class="modal-item-input w-full p-2.5 text-sm font-bold text-amber-700"></select>
+                        <select id="transferCurrency" class="modal-item-input w-full p-2.5 text-sm font-bold text-amber-700 dark:text-amber-400"></select>
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs font-bold mb-1 modal-label-text">ការពិពណ៌នាបញ្ជាក់៖</label>
-                    <input type="text" id="transferDesc" value="ផ្ទេរប្រាក់រវាងគណនី" class="modal-item-input w-full p-2.5 text-sm">
+                    <input type="text" id="transferDesc" value="ផ្ទេរប្រាក់រវាងគណនី" class="modal-item-input w-full p-2.5 text-sm text-slate-900 dark:text-white">
                 </div>
             </div>
 
@@ -1128,7 +1037,7 @@
     </div>
 
     <!-- Custom Modal for Confirmation -->
-    <div id="confirmModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center">
+    <div id="confirmModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 transform transition-all">
             <h3 class="text-lg font-bold mb-2 modal-label-text" id="modalTitle">បញ្ជាក់ការលុប</h3>
             <p class="text-sm mb-6 modal-label-text" id="modalDesc">តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?</p>
@@ -1140,8 +1049,8 @@
     </div>
 
     <script>
-        // Global state container
-        window.state = {
+        // Global state container initialization
+        window.state = window.state || {
             exchangeRate: 4100,
             hideAmounts: false, 
             hiddenAccounts: [],
@@ -1157,7 +1066,7 @@
             subtitleColor: '#bfdbfe',
             pinCode: '',
             enteredPin: '',
-            appTitle: 'ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុផ្ទាល់ខ្លួន (Pro Cloud)',
+            appTitle: 'ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុ Pro Cloud',
             appSubtitle: 'ទិន្នន័យ Sync ស្វ័យប្រវត្តិ ☁️',
             accounts: ['🏦 ABA', '💳 AC', '👛 Wallet', '🐖 Savings', '⛽ កាតសាំង'],
             currencies: ['USD', 'KHR', 'L (លីត្រ)'],
@@ -1186,47 +1095,6 @@
             if (cur === 'KHR') return (amount || 0).toLocaleString('en-US') + ' ៛';
             if (cur === 'USD') return (amount || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' $';
             return (amount || 0).toLocaleString('en-US', {maximumFractionDigits: 2}) + ' ' + (cur || '');
-        };
-
-        // Excel-like Drag-to-Resize Column Initialization Logic
-        window.initResizers = function() {
-            const table = document.getElementById('mainTable');
-            if(!table) return;
-            const cols = table.querySelectorAll('th');
-            [].forEach.call(cols, function (col) {
-                const resizer = col.querySelector('.resizer');
-                if (!resizer) return;
-
-                let x = 0;
-                let w = 0;
-
-                const mouseDownHandler = function (e) {
-                    x = e.clientX;
-                    const styles = window.getComputedStyle(col);
-                    w = parseInt(styles.width, 10);
-
-                    document.addEventListener('mousemove', mouseMoveHandler);
-                    document.addEventListener('mouseup', mouseUpHandler);
-                    resizer.classList.add('resizing');
-                    document.body.style.cursor = 'col-resize';
-                };
-
-                const mouseMoveHandler = function (e) {
-                    const dx = e.clientX - x;
-                    const newWidth = Math.max(40, w + dx);
-                    col.style.width = `${newWidth}px`;
-                    col.style.minWidth = `${newWidth}px`;
-                };
-
-                const mouseUpHandler = function () {
-                    document.removeEventListener('mousemove', mouseMoveHandler);
-                    document.removeEventListener('mouseup', mouseUpHandler);
-                    resizer.classList.remove('resizing');
-                    document.body.style.cursor = '';
-                };
-
-                resizer.addEventListener('mousedown', mouseDownHandler);
-            });
         };
 
         window.playChimeSound = function() {
@@ -1264,6 +1132,7 @@
             }, 3000);
         };
 
+        // Pin Lock Functions
         window.checkPinLock = function() {
             if (window.state.pinCode && window.state.pinCode.length === 4) {
                 const el = document.getElementById('pinLockOverlay');
@@ -1402,7 +1271,6 @@
             document.getElementById('cfgSubtitleColor').value = window.state.subtitleColor || '#bfdbfe';
             document.getElementById('cfgPinInput').value = window.state.pinCode || '';
             
-            // Checkboxes state
             if (window.state.visibleSections) {
                 if (document.getElementById('chkAccounts')) document.getElementById('chkAccounts').checked = !!window.state.visibleSections['sec-accounts'];
                 if (document.getElementById('chkGoals')) document.getElementById('chkGoals').checked = !!window.state.visibleSections['sec-goals'];
@@ -1474,7 +1342,7 @@
         };
 
         window.saveUiCustomizations = function() {
-            window.state.appTitle = document.getElementById('cfgAppTitle').value.trim() || 'ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុផ្ទាល់ខ្លួន (Pro Cloud)';
+            window.state.appTitle = document.getElementById('cfgAppTitle').value.trim() || 'ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុ Pro Cloud';
             window.state.appSubtitle = document.getElementById('cfgAppSubtitle').value.trim() || 'ទិន្នន័យ Sync ស្វ័យប្រវត្តិ ☁️';
             const urlVal = document.getElementById('cfgBgImageUrl').value.trim();
             if (urlVal) window.state.bgImageUrl = urlVal;
@@ -1532,13 +1400,13 @@
             }
 
             body.className = "text-slate-800 antialiased min-h-screen pb-10";
-            body.classList.remove('theme-aba-dark', 'theme-slate', 'theme-dark');
+            body.classList.remove('theme-aba-dark', 'theme-slate', 'theme-dark', 'dark');
 
             if (window.state.themeStyle === 'aba-dark') {
-                body.classList.add('theme-aba-dark', 'theme-dark');
+                body.classList.add('theme-aba-dark', 'theme-dark', 'dark');
                 if (hero) hero.className = "bg-gradient-to-br from-neutral-900 via-amber-950 to-neutral-950 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden border border-amber-500/30";
             } else if (window.state.themeStyle === 'slate') {
-                body.classList.add('theme-slate', 'theme-dark');
+                body.classList.add('theme-slate', 'theme-dark', 'dark');
                 body.style.backgroundColor = '#0f172a';
                 if (hero) hero.className = "bg-gradient-to-br from-slate-800 to-slate-950 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden border border-slate-700";
             } else {
@@ -1546,7 +1414,6 @@
                 if (hero) hero.className = "bg-gradient-to-br from-blue-800 to-indigo-900 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden";
             }
 
-            // Apply section visibility states
             if (window.state.visibleSections) {
                 Object.keys(window.state.visibleSections).forEach(secId => {
                     const isVis = window.state.visibleSections[secId];
@@ -1703,7 +1570,6 @@
             }
         };
 
-        // Custom Date-Time Filter Toggle Handler
         window.toggleCustomDateTimeFilter = function() {
             const periodVal = document.getElementById('filterDatePeriod').value;
             const container = document.getElementById('filterDateTimeContainer');
@@ -1717,7 +1583,6 @@
             window.renderTable();
         };
 
-        // Render Shortcuts Toolbar
         window.renderShortcuts = function() {
             const container = document.getElementById('shortcutsContainer');
             if(!container) return;
@@ -1872,7 +1737,6 @@
             });
         };
 
-        // Savings Goals Handler Functions
         window.renderSavingsGoals = function(accBalances = {}) {
             const container = document.getElementById('goalsContainer');
             if (!container) return;
@@ -2022,7 +1886,6 @@
             });
         };
 
-        // Budget Widget Handlers
         window.renderBudgetWidget = function() {
             const container = document.getElementById('budgetProgressContainer');
             if(!container) return;
@@ -2262,15 +2125,19 @@
         // Dashboard Updater
         window.updateDashboard = function() {
             let accBalances = {};
-            window.state.accounts.forEach(acc => accBalances[acc] = {});
+            if (window.state && window.state.accounts) {
+                window.state.accounts.forEach(acc => accBalances[acc] = {});
+            }
 
-            window.state.transactions.forEach(tx => {
-                if (!accBalances[tx.acc]) accBalances[tx.acc] = {};
-                const cur = tx.cur || 'USD';
-                if (!accBalances[tx.acc][cur]) accBalances[tx.acc][cur] = 0;
-                const bal = (tx.inc || 0) - (tx.exp || 0);
-                accBalances[tx.acc][cur] += bal;
-            });
+            if (window.state && window.state.transactions) {
+                window.state.transactions.forEach(tx => {
+                    if (!accBalances[tx.acc]) accBalances[tx.acc] = {};
+                    const cur = tx.cur || 'USD';
+                    if (!accBalances[tx.acc][cur]) accBalances[tx.acc][cur] = 0;
+                    const bal = (tx.inc || 0) - (tx.exp || 0);
+                    accBalances[tx.acc][cur] += bal;
+                });
+            }
 
             let totalUSD = 0, totalKHR = 0;
             if (!window.state.hiddenAccounts) window.state.hiddenAccounts = [];
@@ -2282,14 +2149,14 @@
                 }
             });
 
-            const combinedNet = totalUSD + (totalKHR / window.state.exchangeRate);
+            const combinedNet = totalUSD + (totalKHR / (window.state.exchangeRate || 4100));
             const netWorthEl = document.getElementById('globalNetWorth');
             if (netWorthEl) netWorthEl.textContent = window.formatMoney(combinedNet, 'USD');
 
             const cardGrid = document.getElementById('dashboardCards');
             if (cardGrid) {
                 cardGrid.innerHTML = '';
-                const isDark = window.state.themeStyle === 'aba-dark' || window.state.themeStyle === 'slate';
+                const isDark = window.state.themeStyle === 'aba-dark' || window.state.themeStyle === 'slate' || document.body.classList.contains('dark');
                 const cardBg = isDark ? 'bg-slate-900/90 border-slate-700' : 'bg-white border-slate-200 shadow-md';
                 const textMain = isDark ? 'text-slate-100' : 'text-slate-900';
 
@@ -2326,10 +2193,8 @@
             if (typeof window.drawCharts === 'function') window.drawCharts();
         };
 
-        // Account management functions
         window.openAccountsModal = function() { window.renderAccountsList(); document.getElementById('accountsModal').classList.remove('hidden'); };
         window.closeAccountsModal = function() { document.getElementById('accountsModal').classList.add('hidden'); };
-        
         window.moveAccount = function(i, dir) {
             const newIndex = i + dir;
             if (newIndex < 0 || newIndex >= window.state.accounts.length) return;
@@ -2354,8 +2219,10 @@
                         <button onclick="toggleAccountVisibility('${acc}')" class="px-2 py-1.5 rounded-lg border text-xs font-bold transition flex items-center gap-1 ${isHidden ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-emerald-100 text-emerald-800 border-emerald-300'}" title="${isHidden ? 'ចុចដើម្បីបង្ហាញលើ Dashboard' : 'ចុចដើម្បីលាក់ពី Dashboard'}">
                             ${isHidden ? '🙈 លាក់' : '👁️ បង្ហាញ'}
                         </button>
-                        <input type="text" value="${acc}" onchange="editAccountName(${i}, this.value)" class="modal-item-input flex-1 outline-none">
-                        <button onclick="deleteAccount(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button>
+                        <input type="text" value="${acc}" onchange="editAccountName(${i}, this.value)" class="modal-item-input flex-1 outline-none text-slate-900 dark:text-white">
+                        <button onclick="deleteAccount(${i})" class="text-white font-bold text-xs bg-red-500 hover:bg-red-600 px-2.5 py-1.5 rounded-lg shadow-sm border border-red-600 flex items-center gap-1">
+                            <i class="fa-solid fa-trash-can"></i> លុប
+                        </button>
                     </div>`;
             });
         };
@@ -2401,8 +2268,10 @@
                             <button onclick="moveCurrency(${i}, -1)" ${i === 0 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលឡើងលើ">⬆️</button>
                             <button onclick="moveCurrency(${i}, 1)" ${i === window.state.currencies.length - 1 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលចុះក្រោម">⬇️</button>
                         </div>
-                        <input type="text" value="${cur}" onchange="editCurrencyName(${i}, this.value)" class="modal-item-input flex-1 outline-none">
-                        <button onclick="deleteCurrency(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button>
+                        <input type="text" value="${cur}" onchange="editCurrencyName(${i}, this.value)" class="modal-item-input flex-1 outline-none text-slate-900 dark:text-white">
+                        <button onclick="deleteCurrency(${i})" class="text-white font-bold text-xs bg-red-500 hover:bg-red-600 px-2.5 py-1.5 rounded-lg shadow-sm border border-red-600 flex items-center gap-1">
+                            <i class="fa-solid fa-trash-can"></i> លុប
+                        </button>
                     </div>`;
             });
         };
@@ -2432,8 +2301,10 @@
                             <button onclick="moveCategory(${i}, -1)" ${i === 0 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលឡើងលើ">⬆️</button>
                             <button onclick="moveCategory(${i}, 1)" ${i === window.state.categories.length - 1 ? 'disabled class="opacity-30"' : 'class="hover:text-blue-600 font-bold p-0.5"'} title="រំកិលចុះក្រោម">⬇️</button>
                         </div>
-                        <input type="text" value="${cat}" onchange="editCategoryName(${i}, this.value)" class="modal-item-input flex-1 outline-none">
-                        <button onclick="deleteCategory(${i})" class="text-red-500 hover:text-red-600 font-bold text-xs bg-red-50 dark:bg-red-950/50 px-2.5 py-1.5 rounded-lg border border-red-200 dark:border-red-900">🗑️ លុប</button>
+                        <input type="text" value="${cat}" onchange="editCategoryName(${i}, this.value)" class="modal-item-input flex-1 outline-none text-slate-900 dark:text-white">
+                        <button onclick="deleteCategory(${i})" class="text-white font-bold text-xs bg-red-500 hover:bg-red-600 px-2.5 py-1.5 rounded-lg shadow-sm border border-red-600 flex items-center gap-1">
+                            <i class="fa-solid fa-trash-can"></i> លុប
+                        </button>
                     </div>`;
             });
         };
@@ -2505,7 +2376,6 @@
             window.showToast('បានចម្លងប្រតិបត្តិការ!', 'success');
         };
 
-        // Table renderer & transactions handlers (with Exact DateTime Filter)
         window.renderTable = function() {
             const tbody = document.getElementById('tableBody');
             if (!tbody) return;
@@ -2517,97 +2387,90 @@
             let totals = {}; 
             window.state.currencies.forEach(c => totals[c] = { in: 0, out: 0 });
 
-            // Prepare Date Filter thresholds
             const now = new Date();
             const todayStr = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
-            
             const yesterday = new Date(now); yesterday.setDate(yesterday.getDate() - 1);
             const yesterdayStr = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000).toISOString().split('T')[0];
-            
             const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay());
             const startOfWeekStr = new Date(startOfWeek.getTime() - startOfWeek.getTimezoneOffset() * 60000).toISOString().split('T')[0];
-            
             const startOfMonthStr = todayStr.substring(0, 7);
 
-            // Custom Start / End Datetime Values
             const startDTVal = document.getElementById('filterStartDateTime')?.value || '';
             const endDTVal = document.getElementById('filterEndDateTime')?.value || '';
 
             let rowCount = 1;
             let summaryIncUSD = 0, summaryExpUSD = 0;
 
-            window.state.transactions.forEach(tx => {
-                if(!tx.date) return;
-                const txDateOnly = tx.date.split('T')[0];
-                const txFullDT = tx.date.length === 10 ? tx.date + 'T00:00:00' : tx.date;
+            if (window.state && window.state.transactions) {
+                window.state.transactions.forEach(tx => {
+                    if(!tx.date) return;
+                    const txDateOnly = tx.date.split('T')[0];
+                    const txFullDT = tx.date.length === 10 ? tx.date + 'T00:00:00' : tx.date;
 
-                // Apply Account Filter
-                if (filterAcc !== 'ALL' && tx.acc !== filterAcc) return;
+                    if (filterAcc !== 'ALL' && tx.acc !== filterAcc) return;
+                    if (filterDate === 'TODAY' && txDateOnly !== todayStr) return;
+                    if (filterDate === 'YESTERDAY' && txDateOnly !== yesterdayStr) return;
+                    if (filterDate === 'THIS_WEEK' && txDateOnly < startOfWeekStr) return;
+                    if (filterDate === 'THIS_MONTH' && !txDateOnly.startsWith(startOfMonthStr)) return;
+                    if (filterDate === 'CUSTOM_DATETIME') {
+                        if (startDTVal && txFullDT < startDTVal) return;
+                        if (endDTVal && txFullDT > endDTVal) return;
+                    }
 
-                // Apply Date/Time Filters
-                if (filterDate === 'TODAY' && txDateOnly !== todayStr) return;
-                if (filterDate === 'YESTERDAY' && txDateOnly !== yesterdayStr) return;
-                if (filterDate === 'THIS_WEEK' && txDateOnly < startOfWeekStr) return;
-                if (filterDate === 'THIS_MONTH' && !txDateOnly.startsWith(startOfMonthStr)) return;
-                if (filterDate === 'CUSTOM_DATETIME') {
-                    if (startDTVal && txFullDT < startDTVal) return;
-                    if (endDTVal && txFullDT > endDTVal) return;
-                }
+                    const matchStr = `${tx.cat} ${tx.desc}`.toLowerCase();
+                    if (searchQ && !matchStr.includes(searchQ)) return;
 
-                const matchStr = `${tx.cat} ${tx.desc}`.toLowerCase();
-                if (searchQ && !matchStr.includes(searchQ)) return;
+                    const incVal = tx.cur === 'USD' ? tx.inc : (tx.inc / window.state.exchangeRate);
+                    const expVal = tx.cur === 'USD' ? tx.exp : (tx.exp / window.state.exchangeRate);
+                    summaryIncUSD += incVal;
+                    summaryExpUSD += expVal;
 
-                const incVal = tx.cur === 'USD' ? tx.inc : (tx.inc / window.state.exchangeRate);
-                const expVal = tx.cur === 'USD' ? tx.exp : (tx.exp / window.state.exchangeRate);
-                summaryIncUSD += incVal;
-                summaryExpUSD += expVal;
+                    const curKey = tx.cur || 'USD';
+                    if (!totals[curKey]) totals[curKey] = { in: 0, out: 0 };
+                    totals[curKey].in += (tx.inc || 0);
+                    totals[curKey].out += (tx.exp || 0);
 
-                const curKey = tx.cur || 'USD';
-                if (!totals[curKey]) totals[curKey] = { in: 0, out: 0 };
-                totals[curKey].in += (tx.inc || 0);
-                totals[curKey].out += (tx.exp || 0);
+                    let accOptsHtml = window.state.accounts.map(a => `<option value="${a}" ${tx.acc===a?'selected':''}>${a}</option>`).join('');
+                    let curOptsHtml = window.state.currencies.map(c => `<option value="${c}" ${tx.cur===c?'selected':''}>${c}</option>`).join('');
+                    let catOptsHtml = window.state.categories.map(c => `<option value="${c}" ${tx.cat===c?'selected':''}>${c}</option>`).join('');
 
-                let accOptsHtml = window.state.accounts.map(a => `<option value="${a}" ${tx.acc===a?'selected':''}>${a}</option>`).join('');
-                let curOptsHtml = window.state.currencies.map(c => `<option value="${c}" ${tx.cur===c?'selected':''}>${c}</option>`).join('');
-                let catOptsHtml = window.state.categories.map(c => `<option value="${c}" ${tx.cat===c?'selected':''}>${c}</option>`).join('');
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-blue-50/50 dark:hover:bg-zinc-800/50 transition-colors group";
+                    
+                    tr.innerHTML = `
+                        <td class="px-3 py-2 text-sm text-gray-500 dark:text-gray-300 text-center">${rowCount++}</td>
+                        <td class="px-3 py-2"><input type="datetime-local" step="1" value="${window.formatForDateTimeInput(tx.date)}" onchange="updateTx('${tx.id}', 'date', this.value)" class="editable-input text-xs font-mono text-slate-800 dark:text-slate-100"></td>
+                        <td class="px-3 py-2">
+                            <select onchange="updateTx('${tx.id}', 'cat', this.value)" class="editable-input text-sm font-medium text-slate-800 dark:text-slate-100">
+                                ${catOptsHtml}
+                            </select>
+                        </td>
+                        <td class="px-3 py-2"><input type="text" value="${tx.desc}" onchange="updateTx('${tx.id}', 'desc', this.value)" class="editable-input text-sm text-slate-800 dark:text-slate-100"></td>
+                        <td class="px-3 py-2">
+                            <select onchange="updateTx('${tx.id}', 'acc', this.value)" class="editable-input text-sm font-medium text-slate-800 dark:text-slate-100">
+                                ${accOptsHtml}
+                            </select>
+                        </td>
+                        <td class="px-3 py-2">
+                            <select onchange="updateTx('${tx.id}', 'cur', this.value)" class="editable-input text-sm font-bold text-amber-700 dark:text-amber-400">
+                                ${curOptsHtml}
+                            </select>
+                        </td>
+                        <td class="px-3 py-2"><input type="${window.state.hideAmounts ? 'text' : 'number'}" step="any" min="0" value="${window.state.hideAmounts ? '••••••' : (tx.inc||0)}" onchange="updateTx('${tx.id}', 'inc', this.value)" class="editable-input text-sm font-semibold text-green-600 dark:text-emerald-400 text-right"></td>
+                        <td class="px-3 py-2"><input type="${window.state.hideAmounts ? 'text' : 'number'}" step="any" min="0" value="${window.state.hideAmounts ? '••••••' : (tx.exp||0)}" onchange="updateTx('${tx.id}', 'exp', this.value)" class="editable-input text-sm font-semibold text-red-500 dark:text-rose-400 text-right"></td>
+                        <td class="px-3 py-2 text-center flex items-center justify-center gap-2">
+                            <button onclick="duplicateRow('${tx.id}')" class="text-blue-600 dark:text-sky-300 hover:text-blue-800 bg-blue-100 dark:bg-sky-950 hover:bg-blue-200 dark:hover:bg-sky-900 px-2 py-1 rounded-md border border-blue-300 dark:border-sky-700 transition shadow-sm flex items-center justify-center" title="ចម្លងប្រតិបត្តិការនេះ">
+                                <i class="fa-solid fa-copy text-xs"></i>
+                            </button>
+                            <button onclick="confirmDelete('${tx.id}')" class="text-rose-600 dark:text-rose-300 hover:text-rose-800 bg-rose-100 dark:bg-rose-950 hover:bg-rose-200 dark:hover:bg-rose-900 px-2 py-1 rounded-md border border-rose-300 dark:border-rose-700 transition shadow-sm flex items-center justify-center" title="លុប">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
 
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-blue-50/50 dark:hover:bg-zinc-800/50 transition-colors group";
-                
-                tr.innerHTML = `
-                    <td class="px-3 py-2 text-sm text-gray-500 dark:text-gray-300 text-center">${rowCount++}</td>
-                    <td class="px-3 py-2"><input type="datetime-local" step="1" value="${window.formatForDateTimeInput(tx.date)}" onchange="updateTx('${tx.id}', 'date', this.value)" class="editable-input text-xs font-mono text-slate-800 dark:text-slate-100"></td>
-                    <td class="px-3 py-2">
-                        <select onchange="updateTx('${tx.id}', 'cat', this.value)" class="editable-input text-sm font-medium text-slate-800 dark:text-slate-100">
-                            ${catOptsHtml}
-                        </select>
-                    </td>
-                    <td class="px-3 py-2"><input type="text" value="${tx.desc}" onchange="updateTx('${tx.id}', 'desc', this.value)" class="editable-input text-sm text-slate-800 dark:text-slate-100"></td>
-                    <td class="px-3 py-2">
-                        <select onchange="updateTx('${tx.id}', 'acc', this.value)" class="editable-input text-sm font-medium text-slate-800 dark:text-slate-100">
-                            ${accOptsHtml}
-                        </select>
-                    </td>
-                    <td class="px-3 py-2">
-                        <select onchange="updateTx('${tx.id}', 'cur', this.value)" class="editable-input text-sm font-bold text-amber-700 dark:text-amber-400">
-                            ${curOptsHtml}
-                        </select>
-                    </td>
-                    <td class="px-3 py-2"><input type="${window.state.hideAmounts ? 'text' : 'number'}" step="any" min="0" value="${window.state.hideAmounts ? '••••••' : (tx.inc||0)}" onchange="updateTx('${tx.id}', 'inc', this.value)" class="editable-input text-sm font-semibold text-green-600 dark:text-emerald-400 text-right"></td>
-                    <td class="px-3 py-2"><input type="${window.state.hideAmounts ? 'text' : 'number'}" step="any" min="0" value="${window.state.hideAmounts ? '••••••' : (tx.exp||0)}" onchange="updateTx('${tx.id}', 'exp', this.value)" class="editable-input text-sm font-semibold text-red-500 dark:text-rose-400 text-right"></td>
-                    <td class="px-3 py-2 text-center flex items-center justify-center gap-2">
-                        <button onclick="duplicateRow('${tx.id}')" class="text-blue-600 dark:text-sky-300 hover:text-blue-800 bg-blue-100 dark:bg-sky-950 hover:bg-blue-200 dark:hover:bg-sky-900 px-2 py-1 rounded-md border border-blue-300 dark:border-sky-700 transition shadow-sm flex items-center justify-center" title="ចម្លងប្រតិបត្តិការនេះ">
-                            <i class="fa-solid fa-copy text-xs"></i>
-                        </button>
-                        <button onclick="confirmDelete('${tx.id}')" class="text-rose-600 dark:text-rose-300 hover:text-rose-800 bg-rose-100 dark:bg-rose-950 hover:bg-rose-200 dark:hover:bg-rose-900 px-2 py-1 rounded-md border border-rose-300 dark:border-rose-700 transition shadow-sm flex items-center justify-center" title="លុប">
-                            <i class="fa-solid fa-trash-can text-xs"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            // Update summary banner text & savings rate %
             const todayIncEl = document.getElementById('todayIncText');
             const todayExpEl = document.getElementById('todayExpText');
             const todaySavingsEl = document.getElementById('todaySavingsRate');
@@ -2659,7 +2522,6 @@
             window.updateDashboard();
         };
 
-        // Report helper functions
         window.toggleCustomPeriod = function() {
             const periodType = document.getElementById('reportPeriod').value;
             const container = document.getElementById('customPeriodContainer');
@@ -2692,19 +2554,21 @@
             const periodType = document.getElementById('reportPeriod')?.value || 'monthly';
             let pData = {}, cData = {};
 
-            window.state.transactions.forEach(r => {
-                if(!r.date && r.inc === 0 && r.exp === 0) return; 
-                const pKey = window.getPeriodKey(r.date, periodType);
-                const cat = r.cat || 'ផ្សេងៗ'; const cur = r.cur || 'USD';
+            if (window.state && window.state.transactions) {
+                window.state.transactions.forEach(r => {
+                    if(!r.date && r.inc === 0 && r.exp === 0) return; 
+                    const pKey = window.getPeriodKey(r.date, periodType);
+                    const cat = r.cat || 'ផ្សេងៗ'; const cur = r.cur || 'USD';
 
-                if(!pData[pKey]) pData[pKey] = {};
-                if(!pData[pKey][cur]) pData[pKey][cur] = { in: 0, out: 0 };
-                pData[pKey][cur].in += r.inc; pData[pKey][cur].out += r.exp;
+                    if(!pData[pKey]) pData[pKey] = {};
+                    if(!pData[pKey][cur]) pData[pKey][cur] = { in: 0, out: 0 };
+                    pData[pKey][cur].in += r.inc; pData[pKey][cur].out += r.exp;
 
-                if(!cData[cat]) cData[cat] = {};
-                if(!cData[cat][cur]) cData[cat][cur] = { in: 0, out: 0 };
-                cData[cat][cur].in += r.inc; cData[cat][cur].out += r.exp;
-            });
+                    if(!cData[cat]) cData[cat] = {};
+                    if(!cData[cat][cur]) cData[cat][cur] = { in: 0, out: 0 };
+                    cData[cat][cur].in += r.inc; cData[cat][cur].out += r.exp;
+                });
+            }
 
             function buildRows(dataObj, showBal = true) {
                 let html = '';
@@ -2733,7 +2597,6 @@
             if (cBody) cBody.innerHTML = buildRows(cData, false);
         };
 
-        // Export and Import handlers
         window.exportToPDF = function() {
             const element = document.getElementById('reportPrintArea');
             const opt = {
@@ -2843,7 +2706,90 @@
             reader.readAsArrayBuffer(file);
         };
 
-        // Onload initializations
+        // 💻 DESKTOP CLICK-AND-DRAG HORIZONTAL SCROLL FUNCTION
+        window.initDesktopDragScroll = function() {
+            const container = document.getElementById('tableScrollContainer');
+            if (!container) return;
+
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            container.addEventListener('mousedown', (e) => {
+                // Ignore drag scrolling if user clicks inside inputs, selects, buttons, or column resizers
+                if (['INPUT', 'SELECT', 'BUTTON', 'A', 'I', 'OPTION'].includes(e.target.tagName) || e.target.classList.contains('resizer')) {
+                    return;
+                }
+                isDown = true;
+                container.classList.add('cursor-grabbing');
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isDown = false;
+                container.classList.remove('cursor-grabbing');
+            });
+
+            container.addEventListener('mouseup', () => {
+                isDown = false;
+                container.classList.remove('cursor-grabbing');
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.5; // Drag scroll sensitivity
+                container.scrollLeft = scrollLeft - walk;
+            });
+        };
+
+        // 💻 DESKTOP EXCEL COLUMN RESIZER
+        window.initResizers = function() {
+            const table = document.getElementById('mainTable');
+            if(!table) return;
+            const cols = table.querySelectorAll('th');
+            [].forEach.call(cols, function (col) {
+                const resizer = col.querySelector('.resizer');
+                if (!resizer || resizer.dataset.initialized) return;
+                resizer.dataset.initialized = 'true';
+
+                let x = 0;
+                let w = 0;
+
+                const mouseDownHandler = function (e) {
+                    e.preventDefault(); // Prevent desktop text highlighting while dragging
+                    e.stopPropagation();
+                    x = e.clientX;
+                    const styles = window.getComputedStyle(col);
+                    w = parseInt(styles.width, 10);
+
+                    document.addEventListener('mousemove', mouseMoveHandler);
+                    document.addEventListener('mouseup', mouseUpHandler);
+                    resizer.classList.add('resizing');
+                    document.body.style.cursor = 'col-resize';
+                };
+
+                const mouseMoveHandler = function (e) {
+                    const dx = e.clientX - x;
+                    const newWidth = Math.max(50, w + dx);
+                    col.style.width = `${newWidth}px`;
+                    col.style.minWidth = `${newWidth}px`;
+                };
+
+                const mouseUpHandler = function () {
+                    document.removeEventListener('mousemove', mouseMoveHandler);
+                    document.removeEventListener('mouseup', mouseUpHandler);
+                    resizer.classList.remove('resizing');
+                    document.body.style.cursor = '';
+                };
+
+                resizer.addEventListener('mousedown', mouseDownHandler);
+            });
+        };
+
+        // Window OnLoad Initializer
         window.onload = () => {
             const savedUi = localStorage.getItem('finance_ui_config');
             if (savedUi) {
@@ -2862,22 +2808,27 @@
                 } catch(e) {}
             }
 
-            window.checkPinLock();
-            window.applyUiConfig();
-            window.renderFilterAccounts();
-            window.renderShortcuts();
-            window.renderTable();
-            window.updateDashboard();
-            window.initResizers(); // Initialize Excel drag-to-resize column handlers
-
-            window.fetchLiveExchangeRate(true);
+            if (typeof window.initResizers === 'function') {
+                window.initResizers();
+            }
+            if (typeof window.initDesktopDragScroll === 'function') {
+                window.initDesktopDragScroll();
+            }
+            
+            if (typeof window.checkPinLock === 'function') window.checkPinLock();
+            if (typeof window.applyUiConfig === 'function') window.applyUiConfig();
+            if (typeof window.renderFilterAccounts === 'function') window.renderFilterAccounts();
+            if (typeof window.renderShortcuts === 'function') window.renderShortcuts();
+            if (typeof window.renderTable === 'function') window.renderTable();
+            if (typeof window.updateDashboard === 'function') window.updateDashboard();
+            if (typeof window.fetchLiveExchangeRate === 'function') window.fetchLiveExchangeRate(true);
         };
     </script>
 
     <!-- Firebase SDK Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getDatabase, ref, onValue, set, remove, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBo9Wq8tNJ5UC0HULZaH2TjZDa6oBEQtl0",
@@ -2897,6 +2848,7 @@
             window.firebaseRef = ref;
             window.firebaseSet = set;
             window.firebaseRemove = remove;
+            window.firebaseGet = get;
 
             const statusBadge = document.getElementById('cloudStatusBadge');
             if (statusBadge) {
@@ -2904,24 +2856,21 @@
                 statusBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> 🟢 ភ្ជាប់ Cloud រួចរាល់`;
             }
 
+            // Realtime Firebase listeners
             onValue(ref(db, 'transactions'), (snapshot) => {
                 const data = snapshot.val();
-                if (data) {
-                    const loadedTxs = [];
-                    Object.keys(data).forEach(key => {
-                        loadedTxs.push({ id: key, ...data[key] });
-                    });
-                    window.state.transactions = loadedTxs;
-                } else {
-                    window.state.transactions = [];
-                }
+                if (!window.state) window.state = { transactions: [] };
+                window.state.transactions = [];
+                if (data) Object.keys(data).forEach(key => window.state.transactions.push({ id: key, ...data[key] }));
                 if (typeof window.renderTable === 'function') window.renderTable();
                 if (typeof window.updateDashboard === 'function') window.updateDashboard();
             });
 
             onValue(ref(db, 'accounts'), (snapshot) => {
                 const data = snapshot.val();
+                if (!window.state) window.state = { accounts: [] };
                 if (data) window.state.accounts = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.renderAccountsList === 'function') window.renderAccountsList();
                 if (typeof window.renderFilterAccounts === 'function') window.renderFilterAccounts();
                 if (typeof window.renderTable === 'function') window.renderTable();
                 if (typeof window.updateDashboard === 'function') window.updateDashboard();
@@ -2929,39 +2878,46 @@
 
             onValue(ref(db, 'currencies'), (snapshot) => {
                 const data = snapshot.val();
+                if (!window.state) window.state = { currencies: [] };
                 if (data) window.state.currencies = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.renderCurrenciesList === 'function') window.renderCurrenciesList();
                 if (typeof window.renderTable === 'function') window.renderTable();
                 if (typeof window.updateDashboard === 'function') window.updateDashboard();
             });
 
             onValue(ref(db, 'categories'), (snapshot) => {
                 const data = snapshot.val();
+                if (!window.state) window.state = { categories: [] };
                 if (data) window.state.categories = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.renderCategoriesList === 'function') window.renderCategoriesList();
                 if (typeof window.renderTable === 'function') window.renderTable();
-                if (typeof window.updateDashboard === 'function') window.updateDashboard();
-            });
-
-            onValue(ref(db, 'budgets'), (snapshot) => {
-                const data = snapshot.val();
-                if (data) window.state.budgets = Array.isArray(data) ? data : Object.values(data);
-                if (typeof window.updateDashboard === 'function') window.updateDashboard();
-            });
-
-            onValue(ref(db, 'goals'), (snapshot) => {
-                const data = snapshot.val();
-                if (data) window.state.goals = Array.isArray(data) ? data : Object.values(data);
                 if (typeof window.updateDashboard === 'function') window.updateDashboard();
             });
 
             onValue(ref(db, 'shortcuts'), (snapshot) => {
                 const data = snapshot.val();
+                if (!window.state) window.state = { shortcuts: [] };
                 if (data) window.state.shortcuts = Array.isArray(data) ? data : Object.values(data);
                 if (typeof window.renderShortcuts === 'function') window.renderShortcuts();
             });
 
+            onValue(ref(db, 'goals'), (snapshot) => {
+                const data = snapshot.val();
+                if (!window.state) window.state = { goals: [] };
+                if (data) window.state.goals = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.updateDashboard === 'function') window.updateDashboard();
+            });
+
+            onValue(ref(db, 'budgets'), (snapshot) => {
+                const data = snapshot.val();
+                if (!window.state) window.state = { budgets: [] };
+                if (data) window.state.budgets = Array.isArray(data) ? data : Object.values(data);
+                if (typeof window.updateDashboard === 'function') window.updateDashboard();
+            });
+
             onValue(ref(db, 'uiConfig'), (snapshot) => {
                 const data = snapshot.val();
-                if (data) {
+                if (data && window.state) {
                     if (data.appTitle) window.state.appTitle = data.appTitle;
                     if (data.appSubtitle) window.state.appSubtitle = data.appSubtitle;
                     if (data.themeStyle) window.state.themeStyle = data.themeStyle;
