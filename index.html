@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុ Pro Cloud</title>
+    <title>ប្រព័ន្ធគ្រប់គ្រងហិរញ្ញវត្ថុ Pro Cloud (Manager)</title>
 
-    <!-- Tailwind CSS for styling -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -96,7 +96,6 @@
             box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
         }
 
-        /* CLEAR WHITE TEXT & DARK FOCUS BACKGROUND FOR DARK MODE INPUTS & DROPDOWNS */
         body.theme-dark .editable-input,
         body.theme-aba-dark .editable-input,
         body.theme-slate .editable-input,
@@ -130,24 +129,33 @@
             cursor: pointer;
         }
 
-        /* Desktop Excel Drag-to-Resize Columns Styling */
+        /* 🌟 ខ្សែបន្ទាត់ខណ្ឌចន្លោះក្បាលតារាង (Visible Header Dividers for Manager) 🌟 */
         th {
-            position: relative;
+            position: relative !important;
         }
         
-        /* ខ្សែបន្ទាត់ពណ៌សចន្លោះក្បាលតារាង (Bright White Vertical Separator Line) */
+        /* បន្ទាត់ខណ្ឌច្បាស់សម្រាប់ Light Theme */
         th::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 15%;
-            bottom: 15%;
-            width: 2px;
-            background-color: #ffffff !important;
+            content: '' !important;
+            position: absolute !important;
+            right: 0 !important;
+            top: 18% !important;
+            bottom: 18% !important;
+            width: 2px !important;
+            background-color: #94a3b8 !important; 
             border-radius: 1px;
             pointer-events: none;
-            z-index: 10;
+            z-index: 25 !important;
         }
+
+        /* បន្ទាត់ខណ្ឌពណ៌សភ្លឺច្បាស់សម្រាប់ Dark Themes (ABA Dark / Navy Slate) */
+        body.dark th::after, 
+        body.theme-dark th::after, 
+        body.theme-aba-dark th::after, 
+        body.theme-slate th::after {
+            background-color: rgba(255, 255, 255, 0.6) !important;
+        }
+
         th:last-child::after {
             display: none !important;
         }
@@ -180,7 +188,6 @@
             background-color: #eff6ff;
         }
 
-        /* Modal Customizations */
         .modal-content-card {
             background-color: #ffffff !important;
             color: #0f172a !important;
@@ -324,7 +331,6 @@
 </head>
 <body class="text-slate-800 antialiased min-h-screen pb-10" id="appBody">
 
-    <!-- PIN Security Lock Overlay -->
     <div id="pinLockOverlay" class="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-xl flex flex-col items-center justify-center text-white hidden">
         <div class="text-center mb-8">
             <div class="w-16 h-16 bg-blue-600/20 border border-blue-500/40 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-400 text-2xl">
@@ -362,7 +368,6 @@
 
     <div class="max-w-[1400px] mx-auto pt-4 px-2 md:px-6">
         
-        <!-- Header & Global Stats Card -->
         <div id="heroCard" class="bg-gradient-to-br from-blue-800 to-indigo-900 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden transition-all duration-300">
             <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -mr-10 -mt-10"></div>
             
@@ -430,7 +435,6 @@
             </button>
         </div>
 
-        <!-- VIEW: DASHBOARD -->
         <div id="view-dashboard" class="space-y-6">
             <div id="sec-accounts">
                 <div class="flex justify-between items-center mb-3">
@@ -472,7 +476,6 @@
             </div>
         </div>
 
-        <!-- VIEW: TRANSACTIONS (DATA ENTRY) -->
         <div id="view-entry" class="hidden space-y-4">
             
             <div class="bg-white dark:bg-zinc-800 p-3 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700">
@@ -535,7 +538,6 @@
                 </div>
             </div>
 
-            <!-- Table Container -->
             <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 overflow-hidden">
                 <div class="scroll-container w-full max-h-[550px] relative rounded-xl" id="tableScrollContainer">
                     <table class="w-full min-w-[1200px] divide-y divide-gray-200 dark:divide-gray-700 border-collapse" id="mainTable">
@@ -572,7 +574,6 @@
             </button>
         </div>
 
-        <!-- VIEW: REPORTS -->
         <div id="view-report" class="hidden space-y-6">
             <div class="bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-zinc-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div class="flex flex-wrap items-center gap-4">
@@ -650,7 +651,6 @@
 
     </div>
 
-    <!-- Modals for Client Customization and Item Management -->
     <div id="customizeModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-lg mx-4 transform transition-all max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
@@ -728,7 +728,7 @@
                     </div>
                 </div>
 
-                <!-- ADMIN LICENSE GENERATOR SECTION -->
+                <!-- ADMIN LICENSE GENERATOR SECTION (Manager Feature) -->
                 <div class="border-t pt-3 mt-3 border-gray-300 dark:border-zinc-700">
                     <label class="block text-sm font-black modal-label-text text-amber-600 mb-2">👑 Admin Panel: បង្កើត License Key</label>
                     <div class="modal-sub-card p-4 rounded-xl border border-amber-300 dark:border-amber-600 shadow-sm space-y-3 bg-amber-50/30 dark:bg-amber-900/10">
@@ -786,13 +786,10 @@
         </div>
     </div>
 
-    <!-- Additional Modals (Goals, Budgets, Shortcuts, Accounts, Currencies, Categories, Transfer, Confirmation) -->
     <div id="goalModal" class="fixed inset-0 modal-overlay hidden z-50 flex items-center justify-center p-4">
         <div class="modal-content-card rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4 transform transition-all">
             <div class="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text">
-                    <span>🐖</span> កំណត់គោលដៅសន្សំប្រាក់
-                </h3>
+                <h3 class="text-lg font-bold flex items-center gap-2 modal-label-text"><span>🐖</span> កំណត់គោលដៅសន្សំប្រាក់</h3>
                 <button onclick="closeGoalModal()" class="text-gray-400 hover:text-gray-200 font-bold text-xl px-2">&times;</button>
             </div>
             <div class="space-y-4 mb-6">
@@ -963,8 +960,9 @@
         </div>
     </div>
 
-    <!-- MAIN JAVASCRIPT LOGIC -->
     <script>
+        const nowIsoString = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 19);
+
         window.state = {
             exchangeRate: 4100,
             hideAmounts: false, 
@@ -999,10 +997,21 @@
                 { id: 's2', name: '☕ កាហ្វេ ($1.50)', cat: 'អាហារ', acc: '👛 Wallet', cur: 'USD', inc: 0, exp: 1.5, desc: 'ទិញកាហ្វេ' },
                 { id: 's3', name: '⛽ ចាក់សាំង (10L)', cat: 'សាំង', acc: '⛽ កាតសាំង', cur: 'L (លីត្រ)', inc: 0, exp: 10, desc: 'ចាក់សាំង' }
             ],
-            transactions: []
+            transactions: [
+                { id: 'tx_sample_1', date: nowIsoString, cat: 'ប្រាក់ខែ', desc: 'ប្រាក់ខែប្រចាំខែ', acc: '🏦 ABA', cur: 'USD', inc: 1200, exp: 0 },
+                { id: 'tx_sample_2', date: nowIsoString, cat: 'អាហារ', desc: 'ទិញអាហារថ្ងៃត្រង់', acc: '👛 Wallet', cur: 'USD', inc: 0, exp: 12.5 },
+                { id: 'tx_sample_3', date: nowIsoString, cat: 'សាំង', desc: 'ចាក់សាំងម៉ូតូ', acc: '⛽ កាតសាំង', cur: 'L (លីត្រ)', inc: 0, exp: 5 }
+            ]
         };
 
         window.charts = { expense: null, trend: null };
+
+        window.getSafeLocal = function(key) {
+            try { return localStorage.getItem(key); } catch(e) { return null; }
+        };
+        window.setSafeLocal = function(key, value) {
+            try { localStorage.setItem(key, value); } catch(e) {}
+        };
 
         window.formatMoney = function(amount, cur) {
             if (window.state && window.state.hideAmounts) return '••••••';
@@ -1176,6 +1185,37 @@
             }
         };
 
+        window.adminGenerateKey = function() {
+            const keyVal = document.getElementById('adminNewKey').value.trim().toUpperCase();
+            if (!keyVal) {
+                window.showToast('សូមបញ្ចូលឈ្មោះ Key!', 'error');
+                return;
+            }
+
+            let expDate = 'LIFETIME';
+            const isLifetime = document.getElementById('adminLifetime').checked;
+            if (!isLifetime) {
+                const duration = parseInt(document.getElementById('adminDuration').value) || 1;
+                const unit = document.getElementById('adminDurationUnit').value;
+                const now = new Date();
+                if (unit === 'MONTHS') now.setMonth(now.getMonth() + duration);
+                if (unit === 'YEARS') now.setFullYear(now.getFullYear() + duration);
+                expDate = now.toISOString().split('T')[0];
+            }
+
+            const newLicObj = { key: keyVal, expiryDate: expDate, status: 'ACTIVE', createdDate: new Date().toISOString().split('T')[0] };
+            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
+                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'licenses/' + keyVal), newLicObj).then(() => {
+                    window.showToast(`✅ បានបង្កើត License: ${keyVal} រួចរាល់!`, 'success');
+                    document.getElementById('adminNewKey').value = '';
+                }).catch((error) => {
+                    window.showToast('មានបញ្ហាក្នុងការបង្កើត Key: ' + error.message, 'error');
+                });
+            } else {
+                window.showToast('ប្រព័ន្ធ Cloud មិនទាន់តភ្ជាប់រូចរាល់ទេ', 'error');
+            }
+        };
+
         window.openCustomizeModal = function() {
             const elTitle = document.getElementById('cfgAppTitle');
             if(elTitle) elTitle.value = window.state.appTitle || '';
@@ -1213,37 +1253,6 @@
 
         window.closeCustomizeModal = function() {
             document.getElementById('customizeModal').classList.add('hidden');
-        };
-
-        window.adminGenerateKey = function() {
-            const keyVal = document.getElementById('adminNewKey').value.trim().toUpperCase();
-            if (!keyVal) {
-                window.showToast('សូមបញ្ចូលឈ្មោះ Key!', 'error');
-                return;
-            }
-
-            let expDate = 'LIFETIME';
-            const isLifetime = document.getElementById('adminLifetime').checked;
-            if (!isLifetime) {
-                const duration = parseInt(document.getElementById('adminDuration').value) || 1;
-                const unit = document.getElementById('adminDurationUnit').value;
-                const now = new Date();
-                if (unit === 'MONTHS') now.setMonth(now.getMonth() + duration);
-                if (unit === 'YEARS') now.setFullYear(now.getFullYear() + duration);
-                expDate = now.toISOString().split('T')[0];
-            }
-
-            const newLicObj = { key: keyVal, expiryDate: expDate, status: 'ACTIVE', createdDate: new Date().toISOString().split('T')[0] };
-            if (window.firebaseDb && window.firebaseRef && window.firebaseSet) {
-                window.firebaseSet(window.firebaseRef(window.firebaseDb, 'licenses/' + keyVal), newLicObj).then(() => {
-                    window.showToast(`✅ បានបង្កើត License: ${keyVal} រួចរាល់!`, 'success');
-                    document.getElementById('adminNewKey').value = '';
-                }).catch((error) => {
-                    window.showToast('មានបញ្ហាក្នុងការបង្កើត Key: ' + error.message, 'error');
-                });
-            } else {
-                window.showToast('ប្រព័ន្ធ Cloud មិនទាន់តភ្ជាប់រូចរាល់ទេ', 'error');
-            }
         };
 
         window.handleLocalBgUpload = function(event) {
@@ -1359,17 +1368,13 @@
                         if (isVis) secEl.classList.remove('hidden');
                         else secEl.classList.add('hidden');
                     }
-                    if (secId === 'sec-accounts' && document.getElementById('chkAccounts')) document.getElementById('chkAccounts').checked = isVis;
-                    if (secId === 'sec-goals' && document.getElementById('chkGoals')) document.getElementById('chkGoals').checked = isVis;
-                    if (secId === 'sec-budgets' && document.getElementById('chkBudgets')) document.getElementById('chkBudgets').checked = isVis;
-                    if (secId === 'sec-charts' && document.getElementById('chkCharts')) document.getElementById('chkCharts').checked = isVis;
                 });
             }
             window.updateDashboard();
         };
 
         window.saveUiConfigToLocal = function() {
-            localStorage.setItem('finance_ui_config', JSON.stringify({
+            window.setSafeLocal('finance_ui_config', JSON.stringify({
                 appTitle: window.state.appTitle,
                 appSubtitle: window.state.appSubtitle,
                 themeStyle: window.state.themeStyle,
@@ -2579,9 +2584,9 @@
             });
         };
 
-        // Window OnLoad
+        // Window OnLoad Event
         window.onload = () => {
-            const savedUi = localStorage.getItem('finance_ui_config');
+            const savedUi = window.getSafeLocal('finance_ui_config');
             if (savedUi) {
                 try {
                     const parsed = JSON.parse(savedUi);
@@ -2598,7 +2603,9 @@
                 } catch(e) {}
             }
 
-            if (window.innerWidth > 768) { window.initResizers(); }
+            if (window.innerWidth > 768) { 
+                try { window.initResizers(); } catch(e) {}
+            }
             
             window.checkPinLock();
             window.applyUiConfig();
@@ -2610,7 +2617,6 @@
         };
     </script>
 
-    <!-- Firebase SDK Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
@@ -2635,10 +2641,13 @@
             }
 
             onValue(ref(db, 'transactions'), (snapshot) => {
-                const data = snapshot.val(); window.state.transactions = [];
-                if (data) Object.keys(data).forEach(k => window.state.transactions.push({id: k, ...data[k]}));
-                if (typeof window.renderTable === 'function') window.renderTable();
-                if (typeof window.updateDashboard === 'function') window.updateDashboard();
+                const data = snapshot.val();
+                if (data) {
+                    window.state.transactions = [];
+                    Object.keys(data).forEach(k => window.state.transactions.push({id: k, ...data[k]}));
+                    if (typeof window.renderTable === 'function') window.renderTable();
+                    if (typeof window.updateDashboard === 'function') window.updateDashboard();
+                }
             });
             onValue(ref(db, 'accounts'), (snapshot) => { 
                 const d = snapshot.val(); 
@@ -2676,7 +2685,7 @@
             });
 
         } catch (e) {
-            console.error("Firebase Error:", e);
+            console.warn("Firebase Init Notice:", e);
         }
     </script>
 </body>
